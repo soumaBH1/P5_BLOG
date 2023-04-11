@@ -1,47 +1,30 @@
 
 <!-- index.php -->
-<?php
-try
-{
-    $db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-}
-catch (Exception $e)
-{ // En cas d'erreur, on affiche un message et on arrête tout -->rediriger vers une autre page avec un message derreur
-        die('Erreur : ' . $e->getMessage());
-}
-?>
+ <!-- inclusion des variables et fonctions -->
+ <?php require_once('config.php') ?>
+<?php require_once( ROOT_PATH . '/includes/public_functions.php') ?>
+<?php require_once( ROOT_PATH . '/includes/registration_login.php') ?>
+<!-- ramener les postes publiees de la BDD  -->
+<?php $posts = getPublishedPosts(); ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Ibtissel BEN HAMMOUDA - Page d'accueil</title>
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
-        rel="stylesheet"
-    >
+<?php require_once('includes/head_section.php') ?>
 </head>
-<body class="d-flex flex-column min-vh-100">
-    <div class="container">
-
-    <?php include_once('header.php'); ?>
-        <h1>BLOG IBH</h1>
-
-        <!-- inclusion des variables et fonctions -->
-        <?php
-            include_once('variables.php');
-            include_once('functions.php');
-        ?>
-
-        <!-- inclusion de l'entête du site -->
-        <?php include_once('header.php'); ?>
+<body>
+	<!-- container - -->
+	<div class="container">
         
-       
-    </div>
+		<!-- navbar -->
+		<?php include('includes/navbar.php') ?>
+		<!-- // navbar -->
+        <!-- banner -->
+        <?php include('includes/banner.php') ?>
+		
 
-    <!-- inclusion du bas de page du site -->
-    <?php include_once('footer.php'); ?>
+		<!-- footer -->
+		<?php include('includes/footer.php') ?>
+		
+
+	</div>
+	<!-- // container -->
 </body>
 </html>
