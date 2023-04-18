@@ -2,6 +2,9 @@
 	// variable declaration
 	$username = "";
 	$email    = "";
+	$firstname ="";
+	$lastname ="";
+	$age=NULL;
 	$errors = array(); 
 
 	// REGISTER USER
@@ -9,14 +12,20 @@
 		// receive all input values from the form
 		$username = esc($_POST['username']);
 		$email = esc($_POST['email']);
+		$firstname = esc($_POST['firstname']);
+		$lastname = esc($_POST['lastname']);
+		$age = esc($_POST['age']);
 		$password_1 = esc($_POST['password_1']);
 		$password_2 = esc($_POST['password_2']);
 
 		// form validation: ensure that the form is correctly filled
-		if (empty($username)) {  array_push($errors, "Uhmm...username obligatoire"); }
-		if (empty($email)) { array_push($errors, "Oops.. vous avez oublié l'Email'"); }
-		if (empty($password_1)) { array_push($errors, "Oops.. vous avez oublié le mot de passe"); }
-		if ($password_1 != $password_2) { array_push($errors, "les deux mots de passe ne correspondent pas.");}
+		if (empty($username)) {  array_push($errors, "Username obligatoire !"); }
+		if (empty($email)) { array_push($errors, "Oops.. vous avez oublié l'Email !'"); }
+		if (empty($firstname)) { array_push($errors, "Oops.. vous avez oublié le nom!'"); }
+		if (empty($lastname)) { array_push($errors, "Oops.. vous avez oublié le prénom !'"); }
+		if (empty($age)) { array_push($errors, "Oops.. vous avez oublié l'age' !'"); }
+		if (empty($password_1)) { array_push($errors, "Oops.. vous avez oublié le mot de passe !"); }
+		if ($password_1 != $password_2) { array_push($errors, "les deux mots de passe ne correspondent pas !");}
 
 			// s'assurer qu'il n'ya pas de doublons. 
 		// l' email et le usernames doivent être uniques
@@ -37,8 +46,8 @@
 		// register user if there are no errors in the form
 		if (count($errors) == 0) {
 			$password = md5($password_1);//encrypt the password before saving in the database
-			$query = "INSERT INTO users (username, email, password, created_at, updated_at) 
-					  VALUES('$username', '$email', '$password', now(), now())";
+			$query = "INSERT INTO users (username, email, password, created_at, updated_at, firstname, lastname, age, admin) 
+					  VALUES('$username', '$email', '$password', now(), now(), '$firstname', '$lastname', '$age', '$admin')";
 			mysqli_query($conn, $query);
 
 			// get id of created user
@@ -49,12 +58,12 @@
 
 			// if user is admin, redirect to admin area
 			if ( in_array($_SESSION['user']['role'], ["Admin", "Author"])) {
-				$_SESSION['message'] = "You are now logged in";
+				$_SESSION['message'] = "Vous êtes maintenant connecté .";
 				// redirect to admin area
 				header('location: ' . BASE_URL . 'admin/dashboard.php');
 				exit(0);
 			} else {
-				$_SESSION['message'] = "You are now logged in";
+				$_SESSION['message'] = "Vous êtes maintenant connecté .";
 				// redirect to public area
 				header('location: index.php');				
 				exit(0);
@@ -94,7 +103,7 @@
 					exit(0);
 				}
 			} else {
-				array_push($errors, 'Wrong credentials');
+				array_push($errors, 'Informations de connection erronées');
 			}
 		}
 	}

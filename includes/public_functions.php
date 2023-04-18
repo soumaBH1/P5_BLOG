@@ -12,33 +12,33 @@ function getPublishedPosts() {
 
 	$final_posts = array();
 	foreach ($posts as $post) {
-		$post['topic'] = getPostTopic($post['id']); 
+		$post['chapo'] = getPostChapo($post['id']); 
 		array_push($final_posts, $post);
 	}
 	return $final_posts;
 }
 /* * * * * * * * * * * * * * *
 * Receives a post id and
-* Returns topic of the post
+* Returns chapo of the post
 * * * * * * * * * * * * * * */
-function getPostTopic($post_id){
+function getPostChapo($post_id){
 	global $conn;
-	$sql = "SELECT * FROM topics WHERE id=
-			(SELECT topic_id FROM post_topic WHERE post_id=$post_id) LIMIT 1";
+	$sql = "SELECT * FROM chapo WHERE id=
+			(SELECT chapo_id FROM post_chapo WHERE post_id=$post_id) LIMIT 1";
 	$result = mysqli_query($conn, $sql);
-	$topic = mysqli_fetch_assoc($result);
-	return $topic;
+	$chapo = mysqli_fetch_assoc($result);
+	return $chapo;
 }
 
 /* * * * * * * * * * * * * * * *
-* Returns all posts under a topic
+* Returns all posts under a chapo
 * * * * * * * * * * * * * * * * */
-function getPublishedPostsByTopic($topic_id) {
+function getPublishedPostsByChapo($chapo_id) {
 	global $conn;
 	$sql = "SELECT * FROM posts ps 
 			WHERE ps.id IN 
-			(SELECT pt.post_id FROM post_topic pt 
-				WHERE pt.topic_id=$topic_id GROUP BY pt.post_id 
+			(SELECT pt.post_id FROM post_chapo pt 
+				WHERE pt.chapo_id=$chapo_id GROUP BY pt.chapo_id 
 				HAVING COUNT(1) = 1)";
 	$result = mysqli_query($conn, $sql);
 	// fetch all posts as an associative array called $posts
@@ -46,21 +46,21 @@ function getPublishedPostsByTopic($topic_id) {
 
 	$final_posts = array();
 	foreach ($posts as $post) {
-		$post['topic'] = getPostTopic($post['id']); 
+		$post['chapo'] = getPostChapo($post['id']); 
 		array_push($final_posts, $post);
 	}
 	return $final_posts;
 }
 /* * * * * * * * * * * * * * * *
-* Returns topic name by topic id
+* Returns chapo name by chapo id
 * * * * * * * * * * * * * * * * */
-function getTopicNameById($id)
+function getChapoNameById($id)
 {
 	global $conn;
-	$sql = "SELECT name FROM topics WHERE id=$id";
+	$sql = "SELECT name FROM chapo WHERE id=$id";
 	$result = mysqli_query($conn, $sql);
-	$topic = mysqli_fetch_assoc($result);
-	return $topic['name'];
+	$chapo = mysqli_fetch_assoc($result);
+	return $chapo['name'];
 }
 /* * * * * * * * * * * * * * *
 * Returns a single post
@@ -75,20 +75,20 @@ function getPost($slug){
 	// fetch query results as associative array.
 	$post = mysqli_fetch_assoc($result);
 	if ($post) {
-		// get the topic to which this post belongs
-		$post['topic'] = getPostTopic($post['id']);
+		// get the chapo to which this post belongs
+		$post['chapo'] = getPostChapo($post['id']);
 	}
 	return $post;
 }
 /* * * * * * * * * * * *
-*  Returns all topics
+*  Returns all chapos
 * * * * * * * * * * * * */
-function getAllTopics()
+function getAllChapos()
 {
 	global $conn;
-	$sql = "SELECT * FROM topics";
+	$sql = "SELECT * FROM chapo";
 	$result = mysqli_query($conn, $sql);
-	$topics = mysqli_fetch_all($result, MYSQLI_ASSOC);
-	return $topics;
+	$chapos = mysqli_fetch_all($result, MYSQLI_ASSOC);
+	return $chapos;
 }
 ?>

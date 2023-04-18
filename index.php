@@ -1,6 +1,7 @@
 
 <!-- index.php -->
  <!-- inclusion des variables et fonctions -->
+ <link rel="stylesheet" href= "static/css/public_styling.css">
  <?php require_once('config.php') ?>
 <?php require_once( ROOT_PATH . '/includes/public_functions.php') ?>
 <?php require_once( ROOT_PATH . '/includes/registration_login.php') ?>
@@ -19,7 +20,6 @@
         <!-- banner -->
         <?php include('includes/banner.php') ?>
 		
-
 		<!-- footer -->
 		<?php include('includes/footer.php') ?>
 		

@@ -6,6 +6,6 @@ if (isset($_COOKIE['LOGGED_USER']) || isset($_SESSION['LOGGED_USER'])) {
         'email' => $_COOKIE['LOGGED_USER'] ?? $_SESSION['LOGGED_USER'],
     ];
 } else {
-    throw new Exception('Il faut être authentifié pour ajouter des posts');
+    throw new Exception('Il faut se connecter pour ajouter des posts !');
 }
 ?>

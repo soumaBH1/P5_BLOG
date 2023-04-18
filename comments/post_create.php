@@ -19,7 +19,7 @@ if (
 }
 
 if (!isset($loggedUser)) {
-    echo('Vous devez être authentifié pour soumettre un commentaire');
+    echo('Il faut se connecter pour soumettre un commentaire');
     return;
 }
 
@@ -52,7 +52,7 @@ $insertBpost->execute([
 <body class="d-flex flex-column min-vh-100">
     <div class="container">
 
-    <?php $rootPath = "C:\MAMP\htdocs"; include_once($rootPath.'/header.php'); ?>
+    <?php include_once($rootPath.'/header.php'); ?>
         <h1>Commentaire ajouté avec succès !</h1>
         
         <div class="card">
@@ -62,6 +62,6 @@ $insertBpost->execute([
             </div>
         </div>
     </div>
-    <?php $rootPath = "C:\MAMP\htdocs"; include_once($rootPath.'/footer.php'); ?>
+    <?php  include_once($rootPath.'/footer.php'); ?>
 </body>
 </html>

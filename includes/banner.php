@@ -1,11 +1,4 @@
-<?php if (isset($_SESSION['user']['username'])) { ?>
-	<div class="logged_in_info">
-		<span>welcome <?php echo $_SESSION['user']['username'] ?></span>
-		|
-		<span><a href="logout.php">logout</a></span>
-	</div>
-<?php }else{ ?>
-	<div class="banner">
+<div class="banner">
 		<div class="welcome_msg">
 			<h1>Inspiration</h1>
 			<p> 
@@ -14,9 +7,21 @@
 			par un premier pas.” <br>
 				<span>~ De Lao-Tseu Philosophe</span>
 			</p>
+			
+		</div>
+<?php if (isset($_SESSION['user']['username'])) { ?>
+	<div class="logged_in_info">
+		<span>welcome <?php echo $_SESSION['user']['username'] ?></span>
+		|
+		<span><a href="logout.php">logout</a></span>
+	</div>
+<?php }else{ ?>
+	
+	<div class="banner">
+		<div class="welcome_msg">
+			
 			<a href="register.php" class="btn">Join us!</a>
 		</div>
-
 		<div class="login_div">
 			<form action="<?php echo BASE_URL . 'index.php'; ?>" method="post" >
 				<h2>Login</h2>
