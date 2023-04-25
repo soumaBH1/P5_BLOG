@@ -2,36 +2,36 @@
 <?php  include(ROOT_PATH . '/admin/includes/admin_functions.php'); ?>
 <?php  include(ROOT_PATH . '/admin/includes/post_functions.php'); ?>
 <?php include(ROOT_PATH . '/admin/includes/head_section.php'); ?>
-<!-- Get all chapos -->
+<!-- Ramener les chapos de la BDD -->
 <?php $chapos = getAllChapos();	?>
-	<title>Admin | Create Post</title>
+	<title>Admin | Céer un Blog Post</title>
 </head>
 <body>
 	<!-- admin navbar -->
 	<?php include(ROOT_PATH . '/admin/includes/navbar.php') ?>
 
 	<div class="container content">
-		<!-- Left side menu -->
+		<!-- afficher le menu sur la gauche -->
 		<?php include(ROOT_PATH . '/admin/includes/menu.php') ?>
 
-		<!-- Middle form - to create and edit  -->
+		<!-- Formulaire de création et modification de blog posts -->
 		<div class="action create-post-div">
-			<h1 class="page-title">Create/Edit Post</h1>
+			<h1 class="page-title">Créer/ Gérer les Blog Posts</h1>
 			<form method="post" enctype="multipart/form-data" action="<?php echo BASE_URL . 'admin/create_post.php'; ?>" >
 				<!-- validation errors for the form -->
 			
 
-				<!-- if editing post, the id is required to identify that post -->
+				<!-- Si MAJ de post, id nécessaire pour identifier ce post -->
 				<?php if ($isEditingPost === true): ?>
 					<input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
 				<?php endif ?>
 
 				<input type="text" name="title" value="<?php echo $title; ?>" placeholder="Title">
-				<label style="float: left; margin: 5px auto 5px;">Featured image</label>
+				<label style="float: left; margin: 5px auto 5px;">Image</label>
 				<input type="file" name="featured_image" >
 				<textarea name="body" id="body" cols="30" rows="10"><?php echo $body; ?></textarea>
 				<select name="chapo_id">
-					<option value="" selected disabled>Choose chapo</option>
+					<option value="" selected disabled>Choisir un chapo</option>
 					<?php foreach ($chapos as $chapo): ?>
 						<option value="<?php echo $chapo['id']; ?>">
 							<?php echo $chapo['name']; ?>
@@ -39,36 +39,32 @@
 					<?php endforeach ?>
 				</select>
 				
-				<!-- Only admin users can view publish input field -->
+				<!-- La case à cocher Publier est visible que pour les profils Admin -->
 				<?php if ($_SESSION['user']['role'] == "Admin"): ?>
-					<!-- display checkbox according to whether post has been published or not -->
+					<!-- mettre la case à coché selon si le post est publié ou non -->
 					<?php if ($published == true): ?>
 						<label for="publish">
-							Publish
+							Publier
 							<input type="checkbox" value="1" name="publish" checked="checked">&nbsp;
 						</label>
 					<?php else: ?>
 						<label for="publish">
-							Publish
+							Publier
 							<input type="checkbox" value="1" name="publish">&nbsp;
 						</label>
 					<?php endif ?>
 				<?php endif ?>
 				
-				<!-- if editing post, display the update button instead of create button -->
+				<!-- s'il s agit de modifier le post, afficher le boutton modifier a la place du boutton créer  -->
 				<?php if ($isEditingPost === true): ?> 
-					<button type="submit" class="btn" name="update_post">UPDATE</button>
+					<button type="submit" class="btn" name="update_post">Modifier</button>
 				<?php else: ?>
-					<button type="submit" class="btn" name="create_post">Save Post</button>
+					<button type="submit" class="btn" name="create_post">Créer</button>
 				<?php endif ?>
 
 			</form>
 		</div>
-		<!-- // Middle form - to create and edit -->
+		<!-- // Formulaire de création et modification de blog posts -->
 	</div>
 </body>
 </html>
-
-<script>
-	CKEDITOR.replace('body');
-</script>

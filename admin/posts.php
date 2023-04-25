@@ -2,39 +2,38 @@
 <?php  include(ROOT_PATH . '/admin/includes/admin_functions.php'); ?>
 <?php  include(ROOT_PATH . '/admin/includes/post_functions.php'); ?>
 <?php include(ROOT_PATH . '/admin/includes/head_section.php'); ?>
-
-<!-- Get all admin posts from DB -->
+<!-- Ramener les posts de la BDD -->
 <?php $posts = getAllPosts(); ?>
-	<title>Admin | Manage Posts</title>
+	<title>Admin | Gérer les blog Posts</title>
 </head>
 <body>
 	<!-- admin navbar -->
 	<?php include(ROOT_PATH . '/admin/includes/navbar.php') ?>
 
 	<div class="container content">
-		<!-- Left side menu -->
+		<!-- menu du gauche -->
 		<?php include(ROOT_PATH . '/admin/includes/menu.php') ?>
 
-		<!-- Display records from DB-->
+		<!-- Afficher les enregistrements de la BDD-->
 		<div class="table-div"  style="width: 80%;">
-			<!-- Display notification message -->
+			<!-- afficher les  messages de notification -->
 			<?php include(ROOT_PATH . '/admin/includes/messages.php') ?>
 
 			<?php if (empty($posts)): ?>
-				<h1 style="text-align: center; margin-top: 20px;">No posts in the database.</h1>
+				<h1 style="text-align: center; margin-top: 20px;">La liste des posts dans la base de données est vide.</h1>
 			<?php else: ?>
 				<table class="table">
 						<thead>
 						<th>N</th>
-						<th>Title</th>
-						<th>Author</th>
+						<th>Auteur</th>
+						<th>Titre</th>
 						<th>Views</th>
-						<!-- Only Admin can publish/unpublish post -->
+						<!-- que l'Admin est autorisé à publier / dépublier post -->
 						<?php if ($_SESSION['user']['role'] == "Admin"): ?>
-							<th><small>Publish</small></th>
+							<th><small>Publié</small></th>
 						<?php endif ?>
-						<th><small>Edit</small></th>
-						<th><small>Delete</small></th>
+						<th><small>Modifier</small></th>
+						<th><small>Supprimer</small></th>
 					</thead>
 					<tbody>
 					<?php foreach ($posts as $key => $post): ?>
@@ -49,7 +48,7 @@
 							</td>
 							<td><?php echo $post['views']; ?></td>
 							
-							<!-- Only Admin can publish/unpublish post -->
+							<!-- que l'Admin est autorisé à publier / dépublier post -->
 							<?php if ($_SESSION['user']['role'] == "Admin" ): ?>
 								<td>
 								<?php if ($post['published'] == true): ?>
@@ -80,7 +79,7 @@
 				</table>
 			<?php endif ?>
 		</div>
-		<!-- // Display records from DB -->
+		<!-- Afficher les enregistrements de la BDD-->
 	</div>
 </body>
 </html>

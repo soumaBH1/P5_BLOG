@@ -107,6 +107,18 @@ form input:focus {
   margin: 20px auto 0px;
   padding: 20px 0px;
 }
+.footer.admin_btn{
+	position: absolute;
+	right: 0;
+	bottom: 1;
+	left: 0;
+	color: rgb(120, 20, 20);
+	background-color: #c8b2b2;
+	text-align: right;
+	width: 80%;
+	margin: 20px auto 0px;
+	padding: 20px 0px;
+  }
 /* BANNER: Welcome message; */
 .banner {
 	margin: 5px auto;

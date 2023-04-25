@@ -25,7 +25,7 @@ $bpost = [
     'id' => $bpostWithComments[0]['id'],
     'title' => $bpostWithComments[0]['title'],
     'content' => $bpostWithComments[0]['content'],
-    'users_id' => $bpostWithComments[0]['users_id'],
+    'user_id' => $bpostWithComments[0]['user_id'],
     'comments' => [],
 ];
 
@@ -62,7 +62,7 @@ foreach($bpostWithComments as $comment) {
                 <?php echo($bpost['content']); ?>
             </article>
             <aside class="col">
-                <p><i>Contribuée par <?php echo($bpost['users_id']); ?></i></p>
+                <p><i>Contribuée par <?php echo($bpost['user_id']); ?></i></p>
             </aside>
         </div>
 

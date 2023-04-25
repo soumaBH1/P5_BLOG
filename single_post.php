@@ -16,9 +16,9 @@
 	<!-- // Navbar -->
 	
 	<div class="content" >
-		<!-- Page wrapper -->
+		<!-- affichage de l'enveloppe de posts -->
 		<div class="post-wrapper">
-			<!-- full post div -->
+			<!-- affichage du post  -->
 			<div class="full-post-div">
 			<?php if ($post['published'] == false): ?>
 				<h2 class="post-title">Désolé... Ce post n'est pas encore publié</h2>
@@ -29,7 +29,7 @@
 				</div>
 			<?php endif ?>
 			</div>
-			<!-- // full post div -->
+			 <!-- affichage du post -->
 			
 			<!-- comments section -->
 			<!--  coming soon ...  -->

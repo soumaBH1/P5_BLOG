@@ -3,23 +3,25 @@
 * Returns all published posts
 * * * * * * * * * * * * * * */
 function getPublishedPosts() {
-	// use global $conn object in function
+	// utilise la variable globale $conn 
 	global $conn;
 	$sql = "SELECT * FROM posts WHERE published=true";
 	$result = mysqli_query($conn, $sql);
-	// fetch all posts as an associative array called $posts
+	// recupere tous les posts dans le tableau $posts
 	$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 	$final_posts = array();
-	foreach ($posts as $post) {
+	if ($posts<>NULL) {
+		foreach ($posts as $post) {
 		$post['chapo'] = getPostChapo($post['id']); 
 		array_push($final_posts, $post);
 	}
 	return $final_posts;
+	}
 }
 /* * * * * * * * * * * * * * *
-* Receives a post id and
-* Returns chapo of the post
+* Recoisle  post id et
+* Retourne le chapo de ce post
 * * * * * * * * * * * * * * */
 function getPostChapo($post_id){
 	global $conn;
@@ -31,7 +33,7 @@ function getPostChapo($post_id){
 }
 
 /* * * * * * * * * * * * * * * *
-* Returns all posts under a chapo
+* Retourne tous les postes d'un même chapo
 * * * * * * * * * * * * * * * * */
 function getPublishedPostsByChapo($chapo_id) {
 	global $conn;
@@ -41,7 +43,7 @@ function getPublishedPostsByChapo($chapo_id) {
 				WHERE pt.chapo_id=$chapo_id GROUP BY pt.chapo_id 
 				HAVING COUNT(1) = 1)";
 	$result = mysqli_query($conn, $sql);
-	// fetch all posts as an associative array called $posts
+	// récupère tous les posts dans le tableau $posts
 	$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 	$final_posts = array();
@@ -63,7 +65,7 @@ function getChapoNameById($id)
 	return $chapo['name'];
 }
 /* * * * * * * * * * * * * * *
-* Returns a single post
+* Retourne un post
 * * * * * * * * * * * * * * */
 function getPost($slug){
 	global $conn;
@@ -72,16 +74,16 @@ function getPost($slug){
 	$sql = "SELECT * FROM posts WHERE slug='$post_slug' AND published=true";
 	$result = mysqli_query($conn, $sql);
 
-	// fetch query results as associative array.
+	// récupérer les résultats de la requête sous forme de tableau 
 	$post = mysqli_fetch_assoc($result);
 	if ($post) {
-		// get the chapo to which this post belongs
+		// obtenir le chapo auquel appartient ce post
 		$post['chapo'] = getPostChapo($post['id']);
 	}
 	return $post;
 }
 /* * * * * * * * * * * *
-*  Returns all chapos
+*  Retourne tous les  chapos
 * * * * * * * * * * * * */
 function getAllChapos()
 {

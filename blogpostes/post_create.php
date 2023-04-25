@@ -20,12 +20,12 @@ $title = $postData['title'];
 $blogpost = $postData['post'];
 $userid=1;
 
-$insertblogpost = $mysqlClient->prepare('INSERT INTO posts( title, content,date, users_id, is_enabled, date_deleated) VALUES ( :title, :content, :date, :users_id, :is_enabled, :date_deleated)');
+$insertblogpost = $mysqlClient->prepare('INSERT INTO posts( title, content,date, user_id, is_enabled, date_deleated) VALUES ( :title, :content, :date, :user_id, :is_enabled, :date_deleated)');
 $insertblogpost->execute([
     'date' => htmlspecialchars(date('Y-m-d')), // insert current date and time,
     'title' => htmlspecialchars($title),
     'content' => htmlspecialchars($blogpost), //sécuriser les entrees de donnees
-     'users_id' => htmlspecialchars($userid),
+     'user_id' => htmlspecialchars($userid),
      'is_enabled' => '1',
      'date_deleated' => NULL, 
    ]);

@@ -8,5 +8,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <!-- ckeditor -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/ckeditor.js"></script>
-<!-- Styling for admin area -->
+<!-- CSS de l'espace admin -->
 <link rel="stylesheet" href="../static/css/admin_styling.css">

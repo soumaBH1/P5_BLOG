@@ -1,5 +1,5 @@
 <?php  include('config.php'); ?>
-<!-- Source code for handling registration and login -->
+<!-- Code source pour gérer l'enregistrement et la connexion-->
 <?php  include('includes/registration_login.php'); ?>
 
 <?php include('includes/head_section.php'); ?>

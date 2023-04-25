@@ -1,20 +1,20 @@
 <?php  include('../config.php'); ?>
 <?php  include(ROOT_PATH . '/admin/includes/admin_functions.php'); ?>
 <?php include(ROOT_PATH . '/admin/includes/head_section.php'); ?>
-<!-- Get all chapos from DB -->
+<!-- ramener tous les chapos de BDD -->
 <?php $chapos = getAllChapos();	?>
-	<title>Admin | Manage chapos</title>
+	<title>Admin | gérer chapos</title>
 </head>
 <body>
 	<!-- admin navbar -->
 	<?php include(ROOT_PATH . '/admin/includes/navbar.php') ?>
 	<div class="container content">
-		<!-- Left side menu -->
+		<!-- Afficher le menu sur la -->
 		<?php include(ROOT_PATH . '/admin/includes/menu.php') ?>
 
 		<!-- Middle form - to create and edit -->
 		<div class="action">
-			<h1 class="page-title">Create/Edit Chapos</h1>
+			<h1 class="page-title">Créer/ Modifier Chapos</h1>
 			<form method="post" action="<?php echo BASE_URL . 'admin/chapos.php'; ?>" >
 				<!-- validation errors for the form -->
 				<?php include(ROOT_PATH . '/includes/errors.php') ?>
@@ -25,25 +25,25 @@
 				<input type="text" name="chapo_name" value="<?php echo $chapo_name; ?>" placeholder="Chapo">
 				<!-- if editing chapo, display the update button instead of create button -->
 				<?php if ($isEditingChapo === true): ?> 
-					<button type="submit" class="btn" name="update_chapo">UPDATE</button>
+					<button type="submit" class="btn" name="update_chapo">Modifier</button>
 				<?php else: ?>
-					<button type="submit" class="btn" name="create_chapo">Save Chapo</button>
+					<button type="submit" class="btn" name="create_chapo">Enregistrer Chapo</button>
 				<?php endif ?>
 			</form>
 		</div>
-		<!-- // Middle form - to create and edit -->
+		<!-- // Formulaire de création et modification de chapos -->
 
-		<!-- Display records from DB-->
+		<!-- Affichage des enregistrement de la BDD-->
 		<div class="table-div">
-			<!-- Display notification message -->
+			<!-- Afficher les messages de notification -->
 			<?php include(ROOT_PATH . '/admin/includes/messages.php') ?>
 			<?php if (empty($chapos)): ?>
-				<h1>No chapos in the database.</h1>
+				<h1>La liste des chapos est vide.</h1>
 			<?php else: ?>
 				<table class="table">
 					<thead>
 						<th>N</th>
-						<th>Chapo Name</th>
+						<th>Nom du Chapo</th>
 						<th colspan="2">Action</th>
 					</thead>
 					<tbody>
@@ -67,7 +67,7 @@
 				</table>
 			<?php endif ?>
 		</div>
-		<!-- // Display records from DB -->
+		
 	</div>
 </body>
 </html>

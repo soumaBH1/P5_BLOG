@@ -1,5 +1,6 @@
 <div class="banner">
 		<div class="welcome_msg">
+			<!-- message inspiration -->
 			<h1>Inspiration</h1>
 			<p> 
 			“Un voyage de mille lieues  <br> 
@@ -9,6 +10,7 @@
 			</p>
 			
 		</div>
+		<!-- si l'utilisateur est déja connecté : mettre un message de bienvenu personnaliséavec son username -->
 <?php if (isset($_SESSION['user']['username'])) { ?>
 	<div class="logged_in_info">
 		<span>welcome <?php echo $_SESSION['user']['username'] ?></span>
@@ -16,11 +18,11 @@
 		<span><a href="logout.php">logout</a></span>
 	</div>
 <?php }else{ ?>
-	
+	<!-- si non : mettre un message 'Rejoigner nous' et  le formulaire de connection-->
 	<div class="banner">
 		<div class="welcome_msg">
 			
-			<a href="register.php" class="btn">Join us!</a>
+			<a href="register.php" class="btn">Rejoignez-nous!</a>
 		</div>
 		<div class="login_div">
 			<form action="<?php echo BASE_URL . 'index.php'; ?>" method="post" >

@@ -19,25 +19,25 @@
 		<?php endif ?>
 	</div>
 	<div class="container dashboard">
-		<h1>Welcome</h1>
+		<h1>Bienvenue</h1>
 		<div class="stats">
 			<a href="users.php" class="first">
-				<span>43</span> <br>
-				<span>Newly registered users</span>
+				<span>20</span> <br>
+				<span>Utilisateurs récement enregistrés</span>
 			</a>
 			<a href="posts.php">
-				<span>43</span> <br>
-				<span>Published posts</span>
+				<span>20</span> <br>
+				<span>Blog posts publiés</span>
 			</a>
 			<a>
-				<span>43</span> <br>
-				<span>Published comments</span>
+				<span>20</span> <br>
+				<span>Commentaires publiés</span>
 			</a>
 		</div>
 		<br><br><br>
 		<div class="buttons">
-			<a href="users.php">Add Users</a>
-			<a href="posts.php">Add Posts</a>
+			<a href="users.php">Ajouter des utilisateurs</a>
+			<a href="posts.php">Ajouter des blog posts</a>
 		</div>
 	</div>
 </body>
