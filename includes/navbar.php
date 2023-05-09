@@ -6,6 +6,6 @@
 			  <li><a class="active" href="index.php">Home</a></li>
 			  <li><a href="blog_postes.php">Blogs</a></li>
 			  <li><a  href="contact.php">Contact</a></li>
-			  <li><a href="CV">Mon CV</a></li>
+			  <li><a href="<?php echo BASE_URL . 'static/cv/CV_IB.doc' ?>">Mon CV</a></li>
 			</ul>
 		</div>

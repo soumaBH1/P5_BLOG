@@ -29,8 +29,9 @@
 						<th>Titre</th>
 						<th>Views</th>
 						<!-- que l'Admin est autorisé à publier / dépublier post -->
-						<?php if ($_SESSION['user']['role'] == "Admin"): ?>
-							<th><small>Publié</small></th>
+						
+						<?php if ($_SESSION['user']['role'] == "admin"): ?>
+							<th><small>Publier</small></th>
 						<?php endif ?>
 						<th><small>Modifier</small></th>
 						<th><small>Supprimer</small></th>
@@ -48,8 +49,8 @@
 							</td>
 							<td><?php echo $post['views']; ?></td>
 							
-							<!-- que l'Admin est autorisé à publier / dépublier post -->
-							<?php if ($_SESSION['user']['role'] == "Admin" ): ?>
+							<!-- si Admin donc autorisé à publier / dépublier post -->
+							<?php if ($_SESSION['user']['role'] == "admin" ): ?>
 								<td>
 								<?php if ($post['published'] == true): ?>
 									<a class="fa fa-check btn unpublish"

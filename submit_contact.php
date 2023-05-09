@@ -1,4 +1,4 @@
-<?phpinclude_once($rootPath.'/includes/head_section.php'); ?>
+<?php include_once($rootPath.'/includes/head_section.php'); ?>
 
 <?php 
 session_start();

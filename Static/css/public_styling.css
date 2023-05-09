@@ -107,17 +107,15 @@ form input:focus {
   margin: 20px auto 0px;
   padding: 20px 0px;
 }
-.footer.admin_btn{
+.footer .admin_btn{
+	background: azure;
+    padding: 10px;
+    display: block;
+    width: 100px;
+    border-radius: 5px;
+    top: 10px;
 	position: absolute;
-	right: 0;
-	bottom: 1;
-	left: 0;
-	color: rgb(120, 20, 20);
-	background-color: #c8b2b2;
-	text-align: right;
-	width: 80%;
-	margin: 20px auto 0px;
-	padding: 20px 0px;
+    right: 5px;
   }
 /* BANNER: Welcome message; */
 .banner {
@@ -346,3 +344,29 @@ form input:focus {
 	text-align: right; 
 	padding: 10px;
 }
+
+/*comments*/
+.comments-section { margin-top: 10px; border: 1px solid #ccc; }
+.comment { margin-bottom: 10px; }
+.comment .comment-name { font-weight: bold; }
+.comment .comment-date {
+	font-style: italic;
+	font-size: 0.8em;
+}
+.comment .reply-btn, .edit-btn { font-size: 0.8em; }
+.comment-details { width: 91.5%; float: left; }
+.comment-details p { margin-bottom: 0px; }
+.comment .profile_pic {
+	width: 35px;
+	height: 35px;
+	margin-right: 5px;
+	float: left;
+	border-radius: 50%;
+}
+/*replies*/
+.reply { margin-left: 30px; }
+.reply_form {
+	margin-left: 40px;
+	display: none;
+}
+#comment_form { margin-top: 10px; }

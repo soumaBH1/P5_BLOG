@@ -1,3 +1,4 @@
+<?php  include(ROOT_PATH . '/config/mysql.php'); ?>
 <?php 
 // Variables utilisateur administrateur
 $admin_id = 0;
@@ -67,6 +68,8 @@ if (isset($_GET['delete-chapo'])) {
 * - Renvoie tous les utilisateurs administrateurs avec leurs rôles 
 * * * * * * * * * * * * * * * * * * * * * * */
 function createAdmin($request_values){
+	//var_dump($request_values);
+	//exit;
 	global $conn, $errors, $role, $username, $email;
 	$username = esc($request_values['username']);
 	$email = esc($request_values['email']);
@@ -100,9 +103,30 @@ function createAdmin($request_values){
 	// enregistrer l'utilisateur s'il n'y a pas d'erreurs dans le formulaire
 	if (count($errors) == 0) {
 		$password = md5($password);//crypter le mot de passe avant de l'enregistrer dans la base de données
-		$query = "INSERT INTO users (username, email, role, password, created_at, updated_at) 
-				  VALUES('$username', '$email', '$role', '$password', now(), now())";
-		mysqli_query($conn, $query);
+		//$query = "INSERT INTO users (username, email, role, password, created_at, updated_at) 
+				 // VALUES('$username', '$email', '$role', '$password', now(), now())";
+
+			//__________
+			try
+			{
+				$conn = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+			}
+			catch (Exception $e)
+			{
+					die('Erreur : ' . $e->getMessage());
+			}
+			$query = $conn->prepare('INSERT INTO users(username, email, role, password, created_at, updated_at) VALUES ( :username, :email, :role, :password, :created_at, :updated_at)');
+			$query->execute([
+    		'username' => htmlspecialchars($username),
+    		'email' => htmlspecialchars($email), //sécuriser les entrees de donnees
+    		'password' => htmlspecialchars($password),
+    		'role' => htmlspecialchars($role),
+			'created_at' => htmlspecialchars(date('Y-m-d')), // insert current date,
+    		'updated_at' => htmlspecialchars(date('Y-m-d')), 
+   			]);
+			   var_dump($query); exit;
+   ///-----------	  
+	//	mysqli_query($conn, $query);
 
 		$_SESSION['message'] = "Admin user created successfully";
 		header('location: users.php');
@@ -145,15 +169,15 @@ function updateAdmin($request_values){
 	if(isset($request_values['role'])){
 		$role = $request_values['role'];
 	}
-	// register user if there are no errors in the form
+	// enregistrer l'utilisateur s'il n'y a pas d'erreurs dans le formulaire
 	if (count($errors) == 0) {
-		//encrypt the password (security purposes)
+		//chiffrer le mot de passe (à des fins de sécurité)
 		$password = md5($password);
 
 		$query = "UPDATE users SET username='$username', email='$email', role='$role', password='$password' WHERE id=$admin_id";
 		mysqli_query($conn, $query);
 
-		$_SESSION['message'] = "Admin user updated successfully";
+		$_SESSION['message'] = "L'utilisateur admin est modifié avec succée.";
 		header('location: users.php');
 		exit(0);
 	}
@@ -163,7 +187,7 @@ function deleteAdmin($admin_id) {
 	global $conn;
 	$sql = "DELETE FROM users WHERE id=$admin_id";
 	if (mysqli_query($conn, $sql)) {
-		$_SESSION['message'] = "User successfully deleted";
+		$_SESSION['message'] = "L'utilisateur est supprimé avec succée.";
 		header("location: users.php");
 		exit(0);
 	}
@@ -183,7 +207,7 @@ function getAdminUsers(){
 	return $users;
 }
 /* * * * * * * * * * * * * * * * * * * * *
-* - Escapes form submitted value, hence, preventing SQL injection
+* - Cette fonction permet de nettoyer et sécuriser les chaînes de caractères d'entrée pour prévenir les attaques de BDD
 * * * * * * * * * * * * * * * * * * * * * */
 function esc(String $value){
 	// bring the global db connect object into function
@@ -212,6 +236,7 @@ function getAllChapos() {
 	$chapos = mysqli_fetch_all($result, MYSQLI_ASSOC);
 	return $chapos;
 }
+// Créer un nouveau chapos
 function createChapo($request_values){
 	global $conn, $errors, $chapo_name;
 	$chapo_name = esc($request_values['chapo_name']);
@@ -223,6 +248,8 @@ function createChapo($request_values){
 	}
 	//Assurez-vous qu'aucun chapo n'est enregistré deux fois.
 	$chapo_check_query = "SELECT * FROM chapo WHERE slug='$chapo_slug' LIMIT 1";
+	
+	
 	$result = mysqli_query($conn, $chapo_check_query);
 	if (mysqli_num_rows($result) > 0) { // si chapo existe
 		array_push($errors, "Chapo existe déjà!");
@@ -233,10 +260,10 @@ function createChapo($request_values){
 				  VALUES('$chapo_name', '$chapo_slug')";
 				  echo($chapo_name);
 				  echo($chapo_slug);
-
+				  
 		mysqli_query($conn, $query);
 
-		$_SESSION['message'] = "chapo creé avec  succée";
+		$_SESSION['message'] = "chapo creé avec  succée.";
 		header('location: chapos.php');
 		exit(0);
 	}
@@ -251,18 +278,18 @@ function editChapo($chapo_id) {
 	$sql = "SELECT * FROM chapo WHERE id=$chapo_id LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	$chapo = mysqli_fetch_assoc($result);
-	// définir les valeurs du formulaire ($chapo_name) sur le formulaire à mettre à jour
+	// remplir le formulaire pour modifier le chapo ($chapo_name)
 	$chapo_name = $chapo['name'];
 }
 function updateChapo($request_values) {
 	global $conn, $errors, $chapo_name, $chapo_id;
 	$chapo_name = esc($request_values['chapo_name']);
 	$chapo_id = esc($request_values['chapo_id']);
-	// créer slug: si chapo est "inspiration", retourner "inspiuration" comme slug
+	// créer slug: si chapo est "inspiration", retourner "inspiration" comme slug
 	$chapo_slug = makeSlug($chapo_name);
 	// valider formulaire
 	if (empty($chapo_name)) { 
-		array_push($errors, "nom du chapo obligatoire"); 
+		array_push($errors, "nom du chapo obligatoire!"); 
 	}
 	// enregistrer chapo s'il n'y a pas d'erreurs dans le formulaire
 	if (count($errors) == 0) {
@@ -279,7 +306,7 @@ function deleteChapo($chapo_id) {
 	global $conn;
 	$sql = "DELETE FROM chapo WHERE id=$chapo_id";
 	if (mysqli_query($conn, $sql)) {
-		$_SESSION['message'] = "Chapo supprimé avec succeé";
+		$_SESSION['message'] = "Chapo supprimé avec succeé.";
 		header("location: chapos.php");
 		exit(0);
 	}

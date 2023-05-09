@@ -23,7 +23,7 @@
 		<div class="stats">
 			<a href="users.php" class="first">
 				<span>20</span> <br>
-				<span>Utilisateurs récement enregistrés</span>
+				<span>Utilisateurs  enregistrés</span>
 			</a>
 			<a href="posts.php">
 				<span>20</span> <br>

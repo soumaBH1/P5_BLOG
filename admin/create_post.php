@@ -38,9 +38,10 @@
 						</option>
 					<?php endforeach ?>
 				</select>
-				
+			
 				<!-- La case à cocher Publier est visible que pour les profils Admin -->
-				<?php if ($_SESSION['user']['role'] == "Admin"): ?>
+				<?php if ($_SESSION['user']['role'] == "admin"): ?>
+					
 					<!-- mettre la case à coché selon si le post est publié ou non -->
 					<?php if ($published == true): ?>
 						<label for="publish">
@@ -50,7 +51,7 @@
 					<?php else: ?>
 						<label for="publish">
 							Publier
-							<input type="checkbox" value="1" name="publish">&nbsp;
+							<input type="checkbox" value="0" name="publish">&nbsp;
 						</label>
 					<?php endif ?>
 				<?php endif ?>

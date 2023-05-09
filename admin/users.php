@@ -72,11 +72,10 @@
 					<?php foreach ($admins as $key => $admin): ?>
 						<tr>
 							<!-- <td><?php echo $key + 1; ?></td> -->
-							<td>
-								<?php echo $admin['username']; ?>, &nbsp;
-								<?php echo $admin['email']; ?>	
-							</td>
-							<td><?php echo $admin['role']; ?></td>
+							<td> <?php echo $admin['id']; ?></td>
+							<td> <?php echo $admin['username']; ?>, &nbsp;
+								 <?php echo $admin['email']; ?>	</td>
+							<td> <?php echo $admin['role']; ?></td>
 							<td>
 								<a class="fa fa-pencil btn edit"
 									href="users.php?edit-admin=<?php echo $admin['id'] ?>">
