@@ -95,12 +95,12 @@
 
 				// si l'utilisateur est administrateur, rediriger vers la zone d'administration
 				if ( in_array($_SESSION['user']['role'], ["Admin", "Author"])) {
-					$_SESSION['message'] = "You are now logged in";
+					$_SESSION['message'] = "Vous êtes maintenant connecté.";
 					// rediriger vers la zone d'administration
 					header('location: ' . BASE_URL . '/admin/dashboard.php');
 					exit(0);
 				} else {
-					$_SESSION['message'] = "You are now logged in";
+					$_SESSION['message'] = "Vous êtes maintenant connecté.";
 					// rediriger vers la zone publique
 					header('location: index.php');				
 					exit(0);

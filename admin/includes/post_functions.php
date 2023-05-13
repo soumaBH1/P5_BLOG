@@ -58,6 +58,7 @@ if (isset($_POST['create_post'])) {
 // 	var_dump($_POST);
 // exit;
 	createPost($_POST); }
+
 // si l'utilisateur clique sur le bouton MAJ un post
 if (isset($_GET['edit-post'])) {
 	$isEditingPost = true;
@@ -79,15 +80,17 @@ if (isset($_GET['delete-post'])) {
 - - - - - - - - - - -*/
 function createPost($request_values)
 	{
-		global $conn, $errors, $title, $featured_image, $chapo_id, $body, $published;
-		$title = esc($request_values['title']);
-		//$body = htmlentities(esc($request_values['body']));
+		global $conn, $errors, $title, $featured_image, $chapo_id, $body, $published, $user_id;
+		$user_id=$_SESSION['user']['id'];
+		//var_dump($user_id);
+		//exit;
+		$title = $request_values['title'];
 		$body = $request_values['body'];
 		if (isset($request_values['chapo_id'])) {
-			$chapo_id = esc($request_values['chapo_id']);
+			$chapo_id = $request_values['chapo_id'];
 		}
 		if (isset($request_values['publish'])) {
-			$published = esc($request_values['publish']);
+			$published =$request_values['publish'];
 		}
 		// créer slug: si titre   "test", return "test" comme slug
 		$post_slug = makeSlug($title);
@@ -95,12 +98,12 @@ function createPost($request_values)
 		if (empty($title)) { array_push($errors, "Titre du post est obligatoire!"); }
 		if (empty($body)) { array_push($errors, "Le contenue du post est obligatoire!"); }
 		if (empty($chapo_id)) { array_push($errors, "Le chapo est obligatoire!"); }
-		// Get image name
+		// prend le nom de l'image
 	  	 $featured_image = $_FILES['featured_image']['name'];
 
 		 //ici finalement j'ai choisi que l'image ne soit pas obligatoire
 	  	//if (empty($featured_image)) { array_push($errors, "L'image du blog post est obligatoire!"); }
-	  	// image file directory
+	  	// Si le fichier de l'image est rempli
 		  if (!empty($featured_image)) { 
 	  		$target = "../static/images/" . basename($featured_image);
 	  		if (!move_uploaded_file($_FILES['featured_image']['tmp_name'], $target)) {
@@ -113,22 +116,34 @@ function createPost($request_values)
 		$result = mysqli_query($conn, $post_check_query);
 		
 		if (mysqli_num_rows($result) > 0) { // si post existe
-			array_push($errors, "Un poste existe déjà avec ce titre!");
+			array_push($errors, "Un post existe déjà avec ce titre!");
 		}
-		
-		  
-		
+			
 		// créer un message s'il n'y a pas d'erreurs dans le formulaire
-		//var_dump($errors);
-		 // exit;
+		//Préparer la requete et l'exécuter si pas d'erreurs
 		if (count($errors) == 0) {
-			
-			$query = "INSERT INTO posts (user_id, title, slug, image, body, published, created_at, date_updated, date_deleated) VALUES(1, '$title', '$post_slug', '$featured_image', '$body', $published, now(), NULL, NULL)";
-			//var_dump($query);
-		 	//exit;
-			$queryresult=mysqli_query($conn, $query);
-			
-			if($queryresult){ // si le post a été créé avec succès
+			try
+	{
+		$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+	}
+	catch (Exception $e)
+	{
+        die('Erreur : ' . $e->getMessage());
+	}
+	//preparer la requete et l'exécuter par la suite
+	$query = $db->prepare('INSERT INTO posts (user_id, title, slug, image, body, published, created_at, date_updated, date_deleated) VALUES (:user_id, :title, :slug, :image, :body, :published, :created_at, :date_updated, :date_deleated)');
+	$query->execute([
+		'user_id'=>htmlspecialchars($user_id),
+		'title'=>htmlspecialchars($title),
+		'slug'=>htmlspecialchars($post_slug),
+		'image'=>htmlspecialchars($featured_image),
+		'body'=>htmlspecialchars($body),
+		'published'=>htmlspecialchars($published),
+		'created_at'=>htmlspecialchars(date('Y-m-d')),
+		'date_updated'=>NULL, 
+		'date_deleated'=>NULL,
+			]) or die(print_r($query));
+			 // si le post a été créé avec succès
 				
 				$inserted_post_id = mysqli_insert_id($conn);
 				// créer une relation entre le post et le chapo
@@ -140,7 +155,7 @@ function createPost($request_values)
 				exit(0);
 			}
 		}
-	}
+	
 
 	/* * * * * * * * * * * * * * * * * * * * *
 	* - Prend l'id du post comme paramètre
@@ -149,13 +164,14 @@ function createPost($request_values)
 	* * * * * * * * * * * * * * * * * * * * * */
 	function editPost($role_id)
 	{
-		global $conn, $title, $post_slug, $body, $published, $isEditingPost, $post_id;
+		global $conn, $title, $post_slug, $body, $published, $isEditingPost, $post_id, $featured_image;
 		$sql = "SELECT * FROM posts WHERE id=$role_id LIMIT 1";
 		$result = mysqli_query($conn, $sql);
 		$post = mysqli_fetch_assoc($result);
 		// remplir des valeurs de formulaire sur le formulaire à mettre à jour
 		$title = $post['title'];
 		$body = $post['body'];
+		//$featured_image = $post['image'];
 		$published = $post['published'];
 	}
 
@@ -163,17 +179,18 @@ function createPost($request_values)
 	{
 		global $conn, $errors, $post_id, $title, $featured_image, $chapo_id, $body, $published;
 
-		$title = esc($request_values['title']);
-		$body = esc($request_values['body']);
-		$post_id = esc($request_values['post_id']);
+		$title = $request_values['title'];
+		$body = $request_values['body'];
+		$featured_image = $request_values['image'];
+		$post_id = $request_values['post_id'];
 		if (isset($request_values['chapo_id'])) {
-			$chapo_id = esc($request_values['chapo_id']);
+			$chapo_id = $request_values['chapo_id'];
 		}
 		// créer slug
 		$post_slug = makeSlug($title);
 
-		if (empty($title)) { array_push($errors, "Le titre du post est obligatoire"); }
-		if (empty($body)) { array_push($errors, "Le contenue du post est obligatoire"); }
+		if (empty($title)) { array_push($errors, "Le titre du post est obligatoire."); }
+		if (empty($body)) { array_push($errors, "Le contenue du post est obligatoire."); }
 		// si une nouvelle image est sélectionnée
 		if (isset($_POST['featured_image'])) {
 			// Obtenir le nom de l'image
@@ -181,7 +198,7 @@ function createPost($request_values)
 		  	// répertoire des fichiers images
 		  	$target = "../static/images/" . basename($featured_image);
 		  	if (!move_uploaded_file($_FILES['featured_image']['tmp_name'], $target)) {
-		  		array_push($errors, "Échec du téléchargement de l'image. Veuillez vérifier les paramètres de fichier pour votre serveur");
+		  		array_push($errors, "Échec du téléchargement de l'image. Veuillez vérifier les paramètres de fichier pour votre serveur.");
 	  	
 		  	}
 		}
@@ -191,20 +208,64 @@ function createPost($request_values)
 		if (count($errors) == 0) {
 //préparer ma requete sql pour toutes les requetes -----a faire!
 		if (!empty($featured_image)) { 
-			$query = "UPDATE posts SET title='$title', slug='$post_slug', views=0, image='$featured_image', body='$body', published=$published, date_updated=now() WHERE id=$post_id";
+			try
+			{
+				$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+			}
+			catch (Exception $e)
+			{        die('Erreur : ' . $e->getMessage());
+			}
+			$query = $db->prepare('UPDATE posts SET title=:title, slug=:slug, image=:image, body=:body, published=:published, date_updated=:date_updated WHERE id=:id');
+					  $query->execute([
+						'id'=>htmlspecialchars($post_id),
+						'title'=>htmlspecialchars($title),
+						'slug'=>htmlspecialchars($post_slug),
+						'image'=>htmlspecialchars($featured_image),
+						'body'=>htmlspecialchars($body),
+						'published'=>htmlspecialchars($published),
+						'date_updated'=>htmlspecialchars(date('Y-m-d')),
+				  ])or die(print_r($db->errorCode()));
+			//$query = "UPDATE posts SET title='$title', slug='$post_slug', image='$featured_image', body='$body', published='$published', date_updated=now() WHERE id=$post_id";
 		} else  {
-			$query = "UPDATE posts SET title='$title', slug='$post_slug', views=0, body='$body', published=$published, date_updated=now() WHERE id=$post_id";
-		
+			//$query = "UPDATE posts SET title='$title', slug='$post_slug', body='$body', published='$published', date_updated=now() WHERE id=$post_id";
+			try
+			{
+				$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+			}
+				catch (Exception $e)
+			{        die('Erreur : ' . $e->getMessage());
+			}
+					$query = $db->prepare('UPDATE posts SET title=:title, slug=:slug, body=:body, published=:published, date_updated=:date_updated WHERE id=:id');
+							  $query->execute([
+								'id'=>htmlspecialchars($post_id),//htmlhtmlspecialchars pour prévenir les attaques xss(Cross Site Scripting)
+								'title'=>htmlspecialchars($title),
+								'slug'=>htmlspecialchars($post_slug),
+								'body'=>htmlspecialchars($body),
+								'published'=>htmlspecialchars($published),
+								'date_updated'=>htmlspecialchars(date('Y-m-d')),
+						  ])or die(print_r($db->errorCode()));
 		}
 			//var_dump($query);
 		//exit;
 			// attacher chapo au post dans la table post_topic
-			if(mysqli_query($conn, $query)){ // si le post est crée avec succée
+			//if(mysqli_query($conn, $query)){ // si le post est crée avec succée
 				if (isset($chapo_id)) {
 					$inserted_post_id = mysqli_insert_id($conn);
 					// créer une relation entre le post and le chapo
-					$sql = "INSERT INTO post_chapo (post_id, chapo_id) VALUES($inserted_post_id, $chapo_id)";
-					mysqli_query($conn, $sql);
+					try
+					{
+						$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+					}
+					catch (Exception $e)
+					{        die('Erreur : ' . $e->getMessage());
+					}
+					$query = $db->prepare('INSERT INTO post_chapo (post_id, chapo_id) VALUES(:post_id, :chapo_id)');
+							  $query->execute([
+								'post_id'=>htmlspecialchars($inserted_post_id),
+								'chapo_id'=>htmlspecialchars($chapo_id),
+								])or die(print_r($db->errorCode()));
+					//$sql = "INSERT INTO post_chapo (post_id, chapo_id) VALUES($inserted_post_id, $chapo_id)";
+					//mysqli_query($conn, $sql);
 					$_SESSION['message'] = "Post crée avec succée.";
 					header('location: posts.php');
 					exit(0);
@@ -215,17 +276,28 @@ function createPost($request_values)
 			exit(0);
 			
 		}
-	}
+	//}
 	// supprimer le blogpost
 	function deletePost($post_id)
 	{
 		global $conn;
-		$sql = "DELETE FROM posts WHERE id=$post_id";
-		if (mysqli_query($conn, $sql)) {
+					try
+					{
+						$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+					}
+					catch (Exception $e)
+					{        die('Erreur : ' . $e->getMessage());
+					}
+					$query = $db->prepare('DELETE FROM posts WHERE id=:id');
+							  $query->execute([
+								'id'=>htmlspecialchars($post_id),
+								])or die(print_r($db->errorCode()));
+		//$sql = "DELETE FROM posts WHERE id=$post_id";
+		//if (mysqli_query($conn, $sql)) {
 			$_SESSION['message'] = "Post supprimée avec succée.";
 			header("location: posts.php");
 			exit(0);
-		}
+		//}
 	}
     // si l'utilisateur clique sur le bouton de publication pour modifier le statut de publication
 if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
@@ -234,7 +306,7 @@ if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 		$message = "Post publiée avec succée.";
 		$post_id = $_GET['publish'];
 	} else if (isset($_GET['unpublish'])) {
-		$message = "Post publiée avec succée.";
+		$message = "Post dépubliée avec succée.";
 		$post_id = $_GET['unpublish'];
 	}
 	togglePublishPost($post_id, $message);
@@ -243,12 +315,25 @@ if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 function togglePublishPost($post_id, $message)
 {
 	global $conn;
-	$sql = "UPDATE posts SET published=!published WHERE id=$post_id";
+	try
+					{
+						$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+					}
+					catch (Exception $e)
+					{        die('Erreur : ' . $e->getMessage());
+					}
+					$query = $db->prepare('UPDATE posts SET published= NOT published WHERE id=:id');
+							  $query->execute([
+								'id'=>htmlspecialchars($post_id),
+								])or die(print_r($db->errorCode()));
+	//$sql = "UPDATE posts SET published= NOT published WHERE id=$post_id";
+	//var_dump($sql);
+	//exit;
 	
-	if (mysqli_query($conn, $sql)) {
+	//if (mysqli_query($conn, $sql)) {
 		$_SESSION['message'] = $message;
 		header("location: posts.php");
 		exit(0);
-	}
+	//}
 }
 ?>

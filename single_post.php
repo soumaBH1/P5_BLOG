@@ -25,7 +25,7 @@
 			<?php else: ?>
 				<div class="post" style="margin-left: 0px;">
 				<img src="<?php echo BASE_URL . '/static/images/' . $post['image']; ?>" class="post_image" alt="">
-       		 <!-- Added this if statement... -->
+       		 <!-- ... -->
 				<?php if (isset($post['topic']['name'])): ?>
 					 
 						href="<?php echo BASE_URL . 'filtered_posts.php?topic=' . $post['topic']['id'] ?>"
@@ -64,15 +64,7 @@
 		<!-- // comments section -->
 	</div>
 </div>
-<!-- Javascripts --> <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Bootstrap Javascript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		</div>
-		
 
-		
-	</div>
-</div>
 <!-- // content -->
 
 <?php include( ROOT_PATH . '/includes/footer.php'); ?>

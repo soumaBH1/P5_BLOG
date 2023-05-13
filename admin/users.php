@@ -3,7 +3,7 @@
 <?php 
 	// ramener tous les admin users de la BDD
 	$admins = getAdminUsers();
-	$roles = ['Admin', 'Author'];				
+	$roles = ['admin', 'author'];				
 ?>
 <?php include(ROOT_PATH . '/admin/includes/head_section.php'); ?>
 	<title>Admin | Manage users</title>
@@ -16,7 +16,7 @@
 		<?php include(ROOT_PATH . '/admin/includes/menu.php') ?>
 		<!-- formulaire du milieu - pour créer et MAJ  -->
 		<div class="action">
-			<h1 class="page-title">Create/Edit Admin User</h1>
+			<h1 class="page-title">Créer/Modifier les Utilisateurs</h1>
 
 			<form method="post" action="<?php echo BASE_URL . 'admin/users.php'; ?>" >
 
@@ -63,7 +63,7 @@
 			<?php else: ?>
 				<table class="table">
 					<thead>
-						<th>N</th>
+						<th>Id</th>
 						<th>Admin</th>
 						<th>Role</th>
 						<th colspan="2">Action</th>

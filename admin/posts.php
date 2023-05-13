@@ -27,7 +27,6 @@
 						<th>N</th>
 						<th>Auteur</th>
 						<th>Titre</th>
-						<th>Views</th>
 						<!-- que l'Admin est autorisé à publier / dépublier post -->
 						
 						<?php if ($_SESSION['user']['role'] == "admin"): ?>
@@ -47,7 +46,7 @@
 									<?php echo $post['title']; ?>	
 								</a>
 							</td>
-							<td><?php echo $post['views']; ?></td>
+							
 							
 							<!-- si Admin donc autorisé à publier / dépublier post -->
 							<?php if ($_SESSION['user']['role'] == "admin" ): ?>

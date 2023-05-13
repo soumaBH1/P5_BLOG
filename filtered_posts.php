@@ -19,10 +19,10 @@
 	<div class="content" >
 		<!-- Page wrapper -->
 		<div class="post-wrapper">
-			<!-- full post div -->
+			<!-- div Post complet-->
 			<div class="full-post-div">
 			<?php if ($post['published'] == false): ?>
-				<h2 class="post-title">Sorry... ce post n'a pas éte publié</h2>
+				<h2 class="post-title">Désolé... ce post n'a pas éte publié</h2>
 			<?php else: ?>
 				<h2 class="post-title"><?php echo $post['title']; ?></h2>
 				<div class="post-body-div">
@@ -30,7 +30,7 @@
 				</div>
 			<?php endif ?>
 			</div>
-			<!-- // full post div -->
+			<!-- // div post complet -->
 			
 			
 		</div>

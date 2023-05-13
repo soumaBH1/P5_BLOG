@@ -18,7 +18,7 @@
 		<div class="action create-post-div">
 			<h1 class="page-title">Créer/ Gérer les Blog Posts</h1>
 			<form method="post" enctype="multipart/form-data" action="<?php echo BASE_URL . 'admin/create_post.php'; ?>" >
-				<!-- validation errors for the form -->
+				<!-- Erreurs de validation du formulaire -->
 			
 
 				<!-- Si MAJ de post, id nécessaire pour identifier ce post -->
