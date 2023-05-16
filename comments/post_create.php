@@ -30,7 +30,7 @@ $insertBpost = $mysqlClient->prepare('INSERT INTO comments(comment, posts_id, us
 $insertBpost->execute([
     'comment' => htmlspecialchars($comment),
     'posts_id' => htmlspecialchars($postId),
-    'user_id' => htmlspecialchars(retrieve_id_from_user_mail($loggedUser['email'], $users)),
+    'user_id' => htmlspecialchars( $users),
     'date_validated' => Null, 
     'date_deleated' =>NULL,
 ]);

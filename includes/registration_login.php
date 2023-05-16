@@ -10,13 +10,13 @@
 	// ENREGISTRER UN UTILISATEUR
 	if (isset($_POST['reg_user'])) {
 		// recevoir toutes les valeurs d'entrée du formulaire
-		$username = esc($_POST['username']);
+		$username =esc($_POST['username']);
 		$email = esc($_POST['email']);
 		$firstname = esc($_POST['firstname']);
 		$lastname = esc($_POST['lastname']);
 		$age = esc($_POST['age']);
 		$password_1 = esc($_POST['password_1']);
-		$password_2 = esc($_POST['password_2']);
+		$password_2 = $_POST['password_2'];
 
 		// validation du formulaire : s'assurer que le formulaire est correctement rempli
 		if (empty($username)) {  array_push($errors, "Username obligatoire !"); }
@@ -29,6 +29,19 @@
 
 			// s'assurer qu'il n'y a pas de doublons.
 			// l'email et les noms d'utilisateur doivent être uniques
+			//try
+			//{
+			//	$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+			//}
+			//	catch (Exception $e)
+			//{        die('Erreur : ' . $e->getMessage());
+			//}
+			//$user_check_query = $db->prepare('SELECT * FROM users WHERE username=:username OR email=:email LIMIT 1');
+						//	$user_check_query->execute([
+							//	'username'=>htmlspecialchars('$username'),
+						//		'email'=>htmlspecialchars('$email'),//htmlhtmlspecialchars pour prévenir les attaques xss(Cross Site Scripting)
+								
+						 // ])or die(print_r($db->errorCode()));
 		$user_check_query = "SELECT * FROM users WHERE username='$username' 
 								OR email='$email' LIMIT 1";
 

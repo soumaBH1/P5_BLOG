@@ -14,6 +14,7 @@ $errors = [];
 $chapo_id = 0;
 $isEditingChapo = false;
 $chapo_name = "";
+$valid=0;
 
 /* - - - - - - - - - - 
 -  Actions des utilisateurs administrateurs
@@ -67,7 +68,7 @@ if (isset($_GET['delete-chapo'])) {
 * - Renvoie tous les utilisateurs administrateurs avec leurs rôles 
 * * * * * * * * * * * * * * * * * * * * * * */
 function createAdmin($request_values){
-	global $conn, $errors, $role, $username, $email;
+	global $conn, $errors, $role, $username, $email, $valid, $firstname, $lastname, $age, $password;
 	$username = $request_values['username'];
 	$firstname = $request_values['firstname'];
 	$lastname = $request_values['lastname'];
@@ -75,9 +76,12 @@ function createAdmin($request_values){
 	$email = $request_values['email'];
 	$password = $request_values['password'];
 	$passwordConfirmation = $request_values['passwordConfirmation'];
-
+	
 	if(isset($request_values['role'])){
 		$role = $request_values['role'];
+	}
+	if (isset($request_values['valid'])) {
+		$valid =$request_values['valid'];
 	}
 	// validation du formulaire : s'assurer que le formulaire est correctement rempli
 	if (empty($username)) { array_push($errors, "Oops....Il faut remplir le username!"); }
@@ -104,7 +108,7 @@ function createAdmin($request_values){
 	if (count($errors) == 0) {
 		$password = md5($password);//crypter le mot de passe avant de l'enregistrer dans la base de données
 		
-//*****************Préparer la requete et l'exécuter*/
+//*****************Préparer la requête et l'exécuter*/
 try
 {
 	$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
@@ -114,21 +118,26 @@ catch (Exception $e)
 {        die('Erreur : ' . $e->getMessage());
 }
 			
-$query = $db->prepare('INSERT INTO users(username, email, role, password, created_at, updated_at) VALUES ( :username, :email, :role, :password, :created_at, :updated_at)');
+$query = $db->prepare('INSERT INTO users(username, email, password, firstname, lastname, age, role, created_at, updated_at, valid) VALUES ( :username, :email, :password, :firstname, :lastname, :age, :role, :created_at, :updated_at, :valid)');
 			$query->execute([
-    		'username' => htmlspecialchars($username),
+    		'username' => htmlspecialchars($username),//htmlspecialchars pour éviter les attaques xss
     		'email' => htmlspecialchars($email), //
     		'password' => htmlspecialchars($password),
+			'firstname' => htmlspecialchars($firstname),
+			'lastname' => htmlspecialchars($lastname),
+			'age' => $age,
     		'role' => htmlspecialchars($role),
 			'created_at' => htmlspecialchars(date('Y-m-d')), // 
     		'updated_at' => htmlspecialchars(date('Y-m-d')), 
+			'valid'=> $valid,
    			]);
-			  
+			var_dump($valid);
+		exit;
 		$_SESSION['message'] = "Admin user created successfully";
 		header('location: users.php');
 		exit(0);
 	}
-}
+}//die(print_r($db->errorCode()));
 /* * * * * * * * * * * * * * * * * * * * *
 * - Prend l'id de l'administrateur comme paramètre
 * - Récupère l'admin de la BDD
@@ -136,22 +145,27 @@ $query = $db->prepare('INSERT INTO users(username, email, role, password, create
 * * * * * * * * * * * * * * * * * * * * * */
 function editAdmin($admin_id)
 {
-	global $conn, $username, $role, $isEditingUser, $admin_id, $email;
+	global $conn, $username, $age, $firstname, $lastname, $role, $admin_id, $email, $valid;
 
 	$sql = "SELECT * FROM users WHERE id=$admin_id LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	$admin = mysqli_fetch_assoc($result);
 
-	// définir les valeurs du formulaire ($username et $email) sur le formulaire à mettre à jourv
+	// définir les valeurs du formulaire ($username , $email..) sur le formulaire à mettre à jourv
 	$username = $admin['username'];
 	$email = $admin['email'];
+	$firstname = $admin['firstname'];
+	$lastname = $admin['lastname'];
+	$age = $admin['age'];
+	$role = $admin['role'];
+	$valid = $admin['valid'];
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 * - Reçoit la demande d'admin du formulaire et MAJ dans la BDD
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function updateAdmin($request_values){
-	global $conn, $errors, $role, $username, $password, $firstname, $lastname, $age, $isEditingUser, $admin_id, $email;
+	global $conn, $errors, $role, $username, $password, $firstname, $lastname, $age, $isEditingUser, $admin_id, $email, $valid;
 	// obtenir l'id de l'utilisateur à mettre à jour
 	$admin_id = $request_values['admin_id'];
 	// modifier statut
@@ -168,6 +182,10 @@ function updateAdmin($request_values){
 	if(isset($request_values['role'])){
 		$role = $request_values['role'];
 	}
+	if(isset($request_values['valid'])){
+		$valid = $request_values['valid'];
+	}
+
 	// enregistrer l'utilisateur s'il n'y a pas d'erreurs dans le formulaire
 	if (count($errors) == 0) {
 	//chiffrer le mot de passe (à des fins de sécurité)
@@ -184,7 +202,7 @@ function updateAdmin($request_values){
 	//si il s'agit de mofidifier le mot de passe
 	if ($password!=NULL){
 		if ($password != $passwordConfirmation) { array_push($errors, "Les deux mots de passe ne correspondent pas!"); }
-		$updateAdminUser = $db->prepare('UPDATE users SET username=:username, email=:email, firstname=:firstname, lastname=:lastname, age=:age, role=:role, password=:password, updated_at=:updated_at WHERE id=' . $admin_id);
+		$updateAdminUser = $db->prepare('UPDATE users SET username=:username, email=:email, firstname=:firstname, lastname=:lastname, age=:age, role=:role, password=:password, updated_at=:updated_at, valid=:valid WHERE id=' . $admin_id);
 		$updateAdminUser->execute([
 			'username'=>htmlspecialchars($username),
 			'email'=>htmlspecialchars($email),
@@ -194,15 +212,16 @@ function updateAdmin($request_values){
 			'lastname'=>htmlspecialchars( $lastname),
 			'age'=> htmlspecialchars($age),
 			'updated_at'=>htmlspecialchars(date('Y-m-d')),
+			'valid'=> htmlspecialchars($valid),
 		]) or die(print_r($db->errorInfo()));
 		$_SESSION['message'] = "L'utilisateur admin est modifié avec succée.";
 		header('location: users.php');
 		exit(0);
-	} 
-	//si il le mot de passe est vide
-	else
+	}
+		//si il le mot de passe est vide
+		else
 	{
-	$updateAdminUser = $db->prepare('UPDATE users SET username=:username, email=:email, firstname=:firstname, lastname=:lastname, age=:age, role=:role, updated_at=:updated_at WHERE id=' . $admin_id);
+	$updateAdminUser = $db->prepare('UPDATE users SET username=:username, email=:email, firstname=:firstname, lastname=:lastname, age=:age, role=:role, updated_at=:updated_at, valid=:valid WHERE id=' . $admin_id);
 	$updateAdminUser->execute([
 		'username'=>htmlspecialchars($username),
 		'email'=>htmlspecialchars($email),
@@ -211,6 +230,7 @@ function updateAdmin($request_values){
 		'lastname'=>htmlspecialchars($lastname),
 		'age'=> htmlspecialchars($age),
 		'updated_at'=>htmlspecialchars(date('Y-m-d')),
+		'valid'=> htmlspecialchars($valid),
 	]) or die(print_r($db->errorCode()));
 				$_SESSION['message'] = "L'utilisateur admin est modifié avec succée.";
 		header('location: users.php');
@@ -307,8 +327,8 @@ catch (Exception $e)
 						'name'=>htmlspecialchars($chapo_name),
 						'slug'=>htmlspecialchars($chapo_slug),
 					  ])or die(print_r($db->errorCode()));
-					  echo($chapo_name);
-					  echo($chapo_slug);
+		echo ($chapo_name);
+		echo ($chapo_slug);
 			
 		$_SESSION['message'] = "chapo creé avec  succée.";
 		header('location: chapos.php');
@@ -349,8 +369,8 @@ function updateChapo($request_values) {
 	}
 			$query = $db->prepare('UPDATE chapo SET name=:name, slug=:slug WHERE id=$chapo_id');
 					  $query->execute([
-						'name'=>htmlspecialchars($chapo_name),
-						'slug'=>htmlspecialchars($chapo_slug),
+						'name' => htmlspecialchars($chapo_name),
+						'slug' => htmlspecialchars($chapo_slug),
 					  ])or die(print_r($db->errorCode()));
 		
 		$_SESSION['message'] = "chapo modifiée  avec succée.";
@@ -370,11 +390,48 @@ function deleteChapo($chapo_id) {
 	}
 			$query = $db->prepare('DELETE FROM chapo WHERE id=:id');
 					  $query->execute([
-						'id'=>htmlspecialchars($chapo_id),
-				  ])or die(print_r($db->errorCode()));
+						'id' => htmlspecialchars($chapo_id),
+					]) or die(print_r($db->errorCode()));
 		
 		$_SESSION['message'] = "Chapo supprimé avec succeé.";
 		header("location: chapos.php");
 		
+}
+ // si l'utilisateur clique sur le bouton de validation pour valider (ou l'inverse) un user
+ if (isset($_GET['valid']) || isset($_GET['unvalid'])) {
+	$message = "";
+	if (isset($_GET['valid'])) {
+		$message = "Utlilisateur validé avec succée.";
+		$user_id = $_GET['valid'];
+	} else if (isset($_GET['unvalid'])) {
+		$message = "Utlilisateur invalidé avec succée.";
+		$user_id = $_GET['unvalid'];
+	}
+	toggleValidUser($user_id, $message);
+}
+// modifier le statut validé d'un utilisateur
+function toggleValidUser($user_id, $message)
+{
+	global $conn;
+	try
+					{
+						$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+					}
+					catch (Exception $e)
+					{        die('Erreur : ' . $e->getMessage());
+					}
+					$query = $db->prepare('UPDATE users SET valid= NOT valid WHERE id=:id');
+							  $query->execute([
+								'id'=>htmlspecialchars($user_id),
+								])or die(print_r($db->errorCode()));
+	//......=====================================================================================================
+	//var_dump($sql);
+	//exit;
+	
+	//if (mysqli_query($conn, $sql)) {
+		$_SESSION['message'] = $message;
+		header("location: users.php");
+		exit(0);
+	//}
 }
 ?>

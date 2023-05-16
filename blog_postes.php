@@ -19,12 +19,12 @@
 		<div class="content">
 			<h2 class="content-title">Blogs posts récents</h2>
 			<hr>
-			<!-- listes des blog postes ... -->
+			<!-- liste des blog posts ... -->
 			<!--  ... -->
 		<?php foreach ($posts as $post): ?>
 			<div class="post" style="margin-left: 0px;">
 				<img src="<?php echo BASE_URL . '/static/images/' . $post['image']; ?>" class="post_image" alt="">
-       		 <!-- Added this if statement... -->
+       		 <!-- ... -->
 				<?php if (isset($post['topic']['name'])): ?>
 					<a 
 						href="<?php echo BASE_URL . 'filtered_posts.php?topic=' . $post['topic']['id'] ?>"

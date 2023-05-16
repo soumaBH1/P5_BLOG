@@ -27,7 +27,6 @@
 				<?php if ($isEditingUser === true): ?>
 					<input type="hidden" name="admin_id" value="<?php echo $admin_id; ?>">
 				<?php endif ?>
-
 				<input type="text" name="username" value="<?php echo $username; ?>" placeholder="Username">
 				<input type="email" name="email" value="<?php echo $email ?>" placeholder="Email">
 				<input type="firstname" name="firstname" value="<?php echo $firstname  ?>" placeholder="Firstname">
@@ -42,6 +41,22 @@
 						<option value="<?php echo $role; ?>"><?php echo $role; ?></option>
 					<?php endforeach ?>
 				</select>
+				<!-- La case à cocher Publier est visible que pour les profils Admin -->
+				<?php if ($_SESSION['user']['role'] == "admin"): ?>
+					
+					<!-- mettre la case à coché selon si le post est publié ou non -->
+					<?php if ($valid == true): ?>
+						<label for="validate">
+							Valider
+							<input type="checkbox" value="1" name="validate" checked="checked">&nbsp;
+						</label>
+					<?php else: ?>
+						<label for="valid">
+							Valider
+							<input type="checkbox" value="0" name="validate">&nbsp;
+						</label>
+					<?php endif ?>
+				<?php endif ?>
 
 				<!-- si vous modifiez l'utilisateur, affichez le bouton de mise à jour au lieu du bouton de création -->
 				<?php if ($isEditingUser === true): ?> 
@@ -66,6 +81,11 @@
 						<th>Id</th>
 						<th>Admin</th>
 						<th>Role</th>
+						<!-- que l'Admin est autorisé à valider / dévalider un user -->
+						
+						<?php if ($_SESSION['user']['role'] == "admin"): ?>
+							<th> Valider </th>
+						<?php endif ?>
 						<th colspan="2">Action</th>
 					</thead>
 					<tbody>
@@ -76,11 +96,30 @@
 							<td> <?php echo $admin['username']; ?>, &nbsp;
 								 <?php echo $admin['email']; ?>	</td>
 							<td> <?php echo $admin['role']; ?></td>
+						<!-- si Admin donc autorisé à valider / dévalider un user -->
+						<?php if ($_SESSION['user']['role'] == "admin" ): ?>
+								<td>
+								<?php if ($admin['valid'] == true): ?>
+									<a class="fa fa-check btn unvalid"
+										href="users.php?unvalid=<?php echo $admin['id'] ?>">
+									</a>
+								<?php else: ?>
+									<a class="fa fa-times btn valid"
+										href="users.php?valid=<?php echo $admin['id'] ?>">
+									</a>
+								<?php endif ?>
+								</td>
+							<?php endif ?>
+
+
+						<!-- Actions sur user : editer et supprimer -->
+						
 							<td>
 								<a class="fa fa-pencil btn edit"
 									href="users.php?edit-admin=<?php echo $admin['id'] ?>">
 								</a>
 							</td>
+							
 							<td>
 								<a class="fa fa-trash btn delete" 
 								    href="users.php?delete-admin=<?php echo $admin['id'] ?>">

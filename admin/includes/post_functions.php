@@ -10,7 +10,7 @@ $featured_image = "";
 $post_chapo = "";
 
 /* - - - - - - - - - - 
--   functions du Post
+-   fonctions du Post
 - - - - - - - - - - -*/
 // Ramener tous les postes de le BDD
 function getAllPosts()
@@ -162,10 +162,10 @@ function createPost($request_values)
 	* - Récupère le post de la BDD
 	* - remplir les champs de post sur le formulaire pour l'édition
 	* * * * * * * * * * * * * * * * * * * * * */
-	function editPost($role_id)
+	function editPost($post_id)
 	{
 		global $conn, $title, $post_slug, $body, $published, $isEditingPost, $post_id, $featured_image;
-		$sql = "SELECT * FROM posts WHERE id=$role_id LIMIT 1";
+		$sql = "SELECT * FROM posts WHERE id=$post_id LIMIT 1";
 		$result = mysqli_query($conn, $sql);
 		$post = mysqli_fetch_assoc($result);
 		// remplir des valeurs de formulaire sur le formulaire à mettre à jour
@@ -186,6 +186,10 @@ function createPost($request_values)
 		if (isset($request_values['chapo_id'])) {
 			$chapo_id = $request_values['chapo_id'];
 		}
+		if (isset($request_values['published'])) {
+			$published = $request_values['published'];
+		}
+		
 		// créer slug
 		$post_slug = makeSlug($title);
 

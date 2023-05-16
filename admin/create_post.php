@@ -62,10 +62,11 @@
 				<?php else: ?>
 					<button type="submit" class="btn" name="create_post">Créer</button>
 				<?php endif ?>
+				
 
 			</form>
 		</div>
-		<!-- // Formulaire de création et modification de blog posts -->
+		
 	</div>
 </body>
 </html>
