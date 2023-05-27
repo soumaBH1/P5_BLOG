@@ -41,22 +41,7 @@
 						<option value="<?php echo $role; ?>"><?php echo $role; ?></option>
 					<?php endforeach ?>
 				</select>
-				<!-- La case à cocher Publier est visible que pour les profils Admin -->
-				<?php if ($_SESSION['user']['role'] == "admin"): ?>
-					
-					<!-- mettre la case à coché selon si le post est publié ou non -->
-					<?php if ($valid == true): ?>
-						<label for="validate">
-							Valider
-							<input type="checkbox" value="1" name="validate" checked="checked">&nbsp;
-						</label>
-					<?php else: ?>
-						<label for="valid">
-							Valider
-							<input type="checkbox" value="0" name="validate">&nbsp;
-						</label>
-					<?php endif ?>
-				<?php endif ?>
+				
 
 				<!-- si vous modifiez l'utilisateur, affichez le bouton de mise à jour au lieu du bouton de création -->
 				<?php if ($isEditingUser === true): ?> 
@@ -79,7 +64,8 @@
 				<table class="table">
 					<thead>
 						<th>Id</th>
-						<th>Admin</th>
+						<th>Login</th>
+						<th>Email</th>
 						<th>Role</th>
 						<!-- que l'Admin est autorisé à valider / dévalider un user -->
 						
@@ -93,8 +79,8 @@
 						<tr>
 							<!-- <td><?php echo $key + 1; ?></td> -->
 							<td> <?php echo $admin['id']; ?></td>
-							<td> <?php echo $admin['username']; ?>, &nbsp;
-								 <?php echo $admin['email']; ?>	</td>
+							<td> <?php echo $admin['username']; ?> </td>
+							<td> <?php echo $admin['email']; ?>	</td>
 							<td> <?php echo $admin['role']; ?></td>
 						<!-- si Admin donc autorisé à valider / dévalider un user -->
 						<?php if ($_SESSION['user']['role'] == "admin" ): ?>
