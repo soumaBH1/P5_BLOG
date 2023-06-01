@@ -1,6 +1,6 @@
 <div class="header">
 	<div class="logo">
-		<a href="<?php echo BASE_URL .'admin/dashboard.php' ?>">
+		<a href="<?php echo BASE_URL . 'admin/dashboard.php' ?>">
 			<h1>Blog IBH - Admin</h1>
 		</a>
 	</div>

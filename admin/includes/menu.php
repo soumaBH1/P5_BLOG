@@ -8,6 +8,7 @@
 			<a href="<?php echo BASE_URL . 'admin/posts.php' ?>">Gérer les Blog Posts</a>
 			<a href="<?php echo BASE_URL . 'admin/users.php' ?>">Gérer les Utilisateurs</a>
 			<a href="<?php echo BASE_URL . 'admin/chapos.php' ?>">Gérer les Chapos</a>
+			<a href="<?php echo BASE_URL . 'admin/comments.php' ?>">Gérer les Commentaires</a>
 		</div>
 	</div>
 </div>

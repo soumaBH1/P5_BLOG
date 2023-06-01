@@ -6,7 +6,7 @@ function getPublishedPosts()
 {
 	// utilise la variable globale $conn 
 	global $conn;
-	$sql = "SELECT * FROM posts WHERE published=true";
+	$sql = "SELECT * FROM posts WHERE published=true order by created_at desc ";
 	$result = mysqli_query($conn, $sql);
 	// recupere tous les posts dans le tableau $posts
 	$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -28,7 +28,7 @@ function getPostChapo($post_id)
 {
 	global $conn;
 	$sql = "SELECT * FROM chapo WHERE id=
-			(SELECT chapo_id FROM post_chapo WHERE post_id=$post_id) LIMIT 1";
+			(SELECT chapo_id FROM posts WHERE id=$post_id) LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	$chapo = mysqli_fetch_assoc($result);
 	return $chapo;
@@ -142,34 +142,34 @@ function getRepliesByCommentId($id)
 function getCommentsCountByPostId($post_id)
 {
 	global $conn;
-	$result = mysqli_query($conn, "SELECT COUNT(*) AS total FROM comments");
+	$result = mysqli_query($conn, "SELECT COUNT(*) AS total FROM comments where post_id = $post_id AND published=1");
 	$data = mysqli_fetch_assoc($result);
 	return $data['total'];
 }
 //...
 
-
-
-
-/* - - - - - - - - - - 
+/* - - - - - - - - - - - - - - - - - -  
 -  Actions su les commentaires
-- - - - - - - - - - -*/
-// // Si le user appuit sur envoyer...
+- - - - - - - - - - - - - - - - - - - */
+// Si le user appuit sur envoyer...
 if (isset($_POST['submit_comment'])) {
 	$comment_text = $_POST['comment_text'];
+	$post_id = $_GET['submit_comment'];
 	createComment($_POST);
-	// insert comment into database
+	//insert comment into database
 	//$sql = "INSERT INTO comments (post_id, user_id, body, created_at, updated_at, published) VALUES (1, " . $user_id . ", '$comment_text', now(), null, 0)";
 	//$result = mysqli_query($db, $sql);
 	// Query same comment from database to send back to be displayed
 
 }
 
-// si l'admin clique sur le bouton modifier un utilisateur
+// si l'admin clique sur le bouton modifier un commentaire
 if (isset($_POST['update_comment'])) {
 	updateComment($_POST);
+	$post_id = $_GET['edit-post'];
+	$post_id = $_GET['edit-post'];
 }
-// si l'admin clique sur le bouton supprimer un utilisateur
+// si l'admin clique sur le bouton supprimer un commentaire
 if (isset($_GET['delete-comment'])) {
 	$admin_id = $_GET['delete-comment'];
 	deleteComment($comment_id);
@@ -181,22 +181,26 @@ if (isset($_GET['delete-comment'])) {
 function getAllCommentsByPostId($post_id)
 {
 	global $conn, $post_id;
-	$sql = "SELECT * FROM comments where 'post_id'=" . $post_id ." & 'published'=1" ;
+	$sql = "SELECT * FROM comments where post_id = " . $post_id ." AND published = 1" ;
+	//var_dump($sql); exit;
 	$result = mysqli_query($conn, $sql);
 	$comments = mysqli_fetch_all($result, MYSQLI_ASSOC);
 	
 	return $comments;
 }
-// Créer un nouveau chapos
+// Créer un nouveau commentaire
 function createcomment($request_values)
 {
-	global $conn, $errors, $comment_text, $comment_id, $published, $user_id, $post_id;
-	$comment_text = $request_values['comment_text'];
-	$comment_id = $request_values['comment_id'];
-	$published = $request_values['comment_published'];
+	global $conn, $errors, $comment_text, $published, $user_id, $post_id;
+	//$user_id = $_SESSION['user']['id'] ;
+	//var_dump($request_values);
+		//exit;
+	$comment_text = $request_values['comment_body'];
+	//$comment_id = $request_values['Post_id'];
+	//$published = $request_values['comment_published'];
 	$user_id = $request_values['user_id'];
 	$post_id = $request_values['post_id'];
-
+	$published=0;
 	// valider forme
 	if (empty($comment_text)) {
 		array_push($errors, "Il faut remplir un commentaire!");
@@ -208,16 +212,16 @@ function createcomment($request_values)
 		} catch (Exception $e) {
 			die('Erreur : ' . $e->getMessage());
 		}
-		$query = $db->prepare('INSERT INTO comments (user_id, post_id, body, published, created_at) VALUES(:body, :published, :created_at, :user_id, :post_id,)');
+		$query = $db->prepare('INSERT INTO comments (user_id, post_id, body, published, created_at) VALUES(:user_id, :post_id, :body, :published, :created_at)');
 		$query->execute([
 			'user_id' => htmlspecialchars($user_id),
 			'post_id' => htmlspecialchars($post_id),
 			'body' => htmlspecialchars($comment_text),
 			'published' => htmlspecialchars($published),
 			'created_at' => htmlspecialchars(date('Y-m-d')),
-		]) or die(print_r($db->errorCode()));
-		var_dump($query);
-		exit;
+		]) or die(print_r($query));
+		//var_dump($query);
+		//exit;
 		$_SESSION['message'] = "Commentaire crée avec  succée.";
 		header('location: single_post.php');
 		exit(0);
@@ -312,3 +316,4 @@ function togglePublishComment($comment_id, $message)
 	exit(0);
 	//}
 }
+

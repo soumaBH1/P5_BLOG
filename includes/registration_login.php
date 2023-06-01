@@ -138,11 +138,17 @@
 	function getUserById($id)
 	{
 		global $conn;
-		$sql = "SELECT * FROM users WHERE id=$id LIMIT 1";
-
-		$result = mysqli_query($conn, $sql);
-		$user = mysqli_fetch_assoc($result);
+		try {
+			$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
+		} catch (Exception $e) {
+			die('Erreur : ' . $e->getMessage());
+		}
+		$query = $db->prepare('SELECT * FROM users WHERE id=:id LIMIT 1');
+		$query->bindParam('id' , htmlspecialchars($id), PDO::PARAM_INT);
+		$query->execute() or die(print_r($db->errorCode()));
+		$user= $query->fetch();//récupérer le resultat
 
 		return $user; 
 	}
+	
 ?>

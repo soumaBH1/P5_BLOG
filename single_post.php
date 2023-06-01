@@ -1,11 +1,19 @@
 <?php include('config.php'); ?>
 <?php include('includes/public_functions.php'); ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <?php
-global $comments, $comment;
+
+
+global $comments, $comment, $user_id;
 if (isset($_GET['post-slug'])) {
 	$post = getPost($_GET['post-slug']);
+	$post_id = $post['id'];
+	$user_id = $post['user_id'];
+//Ramener tous les commentaires d'un post 
+	$comments = getAllCommentsByPostId($post_id);
 }
 ?>
+
 <?php include('includes/head_section.php'); ?>
 <title> <?php echo $post['title'] ?> | Blog IBH</title>
 </head>
@@ -18,21 +26,22 @@ if (isset($_GET['post-slug'])) {
 
 		<div class="content">
 			<!-- affichage de l'enveloppe de posts -->
-			<div class="post-wrapper">
+			<div class="post-wrapper-singleP">
 				<!-- affichage du post  -->
 				<div class="full-post-div">
 					<?php if ($post['published'] == false) : ?>
 						<h2 class="post-title">Désolé... Ce post n'est pas encore publié</h2>
 					<?php else : ?>
 						<?php $chapo = getPostChapo($post['id']);
-						echo ($chapo) ?>
+						//A voir comment faire pour résoudre!
+						$chapo1='' . implode(', ', $chapo); ?>
 						<div class="post" style="margin-left: 0px;">
 							<img src="<?php echo BASE_URL . '/static/images/' . $post['image']; ?>" class="post_image" alt="">
 							<!-- ... -->
 							<?php if (isset($chapo)) : ?>
 
 								<a href="<?php echo BASE_URL . 'single_post.php?chapo=' . $post['chapo']['id'] ?>" class="btn category">
-									<?php echo $chapo ?>
+									<?php echo $chapo1 ?>
 									<a href="single_post.php?post-slug=<?php echo $post['slug']; ?>">
 
 										<span><?php echo date("F j, Y ", strtotime($post["date_updated"])); ?></span>
@@ -40,7 +49,12 @@ if (isset($_GET['post-slug'])) {
 
 									</a>
 								<?php endif ?>
-
+								<div class="post-body-div-details">
+									<?php echo ("modifié le:"); ?>
+									<?php echo html_entity_decode($post['date_updated']); ?>
+									<?php echo ("Uername:"); ?>
+									<?php echo html_entity_decode(getUsernameById($post['user_id'])); ?>
+								</div>
 
 						</div>
 
@@ -48,63 +62,78 @@ if (isset($_GET['post-slug'])) {
 						<div class="post-body-div">
 							<?php echo html_entity_decode($post['body']); ?>
 
-							<div class="post-body-div-details">
-								<?php echo ("modifié le:"); ?>
-								<?php echo html_entity_decode($post['date_updated']); ?>
-								<?php echo ("Uername:"); ?>
-								<?php echo html_entity_decode(getUsernameById($post['user_id'])); ?>
-							</div>
+
 						</div>
 					<?php endif ?>
 				</div>
 			</div>
 			<!-- affichage du post -->
 		</div>
-	</div>
-	<!-- comments section -->
-	<!--Afficher les enregistrements de la BDD -->
-	<div class="table-div">
+		<hr>
+		<!-- Afficher tous les commentaires publiés de ce post-->
 
-
-		<!-- comment form  ceci est visible pour les admin il est possible de calider, modifier ou supprimer un commentaire-->
-		<!-- Afficher les commentaires de ce post-->
 		<?php $post_id = $post['id'];
 		$comments = getAllCommentsByPostId($post_id); ?>
-		<table class="table">
+		<?php echo (getCommentsCountByPostId($post_id)); ?> Commentaires:
+		<hr>
+
+
+		<table class="tableC">
 			<thead>
-				<th>N</th>
-				<th>commentaire</th>
-				<th colspan="2">Action</th>
+				<th>Commentaire</th>
+				<th>Auteur</th>
+				<th>Date</th>
 			</thead>
 			<tbody>
 				<?php foreach ($comments as $key => $comment) : ?>
 					<tr>
-						<td><?php echo $key + 1; ?></td>
-						<td><?php echo $comment['body']; ?></td>
-						<td>
-							<a class="fa fa-pencil btn edit" 
-							href="single_post.php?edit-comment=<?php echo $comment['id'] ?>">
-							</a>
-						</td>
-						<td>
-							<a class="fa fa-trash btn delete" 
-							href="comment.php?delete-comment=<?php echo $comment['id'] ?>">
-							</a>
-						</td>
+						<td><?php $key + 1;
+							echo $comment['body']; ?></td>
+						<td><?php echo getUsernameById($comment['user_id']); ?></td>
+						<td><?php echo date("F j, Y ", strtotime($comment['created_at'])); ?></td>
 					</tr>
+			</tbody>
+		<?php endforeach ?>
+		</table>
+		<hr>
+		<!-- /* - - - - - - - - - - -->
+		<!-- -   actions Comments-->
+		<!-- - - - - - // si l'utilisateur clique sur le bouton Commentaire- - - - - -*/-->
+		<!-- - - - - -Que les utilisateurs connectés sont autorisés a envoyer des commentaires - - - - - -*/-->
+		<?php if (isset($_SESSION['user'])): ?>
+			<?php if (isset($_POST['create_comment'])) {
+				$nouvelleCle = "user_id";
+				$nouvelleValeur = $post['user_id'];
+				$_POST[$nouvelleCle] = $nouvelleValeur;
+				//print_r($_POST); exit;;
+				createComment($_POST);
+			} ?> <?php endif ?>
+			<!-- Middle form - créer des commentaires-->
+		<div class="action">
 
-					<div class="table-div">
-						<h2 class="post-title">Commentaires:</h2>
-						<h3><?php echo $comment['body'] ?></h3>
-						<div class=".comment-details">
-							<span><?php echo date("F j, Y ", strtotime($comment["created_at"])); ?></span>
+			<h2 class="page-title">Ajouter un Commentaire</h1>
+				<form method="post" action="<?php echo BASE_URL . 'single_post.php'; ?>">
+					<!--  -->
 
-						<?php endforeach ?>
+					<!-- Si l'utililistateur est connecté alors il peut commenter -->
+					<?php if (isset($_SESSION['user'])) : ?>
+						<input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+						<input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
 
-						</div>
-					</div>
+						<input type="text" name="comment_body" value="">
+						<button type="submit" class="btn" name="create_comment">Enregistrer commentaire</button>
+					<?php endif ?>
+				</form>
+		</div>
+		<!-- // Formulaire de création de commentaires -->
+
+		
+		
+
+
 	</div>
+	<!-- // container -->
+	<?php include(ROOT_PATH . '/includes/footer.php'); ?>
+</body>
 
-				</body>
-
-		<?php include(ROOT_PATH . '/includes/footer.php'); ?>
+</html>
