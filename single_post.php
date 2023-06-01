@@ -9,7 +9,7 @@ if (isset($_GET['post-slug'])) {
 	$post = getPost($_GET['post-slug']);
 	$post_id = $post['id'];
 	$user_id = $post['user_id'];
-//Ramener tous les commentaires d'un post 
+	//Ramener tous les commentaires d'un post 
 	$comments = getAllCommentsByPostId($post_id);
 }
 ?>
@@ -34,13 +34,13 @@ if (isset($_GET['post-slug'])) {
 					<?php else : ?>
 						<?php $chapo = getPostChapo($post['id']);
 						//A voir comment faire pour résoudre!
-						$chapo1='' . implode(', ', $chapo); ?>
+						$chapo1 = '' . implode(', ', $chapo); ?>
 						<div class="post" style="margin-left: 0px;">
 							<img src="<?php echo BASE_URL . '/static/images/' . $post['image']; ?>" class="post_image" alt="">
 							<!-- ... -->
 							<?php if (isset($chapo)) : ?>
 
-								<a href="<?php echo BASE_URL . 'single_post.php?chapo=' . $post['chapo']['id'] ?>" class="btn category">
+								<a <?php echo BASE_URL . 'single_post.php?chapo=' . $chapo1 ?>" class="btn category">
 									<?php echo $chapo1 ?>
 									<a href="single_post.php?post-slug=<?php echo $post['slug']; ?>">
 
@@ -100,7 +100,7 @@ if (isset($_GET['post-slug'])) {
 		<!-- -   actions Comments-->
 		<!-- - - - - - // si l'utilisateur clique sur le bouton Commentaire- - - - - -*/-->
 		<!-- - - - - -Que les utilisateurs connectés sont autorisés a envoyer des commentaires - - - - - -*/-->
-		<?php if (isset($_SESSION['user'])): ?>
+		<?php if (isset($_SESSION['user'])) : ?>
 			<?php if (isset($_POST['create_comment'])) {
 				$nouvelleCle = "user_id";
 				$nouvelleValeur = $post['user_id'];
@@ -108,27 +108,27 @@ if (isset($_GET['post-slug'])) {
 				//print_r($_POST); exit;;
 				createComment($_POST);
 			} ?> <?php endif ?>
-			<!-- Middle form - créer des commentaires-->
+		<!-- Middle form - créer des commentaires-->
 		<div class="action">
+			<!-- Si l'utililistateur est connecté alors il peut commenter -->
+			<?php if (isset($_SESSION['user'])) : ?>
+				<h2 class="page-title">Ajouter un Commentaire</h1>
+					<form method="post" action="<?php echo BASE_URL . 'single_post.php'; ?>">
+						<!--  -->
 
-			<h2 class="page-title">Ajouter un Commentaire</h1>
-				<form method="post" action="<?php echo BASE_URL . 'single_post.php'; ?>">
-					<!--  -->
 
-					<!-- Si l'utililistateur est connecté alors il peut commenter -->
-					<?php if (isset($_SESSION['user'])) : ?>
 						<input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
 						<input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
 
 						<input type="text" name="comment_body" value="">
 						<button type="submit" class="btn" name="create_comment">Enregistrer commentaire</button>
 					<?php endif ?>
-				</form>
+					</form>
 		</div>
 		<!-- // Formulaire de création de commentaires -->
 
-		
-		
+
+
 
 
 	</div>

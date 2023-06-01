@@ -30,9 +30,14 @@
 					<span>20</span> <br>
 					<span>Blog posts</span>
 				</a>
+				
 				<a href="chapos.php">
 					<span>20</span> <br>
 					<span>Chapos</span>
+				</a>
+				<a href="comments.php">
+					<span>20</span> <br>
+					<span>Commentaires</span>
 				</a>
 			</div>
 			<br><br><br>
@@ -40,6 +45,7 @@
 				<a href="users.php">Ajouter des utilisateurs</a>
 				<a href="posts.php">Ajouter des blog posts</a>
 				<a href="chapos.php">Ajouter des chapos</a>
+				<a href="comments.php">Ajouter des commentaires</a>
 			</div>
 		</div>
 	</body>

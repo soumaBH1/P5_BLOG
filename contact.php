@@ -1,4 +1,9 @@
 <?php include('config.php'); ?>
+<?php 
+error_reporting(-1);
+ini_set("display_errors","On");
+
+?>
 
 <?php include('includes/head_section.php'); ?>
 <!DOCTYPE html>
@@ -58,7 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers .= "Reply-To: $email\r\n";
     
     // Envoi de l'e-mail
-    if (mail($to, $subject, $email_content, $headers)) {
+    $mail_return=mail($to, $subject, $email_content, $headers);
+    var_dump($mail_return);exit;
+    if ($mail_return) {
         echo "Votre message a été envoyé avec succès.";
     } else {
         echo "Une erreur est survenue lors de l'envoi du message.";

@@ -207,11 +207,7 @@ function createcomment($request_values)
 	} else {
 
 		//*****************Préparer la requete */
-		try {
-			$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-		} catch (Exception $e) {
-			die('Erreur : ' . $e->getMessage());
-		}
+		include(ROOT_PATH . '/config/connection.php'); 
 		$query = $db->prepare('INSERT INTO comments (user_id, post_id, body, published, created_at) VALUES(:user_id, :post_id, :body, :published, :created_at)');
 		$query->execute([
 			'user_id' => htmlspecialchars($user_id),
@@ -246,11 +242,7 @@ function updateComment($request_values)
 	}
 	// enregistrer chapo s'il n'y a pas d'erreurs dans le formulaire
 	if (count($errors) == 0) {
-		try {
-			$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-		} catch (Exception $e) {
-			die('Erreur : ' . $e->getMessage());
-		}
+		include(ROOT_PATH . '/config/connection.php'); 
 		$query = $db->prepare('UPDATE comments SET body=:body, published=:published, updated_at=:updated_at WHERE id=:id');
 		$query->execute([
 			'body' => htmlspecialchars($comment_text),
@@ -268,11 +260,7 @@ function updateComment($request_values)
 function deleteComment($comment_id)
 {
 	global $db;
-	try {
-		$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-	} catch (Exception $e) {
-		die('Erreur : ' . $e->getMessage());
-	}
+	include(ROOT_PATH . '/config/connection.php'); 
 	$query = $db->prepare('DELETE FROM comment WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($comment_id),
@@ -297,11 +285,7 @@ if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 function togglePublishComment($comment_id, $message)
 {
 	global $conn;
-	try {
-		$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-	} catch (Exception $e) {
-		die('Erreur : ' . $e->getMessage());
-	}
+	include(ROOT_PATH . '/config/connection.php'); 
 	$query = $db->prepare('UPDATE comment SET published= NOT published WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($comment_id),

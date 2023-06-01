@@ -128,11 +128,7 @@ function createPost($request_values)
 	// créer un message s'il n'y a pas d'erreurs dans le formulaire
 	//Préparer la requete et l'exécuter si pas d'erreurs
 	if (count($errors) == 0) {
-		try {
-			$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-		} catch (Exception $e) {
-			die('Erreur : ' . $e->getMessage());
-		}
+		include(ROOT_PATH . '/config/connection.php'); 
 		//preparer la requete et l'exécuter par la suite
 		$query = $db->prepare('INSERT INTO posts (user_id, title, slug, image, body, published, created_at, date_updated, date_deleated) VALUES (:user_id, :title, :slug, :image, :body, :published, :created_at, :date_updated, :date_deleated)');
 		$query->execute([
@@ -167,7 +163,7 @@ function createPost($request_values)
 	* * * * * * * * * * * * * * * * * * * * * */
 function editPost($post_id)
 {
-	global $conn, $title, $post_slug, $body, $published, $isEditingPost, $post_id, $featured_image;
+	global $conn, $title, $body, $published, $post_id;
 	$sql = "SELECT * FROM posts WHERE id=$post_id LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	$post = mysqli_fetch_assoc($result);
@@ -180,6 +176,7 @@ function editPost($post_id)
 
 function updatePost($request_values)
 {
+	
 	global $conn, $errors, $post_id, $title, $featured_image, $chapo_id, $body, $published;
 
 	$title = $request_values['title'];
@@ -213,16 +210,12 @@ function updatePost($request_values)
 		}
 	}
 
-	// enregistrer le chapo s'il n'y a pas d'erreurs dans le formulaire
+	// enregistrer le post s'il n'y a pas d'erreurs dans le formulaire
 
 	if (count($errors) == 0) {
 		//préparer ma requete sql pour toutes les requetes -----a faire!
 		if (!empty($featured_image)) {
-			try {
-				$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-			} catch (Exception $e) {
-				die('Erreur : ' . $e->getMessage());
-			}
+			include(ROOT_PATH . '/config/connection.php'); 
 			$query = $db->prepare('UPDATE posts SET title=:title, slug=:slug, image=:image, body=:body, published=:published, date_updated=:date_updated WHERE id=:id');
 			$query->execute([
 				'id' => htmlspecialchars($post_id),
@@ -236,11 +229,7 @@ function updatePost($request_values)
 			//$query = "UPDATE posts SET title='$title', slug='$post_slug', image='$featured_image', body='$body', published='$published', date_updated=now() WHERE id=$post_id";
 		} else {
 			//$query = "UPDATE posts SET title='$title', slug='$post_slug', body='$body', published='$published', date_updated=now() WHERE id=$post_id";
-			try {
-				$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-			} catch (Exception $e) {
-				die('Erreur : ' . $e->getMessage());
-			}
+			include(ROOT_PATH . '/config/connection.php'); 
 			$query = $db->prepare('UPDATE posts SET title=:title, slug=:slug, body=:body, published=:published, date_updated=:date_updated WHERE id=:id');
 			$query->execute([
 				'id' => htmlspecialchars($post_id), //htmlhtmlspecialchars pour prévenir les attaques xss(Cross Site Scripting)
@@ -258,11 +247,7 @@ function updatePost($request_values)
 		if (isset($chapo_id)) {
 			$inserted_post_id = mysqli_insert_id($conn);
 			// créer une relation entre le post and le chapo
-			try {
-				$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-			} catch (Exception $e) {
-				die('Erreur : ' . $e->getMessage());
-			}
+			include(ROOT_PATH . '/config/connection.php'); 
 			$query = $db->prepare('INSERT INTO post_chapo (post_id, chapo_id) VALUES(:post_id, :chapo_id)');
 			$query->execute([
 				'post_id' => htmlspecialchars($inserted_post_id),
@@ -284,11 +269,7 @@ function updatePost($request_values)
 function deletePost($post_id)
 {
 	global $conn;
-	try {
-		$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-	} catch (Exception $e) {
-		die('Erreur : ' . $e->getMessage());
-	}
+	include(ROOT_PATH . '/config/connection.php'); 
 	$query = $db->prepare('DELETE FROM posts WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($post_id),
@@ -315,11 +296,7 @@ if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 // modifier le statut publiée
 function togglePublishPost($post_id, $message)
 {
-	try {
-		$db = new PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
-	} catch (Exception $e) {
-		die('Erreur : ' . $e->getMessage());
-	}
+	include(ROOT_PATH . '/config/connection.php'); 
 	$query = $db->prepare('UPDATE posts SET published= NOT published WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($post_id),
