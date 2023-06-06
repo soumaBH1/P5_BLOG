@@ -1,5 +1,4 @@
 <?php include('../config.php'); ?>
-<?php include(ROOT_PATH . '/admin/includes/admin_functions.php'); ?>
 <?php include(ROOT_PATH . '/admin/includes/post_functions.php'); ?>
 <?php include(ROOT_PATH . '/admin/includes/head_section.php'); ?>
 <!-- Ramener les posts de la BDD -->
@@ -55,7 +54,8 @@
 											<a class="fa fa-check btn unpublish" href="posts.php?unpublish=<?php echo $post['id'] ?>">
 											</a>
 										<?php else : ?>
-											<a class="fa fa-times btn publish" href="posts.php?publish=<?php echo $post['id'] ?>">
+											<a class="fa fa-times btn publish" href="posts.php?publish=<?php echo $post['id']?>">
+											
 											</a>
 										<?php endif ?>
 									</td>

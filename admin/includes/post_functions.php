@@ -55,8 +55,6 @@ function getPostAuthorById($user_id)
 // si l'utilisateur clique sur le bouton Créer un post
 
 if (isset($_POST['create_post'])) {
-	// 	var_dump($_POST);
-	// exit;
 	createPost($_POST);
 }
 
@@ -108,7 +106,6 @@ function createPost($request_values)
 	$featured_image = $_FILES['featured_image']['name'];
 
 	//ici finalement j'ai choisi que l'image ne soit pas obligatoire
-	//if (empty($featured_image)) { array_push($errors, "L'image du blog post est obligatoire!"); }
 	// Si le fichier de l'image est rempli
 	if (!empty($featured_image)) {
 		$target = "../static/images/" . basename($featured_image);
@@ -225,9 +222,7 @@ function updatePost($request_values)
 				'published' => htmlspecialchars($published),
 				'date_updated' => htmlspecialchars(date('Y-m-d')),
 			]) or die(print_r($db->errorCode()));
-			//$query = "UPDATE posts SET title='$title', slug='$post_slug', image='$featured_image', body='$body', published='$published', date_updated=now() WHERE id=$post_id";
-		} else {
-			//$query = "UPDATE posts SET title='$title', slug='$post_slug', body='$body', published='$published', date_updated=now() WHERE id=$post_id";
+				} else {
 			include(ROOT_PATH . '/config/connection.php');
 			$query = $db->prepare('UPDATE posts SET title=:title, slug=:slug, body=:body, published=:published, date_updated=:date_updated WHERE id=:id');
 			$query->execute([
@@ -239,10 +234,9 @@ function updatePost($request_values)
 				'date_updated' => htmlspecialchars(date('Y-m-d')),
 			]) or die(print_r($db->errorCode()));
 		}
-		//var_dump($query);
-		//exit;
+		
 		// attacher chapo au post dans la table post_topic
-		//if(mysqli_query($conn, $query)){ // si le post est crée avec succée
+	
 		if (isset($chapo_id)) {
 			$inserted_post_id = mysqli_insert_id($conn);
 			// créer une relation entre le post and le chapo
@@ -252,8 +246,6 @@ function updatePost($request_values)
 				'post_id' => htmlspecialchars($inserted_post_id),
 				'chapo_id' => htmlspecialchars($chapo_id),
 			]) or die(print_r($db->errorCode()));
-			//$sql = "INSERT INTO post_chapo (post_id, chapo_id) VALUES($inserted_post_id, $chapo_id)";
-			//mysqli_query($conn, $sql);
 			$_SESSION['message'] = "Post crée avec succée.";
 			header('location: posts.php');
 			exit(0);
@@ -273,15 +265,15 @@ function deletePost($post_id)
 	$query->execute([
 		'id' => htmlspecialchars($post_id),
 	]) or die(print_r($db->errorCode()));
-	//$sql = "DELETE FROM posts WHERE id=$post_id";
-	//if (mysqli_query($conn, $sql)) {
+	
 	$_SESSION['message'] = "Post supprimée avec succée.";
 	header("location: posts.php");
 	exit(0);
 	//}
 }
-// si l'utilisateur clique sur le bouton de publication pour modifier le statut de publication
+// si l'utilisateur clique sur le bouton de publication pour modifier le statut de publication du post
 if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
+	
 	$message = "";
 	if (isset($_GET['publish'])) {
 		$message = "Post publiée avec succée.";
@@ -294,19 +286,15 @@ if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 }
 // modifier le statut publiée
 function togglePublishPost($post_id, $message)
-{
+{ 
 	include(ROOT_PATH . '/config/connection.php');
 	$query = $db->prepare('UPDATE posts SET published= NOT published WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($post_id),
 	]) or die(print_r($db->errorCode()));
-	//$sql = "UPDATE posts SET published= NOT published WHERE id=$post_id";
-	//var_dump($sql);
-	//exit;
-
-	//if (mysqli_query($conn, $sql)) {
+	
 	$_SESSION['message'] = $message;
 	header("location: posts.php");
 	exit(0);
-	//}
+	
 }
