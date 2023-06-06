@@ -4,7 +4,7 @@
 <?php
 
 
-global $comments, $comment, $user_id;
+global $comments, $comment, $user_id, $nbComments;
 if (isset($_GET['post-slug'])) {
 	$post = getPost($_GET['post-slug']);
 	$post_id = $post['id'];
@@ -33,7 +33,6 @@ if (isset($_GET['post-slug'])) {
 						<h2 class="post-title">Désolé... Ce post n'est pas encore publié</h2>
 					<?php else : ?>
 						<?php $chapo = getPostChapo($post['id']);
-						//A voir comment faire pour résoudre!
 						$chapo1 = '' . implode(', ', $chapo); ?>
 						<div class="post" style="margin-left: 0px;">
 							<img src="<?php echo BASE_URL . '/static/images/' . $post['image']; ?>" class="post_image" alt="">
@@ -43,10 +42,7 @@ if (isset($_GET['post-slug'])) {
 								<a <?php echo BASE_URL . 'single_post.php?chapo=' . $chapo1 ?>" class="btn category">
 									<?php echo $chapo1 ?>
 									<a href="single_post.php?post-slug=<?php echo $post['slug']; ?>">
-
 										<span><?php echo date("F j, Y ", strtotime($post["date_updated"])); ?></span>
-
-
 									</a>
 								<?php endif ?>
 								<div class="post-body-div-details">
@@ -55,14 +51,10 @@ if (isset($_GET['post-slug'])) {
 									<?php echo ("Uername:"); ?>
 									<?php echo html_entity_decode(getUsernameById($post['user_id'])); ?>
 								</div>
-
 						</div>
-
 						<h2 class="post-title"><?php echo $post['title']; ?></h2>
 						<div class="post-body-div">
 							<?php echo html_entity_decode($post['body']); ?>
-
-
 						</div>
 					<?php endif ?>
 				</div>
@@ -74,12 +66,15 @@ if (isset($_GET['post-slug'])) {
 
 		<?php $post_id = $post['id'];
 		$comments = getAllCommentsByPostId($post_id); ?>
-		<?php echo (getCommentsCountByPostId($post_id)); ?> Commentaires:
+		<?php $nbComments=getCommentsCountByPostId($post_id);
+		 echo ($nbComments); ?> Commentaires:
 		<hr>
 
 
-		<table class="tableC">
-			<thead>
+		<?php if ($nbComments!=0) : ?>
+			<table class="tableC">
+		
+				<thead>
 				<th>Commentaire</th>
 				<th>Auteur</th>
 				<th>Date</th>
@@ -95,6 +90,7 @@ if (isset($_GET['post-slug'])) {
 			</tbody>
 		<?php endforeach ?>
 		</table>
+		<?php endif ?>
 		<hr>
 		<!-- /* - - - - - - - - - - -->
 		<!-- -   actions Comments-->
@@ -113,7 +109,7 @@ if (isset($_GET['post-slug'])) {
 			<!-- Si l'utililistateur est connecté alors il peut commenter -->
 			<?php if (isset($_SESSION['user'])) : ?>
 				<h2 class="page-title">Ajouter un Commentaire</h1>
-					<form method="post" action="<?php echo BASE_URL . 'single_post.php'; ?>">
+					<form method="post" action="<?php echo BASE_URL . 'blog_postes.php'; ?>">
 						<!--  -->
 
 

@@ -83,8 +83,7 @@ function createPost($request_values)
 {
 	global $conn, $errors, $title, $featured_image, $chapo_id, $body, $published, $user_id;
 	$user_id = $_SESSION['user']['id'];
-	//var_dump($user_id);
-	//exit;
+	
 	$title = $request_values['title'];
 	$body = $request_values['body'];
 	if (isset($request_values['chapo_id'])) {
@@ -124,11 +123,11 @@ function createPost($request_values)
 	if (mysqli_num_rows($result) > 0) { // si post existe
 		array_push($errors, "Un post existe déjà avec ce titre!");
 	}
-
+	
 	// créer un message s'il n'y a pas d'erreurs dans le formulaire
 	//Préparer la requete et l'exécuter si pas d'erreurs
 	if (count($errors) == 0) {
-		include(ROOT_PATH . '/config/connection.php'); 
+		include(ROOT_PATH . '/config/connection.php');
 		//preparer la requete et l'exécuter par la suite
 		$query = $db->prepare('INSERT INTO posts (user_id, title, slug, image, body, published, created_at, date_updated, date_deleated) VALUES (:user_id, :title, :slug, :image, :body, :published, :created_at, :date_updated, :date_deleated)');
 		$query->execute([
@@ -176,7 +175,7 @@ function editPost($post_id)
 
 function updatePost($request_values)
 {
-	
+
 	global $conn, $errors, $post_id, $title, $featured_image, $chapo_id, $body, $published;
 
 	$title = $request_values['title'];
@@ -215,7 +214,7 @@ function updatePost($request_values)
 	if (count($errors) == 0) {
 		//préparer ma requete sql pour toutes les requetes -----a faire!
 		if (!empty($featured_image)) {
-			include(ROOT_PATH . '/config/connection.php'); 
+			include(ROOT_PATH . '/config/connection.php');
 			$query = $db->prepare('UPDATE posts SET title=:title, slug=:slug, image=:image, body=:body, published=:published, date_updated=:date_updated WHERE id=:id');
 			$query->execute([
 				'id' => htmlspecialchars($post_id),
@@ -229,7 +228,7 @@ function updatePost($request_values)
 			//$query = "UPDATE posts SET title='$title', slug='$post_slug', image='$featured_image', body='$body', published='$published', date_updated=now() WHERE id=$post_id";
 		} else {
 			//$query = "UPDATE posts SET title='$title', slug='$post_slug', body='$body', published='$published', date_updated=now() WHERE id=$post_id";
-			include(ROOT_PATH . '/config/connection.php'); 
+			include(ROOT_PATH . '/config/connection.php');
 			$query = $db->prepare('UPDATE posts SET title=:title, slug=:slug, body=:body, published=:published, date_updated=:date_updated WHERE id=:id');
 			$query->execute([
 				'id' => htmlspecialchars($post_id), //htmlhtmlspecialchars pour prévenir les attaques xss(Cross Site Scripting)
@@ -247,7 +246,7 @@ function updatePost($request_values)
 		if (isset($chapo_id)) {
 			$inserted_post_id = mysqli_insert_id($conn);
 			// créer une relation entre le post and le chapo
-			include(ROOT_PATH . '/config/connection.php'); 
+			include(ROOT_PATH . '/config/connection.php');
 			$query = $db->prepare('INSERT INTO post_chapo (post_id, chapo_id) VALUES(:post_id, :chapo_id)');
 			$query->execute([
 				'post_id' => htmlspecialchars($inserted_post_id),
@@ -269,7 +268,7 @@ function updatePost($request_values)
 function deletePost($post_id)
 {
 	global $conn;
-	include(ROOT_PATH . '/config/connection.php'); 
+	include(ROOT_PATH . '/config/connection.php');
 	$query = $db->prepare('DELETE FROM posts WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($post_id),
@@ -296,7 +295,7 @@ if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 // modifier le statut publiée
 function togglePublishPost($post_id, $message)
 {
-	include(ROOT_PATH . '/config/connection.php'); 
+	include(ROOT_PATH . '/config/connection.php');
 	$query = $db->prepare('UPDATE posts SET published= NOT published WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($post_id),

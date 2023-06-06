@@ -34,7 +34,7 @@
 
 					<a href="single_post.php?post-slug=<?php echo $post['slug']; ?>">
 						<div class="post_info">
-							<h3><?php echo $post['title']?></h3>
+							<h3><?php echo $post['title'] ?></h3>
 							<div class="info">
 								<span><?php echo date("F j, Y ", strtotime($post["created_at"]));  ?></span>
 								<span class="read_more">Lire plus...</span>

@@ -19,12 +19,12 @@
 			<form method="post" action="<?php echo BASE_URL . 'admin/chapos.php'; ?>">
 				<!-- validation errors for the form -->
 				<?php include(ROOT_PATH . '/includes/errors.php') ?>
-				<!-- if editing chapo, the id is required to identify that chapo -->
+				<!-- si editing chapo,  id pour identifier ce chapo -->
 				<?php if ($isEditingChapo === true) : ?>
 					<input type="hidden" name="chapo_id" value="<?php echo $chapo_id; ?>">
 				<?php endif ?>
 				<input type="text" name="chapo_name" value="<?php echo $chapo_name; ?>" placeholder="Chapo">
-				<!-- if editing chapo, display the update button instead of create button -->
+				<!-- if editing chapo, mettre boutton mofifier au lieu de enregistrer button -->
 				<?php if ($isEditingChapo === true) : ?>
 					<button type="submit" class="btn" name="update_chapo">Modifier</button>
 				<?php else : ?>

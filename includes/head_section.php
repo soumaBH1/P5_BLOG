@@ -6,4 +6,4 @@
 	<!-- CSS pour espace public -->
 	<link rel="stylesheet" href= "static/css/public_styling.css">
 	<meta charset="UTF-8">
-	<title>Ibtissem BH | Home </title>
+	<title>Ibtissem BH | Accueil </title>

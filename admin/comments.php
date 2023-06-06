@@ -4,12 +4,7 @@
 <?php
 // ramener tous les commentaires de la BDD
 $comments = getAllComments();
-//$comment_published = ['1', '0'];
-//$user_id = 1;
-//$comment_body = "";
-//$comment_user_id=1;
-//$comment_id=1;
-//$comment_post_id=1;
+
 ?>
 <?php include(ROOT_PATH . '/admin/includes/head_section.php'); ?>
 <title>Admin | Gérer les Commentaire</title>
@@ -30,18 +25,18 @@ $comments = getAllComments();
 				<!-- erreurs de validation du formulaire -->
 				<?php include(ROOT_PATH . '/includes/errors.php') ?>
 
-				<!--si vous modifiez un utilisateur, l'id  est requis pour identifier cet utilisateur -->
+				<!--si vous modifiez un commentaire, l'id  est requis pour identifier ce commentaire -->
 				<?php if ($isEditingComment === true) : ?>
 					<input type="hidden" name="comment_id" value="<?php echo $comment_id; ?>">
 				<?php endif ?>
-				
+
 				<label style="float: left; margin: 5px auto 5px;">Id utilisateur:</label>
 				<input type="user_id" name="comment_user_id" value="<?php echo $comment_user_id; ?>" placeholder="N auteur">
 				<label style="float: left; margin: 5px auto 5px;">Id post:</label>
 				<input type="post_id" name="comment_post_id" value="<?php echo $comment_post_id ?>" placeholder="N post">
 				<label style="float: left; margin: 5px auto 5px;">Commentaire:</label>
 				<input type="text" name="comment_body" value="<?php echo $comment_body  ?>" placeholder="Commentaire">
-				
+
 				<!-- La case à cocher Publier est visible que pour les profils Admin -->
 				<?php if ($_SESSION['user']['role'] == "admin") : ?>
 
@@ -96,8 +91,10 @@ $comments = getAllComments();
 							<tr>
 								<!-- <td><?php echo $key + 1; ?></td> -->
 								<td> <?php echo $comment['id']; ?></td>
-								<td> <?php echo $comment['user_id']; echo $comment['username']; ?> </td>
-								<td> <?php echo $comment['post_id']; echo $comment['title']; ?> </td>
+								<td> <?php echo $comment['user_id'];
+										echo $comment['username']; ?> </td>
+								<td> <?php echo $comment['post_id'];
+										echo $comment['title']; ?> </td>
 								<td> <?php echo $comment['body']; ?></td>
 								<!-- que l'Admin est autorisé à publier / dépublier un commentaire -->
 								<?php if ($_SESSION['user']['role'] == "admin") : ?>

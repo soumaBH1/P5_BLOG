@@ -23,20 +23,20 @@
 			<h1>Bienvenue</h1>
 			<div class="stats">
 				<a href="users.php" class="first">
-					<span>20</span> <br>
-					<span>Utilisateurs enregistrés</span>
+					<span></span> <br>
+					<span>Utilisateurs</span>
 				</a>
 				<a href="posts.php">
-					<span>20</span> <br>
+					<span></span> <br>
 					<span>Blog posts</span>
 				</a>
-				
+
 				<a href="chapos.php">
-					<span>20</span> <br>
+					<span></span> <br>
 					<span>Chapos</span>
 				</a>
 				<a href="comments.php">
-					<span>20</span> <br>
+					<span></span> <br>
 					<span>Commentaires</span>
 				</a>
 			</div>

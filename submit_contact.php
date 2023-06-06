@@ -44,8 +44,9 @@ $message = $postData['message'];
             </div>
         </div>
     </div>
-  
+
 </body>
 <!-- footer -->
 <?php include('includes/footer.php') ?>
+
 </html>

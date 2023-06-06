@@ -1,9 +1,9 @@
 /****************
 *** DEFAULTS
 *****************/
-* { margin: 0px; padding: 0px; }
+* { margin: 0px; padding: 0px;  box-sizing: border-box;}
 
-html { height: 100%; box-sizing: border-box; }
+html { height: 100%; }
 body {
   position: relative;
   margin: 0;
@@ -125,6 +125,7 @@ form input:focus {
 .banner {
 	margin: 5px auto;
 	min-height: 400px;
+	min-height: 80%;
 	color: white;
 	border-radius: 5px;
 	background-image: url('../images/banner.jpg');
@@ -144,7 +145,7 @@ form input:focus {
 }
 .banner .welcome_msg p {
 	color: white;
-	background-color: black;
+	background-color:rgb(43, 87, 100);
 	width: 40%;
 	font-size: 1.0em;
 	line-height: 1.8em;
@@ -155,14 +156,15 @@ form input:focus {
 	color: #B9E6F2;
 }
 .banner .welcome_msg a {
-	width: 30%;
+	width: 40%;
 	margin: 20px 0px;
+	background:rgb(61, 130, 152);
 	padding: 12px 15px;
 	font-size: 1.2em;
 	text-decoration: none;
 }
 .banner .welcome_msg a:hover {
-	background: #374447;
+	background:rgb(43, 87, 100);
 }
 
 /* BANNER: Login Form; */
@@ -175,7 +177,7 @@ form input:focus {
 }
 .banner .login_div form h2 {
 	color: #42889c;
-	width: 13%;
+	width: 33%;
 	background: white;
 	margin-bottom: 20px;
     font-family: 'Noto Serif', serif;

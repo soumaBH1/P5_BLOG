@@ -2,12 +2,12 @@
 <?php include(ROOT_PATH . '/admin/includes/admin_functions.php'); ?>
 
 <?php
-// ramener tous les admin users de la BDD
+// ramener tous les utilisateurs de la BDD
 $admins = getAdminUsers();
 $roles = ['admin', 'author'];
 ?>
 <?php include(ROOT_PATH . '/admin/includes/head_section.php'); ?>
-<title>Admin | Gérer les users</title>
+<title>Admin | Gérer les utilisateurs</title>
 </head>
 
 <body>
@@ -98,7 +98,7 @@ $roles = ['admin', 'author'];
 								<?php endif ?>
 
 
-								<!-- Actions sur user : editer et supprimer -->
+								<!-- Actions sur utilisateur : editer et supprimer -->
 
 								<td>
 									<a class="fa fa-pencil btn edit" href="users.php?edit-admin=<?php echo $admin['id'] ?>">

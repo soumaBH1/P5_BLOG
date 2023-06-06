@@ -11,6 +11,6 @@ try {
         MYSQL_PASSWORD
     );
     $mysqlClient->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(Exception $exception) {
-    die('Erreur : '.$exception->getMessage());
+} catch (Exception $exception) {
+    die('Erreur : ' . $exception->getMessage());
 }

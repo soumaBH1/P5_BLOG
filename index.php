@@ -9,21 +9,16 @@
 
 <?php require_once('includes/head_section.php') ?>
 </head>
-
 <body>
 	<!-- container - -->
 	<div class="container">
-
 		<!-- navbar -->
 		<?php include('includes/navbar.php') ?>
 		<!-- // navbar -->
 		<!-- banner -->
 		<?php include('includes/banner.php') ?>
-
 		<!-- footer -->
 		<?php include('includes/footer.php') ?>
-
-
 	</div>
 	<!-- // container -->
 </body>

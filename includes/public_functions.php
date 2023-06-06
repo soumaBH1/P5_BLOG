@@ -48,7 +48,6 @@ function getPublishedPostsByChapo($chapo_id)
 	$result = mysqli_query($conn, $sql);
 	// récupère tous les posts dans le tableau $posts
 	$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
 	$final_posts = array();
 	foreach ($posts as $post) {
 		$post['chapo'] = getPostChapo($post['id']);
@@ -77,9 +76,7 @@ function getPost($slug)
 	$post_slug = $_GET['post-slug'];
 	$sql = "SELECT * FROM posts WHERE slug='$post_slug' AND published=true";
 	$result = mysqli_query($conn, $sql);
-
 	// récupérer les résultats de la requête sous forme de tableau 
-	//créer un objet une nouvelle class post dans laquelle on recupere  la requete
 	$post = mysqli_fetch_assoc($result);
 	if ($post) {
 		// obtenir le chapo auquel appartient ce post
@@ -99,13 +96,11 @@ function getAllChapos()
 	return $chapos;
 }
 
-
-//
 // récupère le message avec l'id  
 $post_query_result = mysqli_query($conn, "SELECT * FROM posts ORDER BY created_at ASC");
 $post = mysqli_fetch_assoc($post_query_result);
 
-// Get all comments from database
+// renvoie tout les commentaires de la BDD
 $comments_query_result = mysqli_query($conn, "SELECT * FROM comments WHERE post_id=" . $post['id'] . " ORDER BY created_at DESC");
 $comments = mysqli_fetch_all($comments_query_result, MYSQLI_ASSOC);
 //!!!!!!!!!!!!!!!!!!!!
@@ -122,7 +117,8 @@ function getUsernameById($id)
 	// return the username
 	return mysqli_fetch_assoc($result)['username'];
 }
-// Reçoi l'id post et renvoi les comments de ce post
+
+// Reçoi l'id du post et renvoi les commentaires de ce post
 function getCommentId($id)
 {
 	global $conn;
@@ -130,15 +126,8 @@ function getCommentId($id)
 	$comments = mysqli_fetch_all($result, MYSQLI_ASSOC);
 	return $comments;
 }
-// Reçoi le comment_id et retourne le replies
-function getRepliesByCommentId($id)
-{
-	global $conn;
-	$result = mysqli_query($conn, "SELECT * FROM replies WHERE comment_id=$id");
-	$replies = mysqli_fetch_all($result, MYSQLI_ASSOC);
-	return $replies;
-}
-// Reçoi  post_id et retourne le nombre total de commentaires de chaque post
+
+// Reçoi  post_id et retourne le nombre total de commentaires publiés de chaque post
 function getCommentsCountByPostId($post_id)
 {
 	global $conn;
@@ -149,17 +138,14 @@ function getCommentsCountByPostId($post_id)
 //...
 
 /* - - - - - - - - - - - - - - - - - -  
--  Actions su les commentaires
+-  Actions sur les commentaires
 - - - - - - - - - - - - - - - - - - - */
-// Si le user appuit sur envoyer...
+// Si l'utilisateur appuit sur envoyer...
 if (isset($_POST['submit_comment'])) {
 	$comment_text = $_POST['comment_text'];
 	$post_id = $_GET['submit_comment'];
 	createComment($_POST);
-	//insert comment into database
-	//$sql = "INSERT INTO comments (post_id, user_id, body, created_at, updated_at, published) VALUES (1, " . $user_id . ", '$comment_text', now(), null, 0)";
-	//$result = mysqli_query($db, $sql);
-	// Query same comment from database to send back to be displayed
+	
 
 }
 
@@ -177,37 +163,31 @@ if (isset($_GET['delete-comment'])) {
 //* - - - - - - - - - - 
 //-   fonctions du Comments
 //- - - - - - - - - - -*/
-// Ramener tous les commentaires d'un post de la BDD
+// Ramener tous les commentaires d'un post (par son post_id) de la BDD
 function getAllCommentsByPostId($post_id)
 {
 	global $conn, $post_id;
-	$sql = "SELECT * FROM comments where post_id = " . $post_id ." AND published = 1" ;
-	//var_dump($sql); exit;
+	$sql = "SELECT * FROM comments where post_id = " . $post_id . " AND published = 1";
 	$result = mysqli_query($conn, $sql);
 	$comments = mysqli_fetch_all($result, MYSQLI_ASSOC);
-	
+
 	return $comments;
 }
 // Créer un nouveau commentaire
 function createcomment($request_values)
 {
 	global $conn, $errors, $comment_text, $published, $user_id, $post_id;
-	//$user_id = $_SESSION['user']['id'] ;
-	//var_dump($request_values);
-		//exit;
 	$comment_text = $request_values['comment_body'];
-	//$comment_id = $request_values['Post_id'];
-	//$published = $request_values['comment_published'];
 	$user_id = $request_values['user_id'];
 	$post_id = $request_values['post_id'];
-	$published=0;
-	// valider forme
+	$published = 0;
+	// valider formulaire
 	if (empty($comment_text)) {
 		array_push($errors, "Il faut remplir un commentaire!");
 	} else {
 
 		//*****************Préparer la requete */
-		include(ROOT_PATH . '/config/connection.php'); 
+		include(ROOT_PATH . '/config/connection.php');
 		$query = $db->prepare('INSERT INTO comments (user_id, post_id, body, published, created_at) VALUES(:user_id, :post_id, :body, :published, :created_at)');
 		$query->execute([
 			'user_id' => htmlspecialchars($user_id),
@@ -240,9 +220,9 @@ function updateComment($request_values)
 	if (empty($comment_text)) {
 		array_push($errors, "If aut remplir un commentaire!");
 	}
-	// enregistrer chapo s'il n'y a pas d'erreurs dans le formulaire
+	// enregistrer commentaire s'il n'y a pas d'erreurs dans le formulaire
 	if (count($errors) == 0) {
-		include(ROOT_PATH . '/config/connection.php'); 
+		include(ROOT_PATH . '/config/connection.php');
 		$query = $db->prepare('UPDATE comments SET body=:body, published=:published, updated_at=:updated_at WHERE id=:id');
 		$query->execute([
 			'body' => htmlspecialchars($comment_text),
@@ -260,7 +240,7 @@ function updateComment($request_values)
 function deleteComment($comment_id)
 {
 	global $db;
-	include(ROOT_PATH . '/config/connection.php'); 
+	include(ROOT_PATH . '/config/connection.php');
 	$query = $db->prepare('DELETE FROM comment WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($comment_id),
@@ -269,7 +249,7 @@ function deleteComment($comment_id)
 	$_SESSION['message'] = "Commentaire supprimé avec succeé.";
 	header("location: chapos.php");
 }
-// si l'utilisateur clique sur le bouton de validation pour valider (ou l'inverse) un user
+// si l'utilisateur clique sur le bouton de publier pour publier un commentaire (ou l'inverse) un user
 if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 	$message = "";
 	if (isset($_GET['unpublish'])) {
@@ -285,7 +265,7 @@ if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 function togglePublishComment($comment_id, $message)
 {
 	global $conn;
-	include(ROOT_PATH . '/config/connection.php'); 
+	include(ROOT_PATH . '/config/connection.php');
 	$query = $db->prepare('UPDATE comment SET published= NOT published WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($comment_id),
@@ -300,4 +280,3 @@ function togglePublishComment($comment_id, $message)
 	exit(0);
 	//}
 }
-

@@ -19,12 +19,12 @@ $chapo_name = "";
 // variables du commentaires 
 $isEditingComment = false;
 $comment_id;
-$comment_user_id=1;
-$comment_post_id=1;
-$comment_body="";
-$comment_publish=1;
-$comment_unpublish=0;
-$comment_published=0;
+$comment_user_id = 1;
+$comment_post_id = 1;
+$comment_body = "";
+$comment_publish = 1;
+$comment_unpublish = 0;
+$comment_published = 0;
 /* - - - - - - - - - - 
 -  Actions des utilisateurs administrateurs
 - - - - - - - - - - -*/
@@ -92,9 +92,7 @@ function createAdmin($request_values)
 	if (isset($request_values['role'])) {
 		$role = $request_values['role'];
 	}
-	//if (isset($request_values['valid'])) {
-	//	$valid = $request_values['valid'];
-	//}
+	
 	// validation du formulaire : s'assurer que le formulaire est correctement rempli
 	if (empty($username)) {
 		array_push($errors, "Oops....Il faut remplir le username!");
@@ -117,7 +115,7 @@ function createAdmin($request_values)
 							OR email='$email' LIMIT 1";
 	$result = mysqli_query($conn, $user_check_query);
 	$user = mysqli_fetch_assoc($result);
-	if ($user) { // Si le user existe
+	if ($user) { // Si l'utilisateur' existe
 		if ($user['username'] === $username) {
 			array_push($errors, "Username existe déjà!");
 		}
@@ -131,7 +129,7 @@ function createAdmin($request_values)
 		$password = md5($password); //crypter le mot de passe avant de l'enregistrer dans la base de données
 
 		//*****************Préparer la requête et l'exécuter*/
-		include(ROOT_PATH . '/config/connection.php'); 
+		include(ROOT_PATH . '/config/connection.php');
 		$query = $db->prepare('INSERT INTO users(username, email, password, firstname, lastname, age, role, created_at) VALUES ( :username, :email, :password, :firstname, :lastname, :age, :role, :created_at)');
 		$query->execute([
 			'username' => htmlspecialchars($username), //htmlspecialchars pour éviter les attaques xss
@@ -141,16 +139,14 @@ function createAdmin($request_values)
 			'lastname' => htmlspecialchars($lastname),
 			'age' => $age,
 			'role' => htmlspecialchars($role),
-			'created_at' => htmlspecialchars(date('Y-m-d')), 
-			// 'updated_at' => htmlspecialchars(NULL),
+			'created_at' => htmlspecialchars(date('Y-m-d')),
 		]);
-		//var_dump($valid);
-		//exit;
 		$_SESSION['message'] = "Admin user created successfully";
 		header('location: users.php');
 		exit(0);
 	}
-} //die(print_r($db->errorCode()));
+}
+
 /* * * * * * * * * * * * * * * * * * * * *
 * - Prend l'id de l'administrateur comme paramètre
 * - Récupère l'admin de la BDD
@@ -171,7 +167,6 @@ function editAdmin($admin_id)
 	$lastname = $admin['lastname'];
 	$age = $admin['age'];
 	$role = $admin['role'];
-	//$valid = $admin['valid'];
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -184,8 +179,6 @@ function updateAdmin($request_values)
 	$admin_id = $request_values['admin_id'];
 	// modifier statut
 	$isEditingUser = false;
-
-
 	$username = $request_values['username'];
 	$email = $request_values['email'];
 	$password = $request_values['password'];
@@ -203,7 +196,7 @@ function updateAdmin($request_values)
 		//chiffrer le mot de passe (à des fins de sécurité)
 		$password = md5($password);
 		global $db;
-		include(ROOT_PATH . '/config/connection.php'); 
+		include(ROOT_PATH . '/config/connection.php');
 		//si il s'agit de mofidifier le mot de passe
 		if ($password != NULL) {
 			if ($password != $passwordConfirmation) {
@@ -246,7 +239,7 @@ function updateAdmin($request_values)
 function deleteAdmin($admin_id)
 {
 	global $db;
-	include(ROOT_PATH . '/config/connection.php'); 
+	include(ROOT_PATH . '/config/connection.php');
 	//preparer la requete et l'exécuter par la suite
 	$deleteAdminUser = $db->prepare('DELETE FROM users WHERE id=:id');
 	$deleteAdminUser->execute([
@@ -306,9 +299,8 @@ function createChapo($request_values)
 	}
 	//S'Assurer qu'aucun chapo n'est enregistré deux fois.
 	$chapo_check_query = "SELECT * FROM chapo WHERE slug='$chapo_slug' LIMIT 1";
-
-
 	$result = mysqli_query($conn, $chapo_check_query);
+	
 	if (mysqli_num_rows($result) > 0) { // si chapo existe
 		array_push($errors, "Chapo existe déjà!");
 	}
@@ -316,7 +308,7 @@ function createChapo($request_values)
 	if (count($errors) == 0) {
 
 		//*****************Préparer la requete */
-		include(ROOT_PATH . '/config/connection.php'); 
+		include(ROOT_PATH . '/config/connection.php');
 		$query = $db->prepare('INSERT INTO chapo (name, slug) VALUES(:name, :slug)');
 		$query->execute([
 			'name' => htmlspecialchars($chapo_name),
@@ -357,7 +349,7 @@ function updateChapo($request_values)
 	}
 	// enregistrer chapo s'il n'y a pas d'erreurs dans le formulaire
 	if (count($errors) == 0) {
-		include(ROOT_PATH . '/config/connection.php'); 
+		include(ROOT_PATH . '/config/connection.php');
 		$query = $db->prepare('UPDATE chapo SET name=:name, slug=:slug WHERE id=$chapo_id');
 		$query->execute([
 			'name' => htmlspecialchars($chapo_name),
@@ -369,12 +361,13 @@ function updateChapo($request_values)
 		exit(0);
 	}
 }
+
 // Supprimer chapo 
 function deleteChapo($chapo_id)
 {
 	global $db;
-	include(ROOT_PATH . '/config/connection.php'); 
-		$query = $db->prepare('DELETE FROM chapo WHERE id=:id');
+	include(ROOT_PATH . '/config/connection.php');
+	$query = $db->prepare('DELETE FROM chapo WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($chapo_id),
 	]) or die(print_r($db->errorCode()));
@@ -398,20 +391,16 @@ if (isset($_GET['valid']) || isset($_GET['unvalid'])) {
 function toggleValidUser($user_id, $message)
 {
 	global $conn;
-	include(ROOT_PATH . '/config/connection.php'); 
+	include(ROOT_PATH . '/config/connection.php');
 	$query = $db->prepare('UPDATE users SET valid= NOT valid WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($user_id),
 	]) or die(print_r($db->errorCode()));
-	//......=====================================================================================================
-	//var_dump($sql);
-	//exit;
-
-	//if (mysqli_query($conn, $sql)) {
+	
 	$_SESSION['message'] = $message;
 	header("location: users.php");
 	exit(0);
-	//}
+	
 }
 //...
 
@@ -420,13 +409,11 @@ function toggleValidUser($user_id, $message)
 - - - - - - - - - - - - - - - - - - - */
 // Si le user appuit sur envoyer commentaire...
 if (isset($_POST['submit_comment'])) {
-	//var_dump($_POST);
-	//exit;
+	
 	$comment_body = $_POST['comment_body'];
 	$comment_post_id = $_POST['submit_comment'];
 	$comment_user_id = $_POST['submit_comment'];
 	createComment($_POST);
-	
 }
 // si l'admin clique sur le bouton modifier un commentaire
 
@@ -439,12 +426,13 @@ if (isset($_GET['edit-comment'])) {
 if (isset($_POST['update_comment'])) {
 	updateComment($_POST);
 	$comment_id = $_GET['edit-comment'];
-	}
+}
 // si l'admin clique sur le bouton supprimer un commentaire
 if (isset($_GET['delete-comment'])) {
 	$comment_id = $_GET['delete-comment'];
 	deleteComment($comment_id);
 }
+
 //* - - - - - - - - - - 
 //-   fonctions du Comments
 //- - - - - - - - - - -*/
@@ -452,33 +440,30 @@ if (isset($_GET['delete-comment'])) {
 function getAllCommentsByPostId($post_id)
 {
 	global $conn, $post_id;
-	$sql = "SELECT * FROM comments where post_id = " . $post_id ." AND published = 1" ;
-	//var_dump($sql); exit;
+	$sql = "SELECT * FROM comments where post_id = " . $post_id . " AND published = 1";
+
 	$result = mysqli_query($conn, $sql);
 	$comments = mysqli_fetch_all($result, MYSQLI_ASSOC);
-	
+
 	return $comments;
 }
 // Créer un nouveau commentaire
 function createcomment($request_values)
 {
-	//var_dump($request_values);
-	//exit;
+	
 	global $conn, $errors, $comment_body, $published, $comment_user_id, $comment_post_id, $comment_published;
-	//$user_id = $_SESSION['user']['id'] ;
-	//var_dump($request_values);
-		//exit;
+	
 	$comment_body = $request_values['comment_body'];
-		$comment_user_id = $request_values['comment_user_id'];
+	$comment_user_id = $request_values['comment_user_id'];
 	$comment_post_id = $request_values['comment_post_id'];
-	$comment_published=$request_values['publish'];
+	$comment_published = $request_values['publish'];
 	// valider forme
 	if (empty($comment_body)) {
 		array_push($errors, "Il faut remplir un commentaire!");
 	} else {
 
-		//*****************Préparer la requete */
-		include(ROOT_PATH . '/config/connection.php'); 
+		//*****************Préparer la requete et l'exécuter */
+		include(ROOT_PATH . '/config/connection.php');
 		$query = $db->prepare('INSERT INTO comments (user_id, post_id, body, published, created_at) VALUES(:user_id, :post_id, :body, :published, :created_at)');
 		$query->execute([
 			'user_id' => htmlspecialchars($comment_user_id),
@@ -487,8 +472,7 @@ function createcomment($request_values)
 			'published' => htmlspecialchars($comment_published),
 			'created_at' => htmlspecialchars(date('Y-m-d')),
 		]) or die(print_r($query));
-		//var_dump($query);
-		//exit;
+	
 		$_SESSION['message'] = "Commentaire crée avec succée.";
 		header('location: comments.php');
 		exit(0);
@@ -509,26 +493,23 @@ function editComment($comment_id)
 	$sql = "SELECT * FROM comments WHERE id=$comment_id LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	$comment = mysqli_fetch_assoc($result);
-	//var_dump($comment);
-	//exit;
+	
 	// variables pour remplir le formulaire pour modifier le commentaire ()
 	$comment_user_id = $comment['user_id'];
 	$comment_post_id = $comment['post_id'];
 	$comment_body = $comment['body'];
 	$comment_published = $comment['published'];
-	
 }
+
 //Modifier un commentaire
 function updateComment($request_values)
 {
-	//var_dump($request_values);
-	//exit;
-	global  $errors, $comment_body, $comment_id, $comment_published, $comment_post_id, $comment_user_id ;
+	global  $errors, $comment_body, $comment_id, $comment_published, $comment_post_id, $comment_user_id;
 	$comment_body = $request_values['comment_body'];
 	$comment_id = $request_values['comment_id'];
 	$comment_post_id = $request_values['comment_post_id'];
 	$comment_user_id = $request_values['comment_user_id'];
-		if (isset($request_values['publish'])) {
+	if (isset($request_values['publish'])) {
 		$comment_published = $request_values['publish'];
 	}
 	// valider formulaire
@@ -537,7 +518,7 @@ function updateComment($request_values)
 	}
 	// enregistrer commentaire s'il n'y a pas d'erreurs dans le formulaire
 	if (count($errors) == 0) {
-		include(ROOT_PATH . '/config/connection.php'); 
+		include(ROOT_PATH . '/config/connection.php');
 		$query = $db->prepare('UPDATE comments SET body=:body, published=:published, updated_at=:updated_at WHERE id=:id');
 		$query->execute([
 			'body' => htmlspecialchars($comment_body),
@@ -555,7 +536,7 @@ function updateComment($request_values)
 function deleteComment($comment_id)
 {
 	global $db;
-	include(ROOT_PATH . '/config/connection.php'); 
+	include(ROOT_PATH . '/config/connection.php');
 	$query = $db->prepare('DELETE FROM comments WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($comment_id),
@@ -567,7 +548,7 @@ function deleteComment($comment_id)
 // si l'utilisateur clique sur le bouton de publier pour dépublier (ou l'inverse) un commentaire
 if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 	$message = "";
-	
+
 	if (isset($_GET['publish'])) {
 		$message = "Commentaire publiée avec succée.";
 		$comment_id = $_GET['publish'];
@@ -581,20 +562,16 @@ if (isset($_GET['publish']) || isset($_GET['unpublish'])) {
 function togglePublishComment($comment_id, $message)
 {
 	global $db;
-	include(ROOT_PATH . '/config/connection.php'); 
+	include(ROOT_PATH . '/config/connection.php');
 	$query = $db->prepare('UPDATE comments SET published= NOT published WHERE id=:id');
 	$query->execute([
 		'id' => htmlspecialchars($comment_id),
 	]) or die(print_r($db->errorCode()));
-	//......=====================================================================================================
-	//var_dump($sql);
-	//exit;
-
-	//if (mysqli_query($conn, $sql)) {
+	
 	$_SESSION['message'] = $message;
 	header("location: comments.php");
 	exit(0);
-	//}
+	
 }
 
 
@@ -602,14 +579,13 @@ function togglePublishComment($comment_id, $message)
 function getAllComments()
 {
 	global $conn, $post_id;
-	//$sql = "SELECT * FROM comments" ;
-	$sql ="SELECT t1.id, t1.user_id, t1.post_id,t1.body,t1.created_at, t1.updated_at, t1.published, t2.title, t3.username
-FROM comments t1
-JOIN posts t2 ON t1.post_id = t2.id
-JOIN users t3 ON t1.user_id = t3.id";
 	
+	$sql = "SELECT t1.id, t1.user_id, t1.post_id,t1.body,t1.created_at, t1.updated_at, t1.published, t2.title, t3.username
+	FROM comments t1
+	JOIN posts t2 ON t1.post_id = t2.id
+	JOIN users t3 ON t1.user_id = t3.id";
+
 	$result = mysqli_query($conn, $sql);
 	$comments = mysqli_fetch_all($result, MYSQLI_ASSOC);
-	//var_dump($comments); exit;
 	return $comments;
 }

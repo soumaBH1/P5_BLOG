@@ -15,9 +15,12 @@
 		<!-- afficher le menu sur la gauche -->
 		<?php include(ROOT_PATH . '/admin/includes/menu.php') ?>
 
+
 		<!-- Formulaire de création et modification de blog posts -->
 		<div class="action create-post-div">
 			<h1 class="page-title">Créer/ Gérer les Blog Posts</h1>
+			<!-- erreurs de validation du formulaire -->
+			<?php include(ROOT_PATH . '/includes/errors.php') ?>
 			<form method="post" enctype="multipart/form-data" action="<?php echo BASE_URL . 'admin/create_post.php'; ?>">
 				<!-- Erreurs de validation du formulaire -->
 
