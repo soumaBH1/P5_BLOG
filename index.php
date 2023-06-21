@@ -1,26 +1,39 @@
-<!-- index.php -->
-<!-- inclusion des variables et fonctions -->
-<link rel="stylesheet" href="static/css/public_styling.css">
-<?php require_once('config.php') ?>
-<?php require_once(ROOT_PATH . '/includes/public_functions.php') ?>
-<?php require_once(ROOT_PATH . '/includes/registration_login.php') ?>
-<!-- ramener les postes publiees de la BDD  -->
-<?php $posts = getPublishedPosts(); ?>
+<?php
 
-<?php require_once('includes/head_section.php') ?>
-</head>
-<body>
-	<!-- container - -->
-	<div class="container">
-		<!-- navbar -->
-		<?php include('includes/navbar.php') ?>
-		<!-- // navbar -->
-		<!-- banner -->
-		<?php include('includes/banner.php') ?>
-		<!-- footer -->
-		<?php include('includes/footer.php') ?>
-	</div>
-	<!-- // container -->
-</body>
+require_once('src/controllers/add_comment.php');
+require_once('src/controllers/homepage.php');
+require_once('src/controllers/post.php');
 
-</html>
+use Application\Controllers\AddComment\AddComment;
+use Application\Controllers\Homepage\Homepage;
+use Application\Controllers\Post\Post;
+
+try {
+    if (isset($_GET['action']) && $_GET['action'] !== '') {
+        if ($_GET['action'] === 'post') {
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+                $identifier = $_GET['id'];
+
+                (new Post())->execute($identifier);
+            } else {
+                throw new Exception('Aucun identifiant de billet envoyé');
+            }
+        } elseif ($_GET['action'] === 'addComment') {
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+                $identifier = $_GET['id'];
+
+                (new AddComment())->execute($identifier, $_POST);
+            } else {
+                throw new Exception('Aucun identifiant de billet envoyé');
+            }
+        } else {
+            throw new Exception("La page que vous recherchez n'existe pas.");
+        }
+    } else {
+        (new Homepage())->execute();
+    }
+} catch (Exception $e) {
+    $errorMessage = $e->getMessage();
+
+    require('templates/error.php');
+}
