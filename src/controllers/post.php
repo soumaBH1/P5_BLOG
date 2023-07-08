@@ -14,15 +14,13 @@ class Post
 {
     public function execute(string $identifier)
     {
-        $connection = new DatabaseConnection();
+        $connection =  DatabaseConnection::getConnection();
 
         $postRepository = new PostRepository();
-        $postRepository->connection = $connection;
-        $post = $postRepository->getPost($identifier);
-
+        $post =$postRepository->getPost($identifier);
+        
         $commentRepository = new CommentRepository();
-        $commentRepository->connection = $connection;
-        $comments = $commentRepository->getComments($identifier);
+        $comment =$commentRepository->getComments($identifier);
 
         require('templates/post.php');
     }

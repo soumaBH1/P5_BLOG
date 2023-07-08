@@ -8,22 +8,26 @@ use Application\Lib\Database\DatabaseConnection;
 
 class Post
 {
+    private int $identifier;
     private string $title;
     private string $frenchCreationDate;
+    private string $frenchUpdatedDate;
     private string $content;
-    private string $identifier;
+    private string $image;
+    private string $chapo;
+    private string $published;
     public function getTitle(): string
     {
-        return $this->title;
+        return htmlspecialchars($this->title);
     }
    
     public function setTitle(string $value)
     {
         $this->title = strtoupper($value);
     }
-    public function geContent(): string
+    public function getContent(): string
     {
-        return $this->content;
+        return htmlspecialchars($this->content);
     }
     public function setContent(string $value)
     {
@@ -37,33 +41,74 @@ class Post
     {
         $this->frenchCreationDate = strtoupper($value);
     }
-    public function getIdentifier(): string
+    public function getIdentifier(): int
     {
         return $this->identifier;
     }
-    public function setIdentifier(string $value)
+    public function setIdentifier(int $value)
     {
-        $this->identifier= strtoupper($value);
+        $this->identifier= $value;
+    }
+    public function getImage(): string
+    {
+        return $this->image;
     }
    
-       
+    public function setImage(string $value)
+    {
+        $this->image = strtoupper($value);
+    }
+    public function getChapo(): string
+    {
+        return htmlspecialchars($this->chapo);
+    }
+   
+    public function setChapo(string $value)
+    {
+        $this->chapo = strtoupper($value);
+    } 
+    public function getPublished(): string
+    {
+        return htmlspecialchars($this->published);
+    }
+   
+    public function setPublished(bool $value)
+    {
+        $this->published = $value;
+    } 
+    public function getFrenchUpdatedDate(): string
+    {
+        return $this->frenchUpdatedDate;
+    }
+    public function setFrenchUpdatedDate(string $value)
+    {
+        $this->frenchUpdatedDate = strtoupper($value);
+    }
     public function hydrate(array $value)
     {
         $this->setIdentifier($value['id'] ?? ''); 
         $this->setTitle($value['title'] ?? '');
-        $this->setContent($value['content'] ?? ''); //remplace le isset
+        $this->setContent($value['body'] ?? ''); //remplace le isset
+        $this->setImage($value['image'] ?? '');
+        $this->setChapo($value['chapo'] ?? '');
+        $this->setPublished($value['published'] ?? '');
         $this->setFrenchCreationDate($value['french_creation_date'] ?? ''); 
+        $this->setFrenchUpdatedDate($value['french_updated_date'] ?? ''); 
     }
 }
 
 class PostRepository
 {
-    public DatabaseConnection $connection;
+    private \PDO $connection;
+public function __construct() {
+        $this->connection = DatabaseConnection::getConnection();
 
+   
+}
     public function getPost(string $identifier): Post
     {
-        $statement = $this->connection->getConnection()->prepare(
-            "SELECT id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM posts WHERE id = ?"
+        $statement = $this->connection->prepare(
+            "SELECT id, title, body,user_id ,image, chapo, published, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(date_updated, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM posts WHERE id = ?"
         );
         $statement->execute([$identifier]);
 
@@ -75,8 +120,8 @@ class PostRepository
 
     public function getPosts(): array
     {
-        $statement = $this->connection->getConnection()->query(
-            "SELECT id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM posts ORDER BY creation_date DESC LIMIT 0, 5"
+        $statement = $this->connection->query(
+            "SELECT id, title, body,user_id ,image, chapo, published, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(date_updated, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM posts ORDER BY created_at DESC LIMIT 0, 5"
         );
         $posts = [];
         while (($row = $statement->fetch())) {

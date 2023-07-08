@@ -4,14 +4,14 @@ namespace Application\Lib\Database;
 
 class DatabaseConnection
 {
-    public ?\PDO $database = null;
+    private static ?\PDO $database = null;
 
-    public function getConnection(): \PDO
+    public static function getConnection(): \PDO
     {
-        if ($this->database === null) {
-            $this->database = new \PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');
+        if (self::$database === null) {
+            self::$database = new \PDO('mysql:host=localhost;dbname=myblog;charset=utf8', 'root', 'root');
         }
 
-        return $this->database;
+        return self::$database;
     }
 }

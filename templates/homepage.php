@@ -1,16 +1,18 @@
 <!-- index.php -->
 <!-- inclusion des variables et fonctions -->
+
 <?php use Application\Model\Post;
+// definir les constantes globales
+
  ob_start(); ?>
-<h1>Le super blog de  !</h1>
-<p>Derniers billets du blog :</p>
 
 
 <?php
-
 foreach ($posts as $post) {
 ?>
-    <div class="news">
+     <div class="post" style="margin-left: 0px;">
+			<img src="<?php echo  'static/images/' . $post->getImage(); ?>" class="post_image" alt="">
+				
         <h3>
             <?= htmlspecialchars($post->getTitle()); ?>
             <em>le <?=  $post->getFrenchCreationDate(); ?></em>
@@ -25,5 +27,5 @@ foreach ($posts as $post) {
 }
 ?>
 <?php $content = ob_get_clean(); ?>
-
 <?php require('layout.php') ?>
+
