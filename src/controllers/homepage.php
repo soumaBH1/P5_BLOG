@@ -12,10 +12,11 @@ class Homepage
 {
     public function execute()
     {
+        $connection =  DatabaseConnection::getConnection();
+//var_dump($connection); exit();
         $postRepository = new PostRepository();
-        $postRepository->connection = new DatabaseConnection();
-        $posts = $postRepository->getPosts();
-
-        require('templates/homepage.php');
+        $posts =$postRepository->getPosts();
+        
+       require('templates/homepage.php');
     }
 }

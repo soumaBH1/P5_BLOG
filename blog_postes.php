@@ -1,6 +1,5 @@
 <!-- index.php -->
 <!-- inclusion des variables et fonctions -->
-<?php require_once('config.php') ?>
 <?php require_once(ROOT_PATH . '/includes/public_functions.php') ?>
 <?php require_once(ROOT_PATH . '/includes/registration_login.php') ?>
 <!-- Retrieve all posts from database  -->
@@ -24,10 +23,10 @@
 			<!--  ... -->
 			<?php foreach ($posts as $post) : ?>
 				<div class="post" style="margin-left: 0px;">
-					<img src="<?php echo BASE_URL . '/static/images/' . $post['image']; ?>" class="post_image" alt="">
+					<img src="<?php echo  'static/images/' . $post['image']; ?>" class="post_image" alt="">
 					<!-- ... -->
 					<?php if (isset($post['topic']['name'])) : ?>
-						<a href="<?php echo BASE_URL . 'filtered_posts.php?topic=' . $post['topic']['id'] ?>" class="btn category">
+						<a href="<?php echo  'filtered_posts.php?topic=' . $post['topic']['id'] ?>" class="btn category">
 							<?php echo $post['topic']['name'] ?>
 						</a>
 					<?php endif ?>

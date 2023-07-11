@@ -1,0 +1,11 @@
+{
+    "name": "autoload/namespacer",
+    "autoload": {
+        "psr-4": {
+            "Application\\": "src/"
+        }
+    },
+    "require": {
+        "twig/twig": "^3.6"
+    }
+}
