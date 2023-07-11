@@ -11,7 +11,7 @@ use Application\Model\Post\PostRepository;
 include 'vendor/autoload.php';
 try {
 // le dossier ou on trouve les templates
-$loader = new Twig\Loader\FilesystemLoader('templates');
+$loader = new \Twig\Loader\FilesystemLoader('templates');
 // initialiser l'environement Twig
 $twig = new Twig\Environment($loader);
 // load template

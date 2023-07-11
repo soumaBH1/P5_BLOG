@@ -1,13 +1,12 @@
 <?php
 
-namespace Application\Controllers\Homepage;
+namespace Application\Controllers;
 
 require_once('src/lib/database.php');
 require_once('src/model/post.php');
 
-use Application\Lib\Database\DatabaseConnection;
-use Application\Model\Post\PostRepository;
-use Application\Controllers\Post;
+use Application\Lib\DatabaseConnection;
+use Application\Repository\PostRepository;
 class Homepage
 {
     public function execute()

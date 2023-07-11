@@ -2,9 +2,7 @@
 
 namespace Application\Model\Post;
 
-require_once('src/lib/database.php');
-
-use Application\Lib\Database\DatabaseConnection;
+use Application\Lib\DatabaseConnection;
 
 class Post
 {
@@ -97,39 +95,3 @@ class Post
     }
 }
 
-class PostRepository
-{
-    private \PDO $connection;
-public function __construct() {
-        $this->connection = DatabaseConnection::getConnection();
-
-   
-}
-    public function getPost(string $identifier): Post
-    {
-        $statement = $this->connection->prepare(
-            "SELECT id, title, body,user_id ,image, chapo, published, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(date_updated, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM posts WHERE id = ?"
-        );
-        $statement->execute([$identifier]);
-
-        $row = $statement->fetch();
-        $post = new Post();
-        $post->hydrate( $row);
-        return $post;
-    }
-
-    public function getPosts(): array
-    {
-        $statement = $this->connection->query(
-            "SELECT id, title, body,user_id ,image, chapo, published, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(date_updated, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM posts ORDER BY created_at DESC LIMIT 0, 5"
-        );
-        $posts = [];
-        while (($row = $statement->fetch())) {
-            $post = new Post();
-            $post->hydrate( $row);
-            $posts[] = $post;
-        }
-
-        return $posts;
-    }
-}
