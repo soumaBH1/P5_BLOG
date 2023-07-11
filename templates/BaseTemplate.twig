@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+{% block head %}
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Averia+Serif+Libre|Noto+Serif|Tangerine" rel="stylesheet">
+	<!-- CSS pour espace public -->
+	<link rel="stylesheet" href= "static/css/public_styling.css">
+	<meta charset="UTF-8">
+	<title>Ibtissem BH | Accueil </title>
+{% endblock %}
+</head>
+<body>
+<section id="content">
+{% block content %}{% endblock %}
+</section>
+<footer id="footer">
+{% block footer %}
+&copy; © Copyright © 2023 <a href="http://monsite.com">
+ - Site réalisé par Ibtissem Ben Hammouda
+  <a class="text-dark" href="https://www.linkedin.com/in/ibtissem-ben-hammouda-b0027653/?originalSubdomain=fr">Linkedin <?php echo date('Y'); ?></a>
+{% endblock %}
+</footer>
+</body>
+</html>

@@ -15,7 +15,7 @@ $loader = new Twig\Loader\FilesystemLoader('templates');
 // initialiser l'environement Twig
 $twig = new Twig\Environment($loader);
 // load template
-$template = $twig->load('ListePosts.html');
+$template = $twig->load('ListePosts.twig.html');
 // set template variables
 // render template
 $connection =  DatabaseConnection::getConnection();
