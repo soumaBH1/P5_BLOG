@@ -1,8 +1,6 @@
 <?php
 
-namespace Application\Model\Post;
-
-use Application\Lib\DatabaseConnection;
+namespace Application\Model;
 
 class Post
 {

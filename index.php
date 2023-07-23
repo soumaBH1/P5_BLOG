@@ -2,10 +2,10 @@
 require('vendor/autoload.php');
 
 
-use Application\Controllers\AddComment;
-use Application\Controllers\Homepage;
+use Exception;
 use Application\Controllers\Post;
-
+use Application\Controllers\Homepage;
+use Application\Controllers\AddComment;
 try {
     if (isset($_GET['action']) && $_GET['action'] !== '') {
         if ($_GET['action'] === 'post') {

@@ -1,12 +1,13 @@
 <?php
 namespace Application\Repository;
+
+use Application\Lib\DatabaseConnection;
 use Application\Model\Comment;
-use Application\Lib\Database;
 class CommentRepository
 {
     private \PDO $connection;
     public function __construct() {
-            $this->connection = DatabaseConnection::getConnection();
+            $this->connection = (new DatabaseConnection())->getConnection();
     
        
     }

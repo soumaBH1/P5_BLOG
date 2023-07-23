@@ -9,7 +9,7 @@ class PostRepository
 {
     public \PDO $connection;
     public function __construct(){
-    $this->connection = DatabaseConnection->getConnection();
+    $this->connection = (new DatabaseConnection())->getConnection();
 
     }
 

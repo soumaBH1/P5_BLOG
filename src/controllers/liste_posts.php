@@ -1,13 +1,11 @@
 <?php
-// list_posts.php
-// inclure l'autoloader
-require_once('src/lib/database.php');
-require_once('src/model/comment.php');
-require_once('src/model/post.php');
 
-use Application\Lib\Database\DatabaseConnection;
-use Application\Model\Comment\CommentRepository;
-use Application\Model\Post\PostRepository;
+// inclure l'autoloader
+
+
+use Application\Lib\DatabaseConnection;
+use Application\Repository\CommentRepository;
+use Application\Repository\PostRepository;
 include 'vendor/autoload.php';
 try {
 // le dossier ou on trouve les templates
