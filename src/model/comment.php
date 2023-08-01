@@ -2,26 +2,18 @@
 
 namespace Application\Model;
 
-require_once('src/lib/database.php');
+//require_once('src/lib/database.php');
 
 
 class Comment
 {
-    private string $author;
     private string $post_id;
     private string $user_id;
     private string $id;
     private string $frenchCreationDate;
     private string $frenchUpdatedDate;
-    private string $comment;
-    public function getAuthor(): string
-    {
-        return $this->author;
-    }
-    public function setAuthor(string $value)
-    {
-        $this->author= strtoupper($value);
-    }
+    private string $body;
+    
     public function getFrenchCreationDate(): string
     {
         return $this->frenchCreationDate;
@@ -30,13 +22,13 @@ class Comment
     {
         $this->frenchCreationDate= strtoupper($value);
     }
-    public function getComment(): string
+    public function getBody(): string
     {
-        return $this->comment;
+        return $this->body;
     }
-    public function setComment(string $value)
+    public function setBody(string $value)
     {
-        $this->comment= strtoupper($value);
+        $this->body= strtoupper($value);
     }
     public function getPost_id(): string
     {
@@ -75,8 +67,7 @@ class Comment
         $this->setId($value['id'] ?? ''); 
         $this->setPost_id($value['post_id'] ?? ''); 
         $this->setUser_id($value['user_id'] ?? ''); 
-        $this->setAuthor($value['author'] ?? ''); 
-        $this->setComment($value['comment'] ?? ''); //remplace le isset
+        $this->setBody($value['body'] ?? ''); //remplace le isset
         $this->setFrenchCreationDate($value['french_creation_date'] ?? ''); 
         $this->setFrenchUpdatedDate($value['french_updated_date'] ?? ''); 
         

@@ -14,7 +14,7 @@ class CommentRepository
     public function getComments(string $post): array
     {
         $statement = $this->connection->prepare(
-            "SELECT id, post_id, user_id, comment, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM comments WHERE post_id = ? ORDER BY comment_date DESC"
+            "SELECT id, post_id, user_id, body, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM comments WHERE post_id = ? ORDER BY created_at DESC"
         );
         $statement->execute([$post]);
 
@@ -24,6 +24,7 @@ class CommentRepository
             $comment->hydrate( $row);
             $comments[] = $comment;
         }
+       
 
         return $comments;
     }

@@ -1,0 +1,57 @@
+{% extends 'BaseTemplate.html.twig' %}
+{% block head %}{% endblock %}
+{% block title %}
+    <div class="row">
+        <div class="col text-center">
+          <h3>Liste des utilisateurs</h3>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+ <div class="container">
+            
+            <!-- affichage de l'enveloppe de posts -->
+          <div class="post-wrapper-singleP">
+              
+               <!--Afficher les enregistrements de la BDD -->
+		<div class="table-div">
+			<!-- Afficher le message de  notification -->
+			{{ include(ROOT_PATH . '/admin/includes/messages.php') }}
+
+			<!-- Afficher le message de  notification -->
+			
+				<table class="table">
+					<thead>
+						<th>Id</th>
+						<th>Login</th>
+						<th>Email</th>
+						<th>Role</th>
+						<!-- que l'Admin est autorisé à valider / dévalider un user -->
+
+						
+						<th colspan="2">Action</th>
+					</thead>
+					<tbody>
+						{% for user in users %}
+							<tr>
+								<!-- <td><?php echo $key + 1; ?></td> -->
+								<td> {{user.id }}</td>
+								<td> {{ user.username }}</td>
+								<td> {{ user.email }} </td>
+								<td> {{ user.role }}</td>
+									<td>{{ user.valid  }}</td>
+							
+
+
+								<!-- Actions sur utilisateur : editer et supprimer -->
+					</tbody>
+				</table>
+	
+		</div>
+		<!-- // Afficher les enregistrements de la BDD -->
+
+
+        {% endfor %}
+
+{% endblock %}

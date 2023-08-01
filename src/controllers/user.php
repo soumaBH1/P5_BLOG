@@ -4,51 +4,51 @@ namespace Application\Controllers;
 
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
-use Application\Lib\DatabaseConnection;
-use Application\Repository\PostRepository;
-use Application\Repository\CommentRepository;
+use connection;
 use Twig\Environment;
+use Application\Lib\DatabaseConnection;
+use Application\Repository\UserRepository;
+use Application\Repository\CommentRepository;
 
-class Post
+class User
 {
     private $connection;
     private $repository;
     public function __construct()
     {
         $this->connection = DatabaseConnection::getConnection();
-        $this->repository = new PostRepository();
+        $this->repository = new UserRepository();
     }
     public function show(string $identifier)
     {
        
-        $post = $this->repository->getPost($identifier);
+        $User = $this->repository->getUser($identifier);
 
-        $commentRepository = new CommentRepository();
-        $comments = $commentRepository->getComments($identifier);
+        $userRepository = new userRepository();
+        $user = $userRepository->getUser($identifier);
         $loader = new FilesystemLoader("templates");
         $twig = new Environment($loader);
         $twig->addExtension(new DebugExtension());
         // load template
-        $template = $twig->load('posts/show.html.twig');
+        $template = $twig->load('users/show.html.twig');
         // set template variables
         // render template
     
-        echo $template->render(array("post" => $post));
+        echo $template->render(array("user" => $user));
         
     }
     public function index()
     {
         $connection =  DatabaseConnection::getConnection();
-        $postRepository = new PostRepository();
-        $posts = $postRepository->getPosts();
+        $userRepository = new UserRepository();
+        $users = $userRepository->getUsers();
         $loader = new FilesystemLoader("templates");
         $twig = new Environment($loader);
         $twig->addExtension(new DebugExtension());
         // load template
-        $template = $twig->load('posts/listPosts.html.twig');
+        $template = $twig->load('users/listUsers.html.twig');
         // set template variables
         // render template
-        echo $template->render(array("posts" => $posts));
+        echo $template->render(array("users" => $users));
     }
-    
 }

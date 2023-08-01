@@ -4,12 +4,14 @@
 <?php use Application\Model\Post;
 // definir les constantes globales
 
- ob_start(); ?>
-
-
+ob_start(); ?>
+<div class="container">
 <?php
+
 foreach ($posts as $post) {
+    
 ?>
+ <div class="post-wrapper-singleP">
      <div class="post" style="margin-left: 0px;">
 			<img src="<?php echo  'static/images/' . $post->getImage(); ?>" class="post_image" alt="">
 				
@@ -20,12 +22,16 @@ foreach ($posts as $post) {
         <p>
             <?= htmlspecialchars($post->getContent()); ?>
             <br />
-            <em><a href="index.php?action=post&id=<?= urlencode($post->getIdentifier()) ?>">Commentaires</a></em>
+            <em><a href="index.php?action=post&id=<?= urlencode( $post->getIdentifier()) ?>">Commentaires</a></em>
         </p>
     </div>
-<?php
+    </div>
+    
+    <?php
+
 }
 ?>
+</div>
 <?php $content = ob_get_clean(); ?>
 <?php require('layout.php') ?>
 

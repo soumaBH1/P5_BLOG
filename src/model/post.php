@@ -12,6 +12,7 @@ class Post
     private string $image;
     private string $chapo;
     private string $published;
+    private string $username;
     public function getTitle(): string
     {
         return htmlspecialchars($this->title);
@@ -80,6 +81,14 @@ class Post
     {
         $this->frenchUpdatedDate = strtoupper($value);
     }
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+    public function setUsername(string $value)
+    {
+        $this->username = strtoupper($value);
+    }
     public function hydrate(array $value)
     {
         $this->setIdentifier($value['id'] ?? ''); 
@@ -90,6 +99,7 @@ class Post
         $this->setPublished($value['published'] ?? '');
         $this->setFrenchCreationDate($value['french_creation_date'] ?? ''); 
         $this->setFrenchUpdatedDate($value['french_updated_date'] ?? ''); 
+        $this->setUsername($value['username'] ?? ''); 
     }
 }
 

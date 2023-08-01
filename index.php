@@ -1,41 +1,50 @@
 <?php
-require('vendor/autoload.php');
+require_once __DIR__ . '/vendor/autoload.php';
 
-
-use Exception;
+require_once('src/controllers/homepage.php');
+require_once('src/controllers/post.php');
 use Application\Controllers\Post;
-use Application\Controllers\ListPosts;
+use Application\Controllers\User;
 use Application\Controllers\Homepage;
+use Application\Controllers\ListPosts;
 use Application\Controllers\AddComment;
+use Tracy\Debugger;
+
+require 'vendor/autoload.php' ; // 
+
+Debugger::enable();
 try {
-    if (isset($_GET['action']) && $_GET['action'] !== '') {
+      if (isset($_GET['action']) && $_GET['action'] !== '') {
         if ($_GET['action'] === 'post') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $identifier = $_GET['id'];
-
-                (new Post())->execute($identifier);
+                (new Post())->show($identifier);
+                
             } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
+                throw new Exception('Aucun identifiant de post envoyé.');
             }
         }
-            elseif ($_GET['action'] === 'posts') { 
-                (new ListPosts())->execute();
+            elseif ($_GET['action'] === 'listPosts') { 
+                (new Post())->index();
        
-        } elseif ($_GET['action'] === 'addComment') {
+        }elseif ($_GET['action'] === 'listUsers') { 
+            (new User())->index();
+   
+    } elseif ($_GET['action'] === 'addComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $identifier = $_GET['id'];
+                //var_dump($identifier, $_POST);exit;
 
-                (new AddComment())->execute($identifier, $_POST);
+               
             } else {
-                throw new Exception('Aucun identifiant de billet envoyé');
+                throw new Exception('Aucun identifiant de post envoyé.');
             }
-         } elseif ($_GET['action'] === 'test') {
-            (new Homepage())->test();
-        } else {
+         
+        }else {
             throw new Exception("La page que vous recherchez n'existe pas.");
     }
-    } else {
-        (new Homepage())->execute();
+    //} else {
+      // (new Homepage())->execute();
     }
 } catch (Exception $e) {
     $errorMessage = $e->getMessage();

@@ -16,12 +16,14 @@ class PostRepository
     public function getPost(string $identifier): Post
     {
         $statement = $this->connection->prepare(
-            "SELECT id, title, content, DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM posts WHERE id = ?"
+            "SELECT posts.id, posts.title, posts.body, posts.published, posts.image, posts.chapo, DATE_FORMAT(posts.created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, users.username FROM posts 
+            INNER JOIN users ON posts.user_id = users.id WHERE posts.id = ?"
         );
         $statement->execute([$identifier]);
 
         $row = $statement->fetch();
         $post = new Post();
+        //var_dump($row); exit();
         $post->hydrate( $row);
         return $post;
     }
@@ -29,7 +31,8 @@ class PostRepository
     public function getPosts(): array
     {
         $statement = $this->connection->query(
-            "SELECT id, title, body, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM posts ORDER BY created_at DESC LIMIT 0, 5"
+            "SELECT posts.id, posts.title, posts.body, posts.published, posts.image, posts.chapo, DATE_FORMAT(posts.created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, users.username FROM posts 
+            INNER JOIN users ON posts.user_id = users.id "
         );
         $posts = [];
         while (($row = $statement->fetch())) {

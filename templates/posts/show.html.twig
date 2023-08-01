@@ -1,0 +1,45 @@
+{% extends 'BaseTemplate.html.twig' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}
+        
+          <h3>Affichage post</h3>
+        
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="content">
+            <!-- affichage de l'enveloppe de posts -->
+            <div class="post-wrapper-singleP">
+                <!-- affichage du post  -->
+                <div class="full-post-div">
+                    {% if not post.published %}
+                      <h2 class="post-title">Désolé... Ce post n'est pas encore publié</h2>
+                    {% else %}
+                        <h2 class="post-title">{{ post.title|e }}</h2> 
+                        
+                        <div class="post" style="margin-left: 0px">
+                        
+                            <div class="post_image" alt="">
+                          <img src={{ BASE_URL ~ '/static/images/' ~ post.image }} alt="">
+                           
+                            </div>
+                            <div class="post-body-div-details">
+                                crée le: {{ post.french_creation_date|e }}
+                                modifié le: {{ post.french_updated_date|e }}
+                                Username: {{ post.username|e }}
+                            </div>
+                           
+                            <div class="post-body-div">
+                                {{ post.content|e }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
