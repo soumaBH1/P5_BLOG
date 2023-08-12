@@ -6,7 +6,7 @@
 	</div>
 	<ul>
 		<li><a class="active" href="index.php">Home</a></li>
-		<li><a href="blog_postes.php">Blogs</a></li>
+		<li><a href="index.php?action=listPosts">Blogs</a></li>
 		<li><a href="contact.php">Contact</a></li>
 		<li><a href="<?php echo 'static/cv/CV_Ibtissem_BEN_HAMMOUDA.pdf' ?>">Mon CV</a></li>
 	</ul>

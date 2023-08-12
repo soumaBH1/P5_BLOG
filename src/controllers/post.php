@@ -42,13 +42,13 @@ class Post
         $postRepository = new PostRepository();
         $posts = $postRepository->getPosts();
         $loader = new FilesystemLoader("templates");
-        $twig = new Environment($loader);
+        $twig = new Environment($loader, ['debug' => true]);
         $twig->addExtension(new DebugExtension());
         // load template
         $template = $twig->load('posts/listPosts.html.twig');
         // set template variables
         // render template
-        echo $template->render(array("posts" => $posts));
+        echo $template->render(array("posts" => $posts, "test"=>1));
     }
     
 }

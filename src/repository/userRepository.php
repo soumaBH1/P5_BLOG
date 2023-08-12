@@ -34,7 +34,7 @@ class UserRepository
         $users = [];
         while (($row = $statement->fetch())) {
             $user = new User();
-            $user->hydrate( $row);
+           $user->hydrate( $row);
             $users[] = $user;
         }
 

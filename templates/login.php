@@ -1,16 +1,10 @@
-<!-- inclusion des variables et fonctions -->
-<?php include('config.php'); ?>
-<?php include('includes/registration_login.php'); ?>
-<?php include('includes/head_section.php'); ?>
 <title>Blog | Se connecter </title>
 </head>
 
 <body>
+<? ob_start(); ?>
 	<div class="container">
-		<!-- Navbar -->
-		<?php include(ROOT_PATH . '/includes/navbar.php'); ?>
-		<!-- // Navbar -->
-
+		
 		<div style="width: 40%; margin: 20px auto;">
 			<form method="post" action="login.php">
 				<h2>Connection</h2>
@@ -19,13 +13,8 @@
 				<input type="password" name="password" placeholder="Password">
 				<button type="submit" class="btn" name="login_btn">Connection</button>
 				<p>
-					Pas encore membre?? <a href="register.php">s'enregistrer</a>
+					Pas encore membre?? <a href="register.php">s'enregistrer :</a>
 				</p>
 			</form>
 		</div>
 	</div>
-	<!-- // container -->
-
-	<!-- Footer -->
-	<?php include(ROOT_PATH . '/includes/footer.php'); ?>
-	<!-- // Footer -->

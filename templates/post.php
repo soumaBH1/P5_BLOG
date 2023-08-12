@@ -1,4 +1,4 @@
-<?php $title = "Le blog de l'AVBN"; ?>
+<?php $title = "blog IBH"; ?>
 
 <?php ob_start(); ?>
 <!-- container -  -->
@@ -47,8 +47,8 @@
 <?php
 foreach ($comments as $comment) {
 ?>
-    <p><strong><?= htmlspecialchars($comment->getAuthor()) ?></strong> le <?= $comment->getFrenchCreationDate() ?></p>
-    <p><?= nl2br(htmlspecialchars($comment->getComment())) ?></p>
+    <p><strong><?= htmlspecialchars($comment->getUser_id()) ?></strong> le <?= $comment->getFrenchCreationDate() ?></p>
+    <p><?= nl2br(htmlspecialchars($comment->getBody())) ?></p>
 <?php
 }
 ?></div>

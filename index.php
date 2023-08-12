@@ -43,8 +43,8 @@ try {
         }else {
             throw new Exception("La page que vous recherchez n'existe pas.");
     }
-    //} else {
-      // (new Homepage())->execute();
+   } else {
+      (new Homepage())->execute();
     }
 } catch (Exception $e) {
     $errorMessage = $e->getMessage();

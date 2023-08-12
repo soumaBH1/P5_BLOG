@@ -16,15 +16,11 @@ class User
     private string $frenchCreationDate;
 
 
-    public function __construct(?int $id, string $email, string $username, string $password,string $firstname,string $lastname, string $role = 'user')
+    public function __construct(array  $data=null)
     {
-        $this->id = $id;
-        $this->email = $email;
-        $this->username = $username;
-        $this->password = $password;
-        $this->role = $role;
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
+      if( isset($data)  ){
+        $this->hydrate($data);
+      }
     }
     public function isAdmin(): bool
     {

@@ -39,4 +39,11 @@ class CommentRepository
 
         return ($affectedLines > 0);
     }
+    public function deleteComment($idComment)
+    {
+        $statement = $this->connection->prepare(
+ 'DELETE FROM Comment WHERE Comment.id = ' . $idComment );
+        return $statement->execute();
+    }
+
 }

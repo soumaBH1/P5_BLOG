@@ -100,6 +100,7 @@ class Post
         $this->setFrenchCreationDate($value['french_creation_date'] ?? ''); 
         $this->setFrenchUpdatedDate($value['french_updated_date'] ?? ''); 
         $this->setUsername($value['username'] ?? ''); 
+      
     }
 }
 

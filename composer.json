@@ -6,6 +6,7 @@
         }
     },
     "require": {
-        "twig/twig": "^3.6"
+        "twig/twig": "^3.6",
+        "tracy/tracy": "^2.10"
     }
 }

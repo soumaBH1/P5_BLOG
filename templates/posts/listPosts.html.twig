@@ -8,28 +8,29 @@
 
 {% block content %}
  <div class="container">
+   
         {% for post in posts %}
-            
+           {# dump(post.getFrenchCreationDate())#}
             <!-- affichage de l'enveloppe de posts -->
           <div class="post-wrapper-singleP">
                 <!-- affichage du post  -->
                 <div class="full-post-div">
                         <h2 class="post-title">{{ post.title }}</h4>
-                       <div classe=".post .chapo"> {{ post.chapo }} </div>
+                       <div > {{ post.chapo }} </div>
                      
                             <a class="card-link" href='index.php?page=post&id='~{{ post.identifier }}>Lire la suite</a>
                        
                         <div class="row">
                            <div class="post-body-div-details">
                                
-                                    <p>A été créé le {{ post.french_creation_date|date('d/m/Y \\à H:i:s') }}</p>
-                                {% if post.french_updated_date <= post.french_creation_date %} 
+                                    <p>A été créé le {{ post.frenchCreationDate}}</p>
+                                {% if post.frenchUpdatedDate <= post.frenchCreationDate %} 
                                 {% else %}
-                                    <p>A été modifié le {{ post.french_updated_date|date('d/m/Y \\à H:i:s') }}</p>
+                                    <p>A été modifié le {{ post.frenchUpdatedDate|date('d/m/Y \\à H:i:s') }}</p>
                                 {% endif %}
                             </div>
                             <div class="post_image" alt="">
-                                <img src={{ BASE_URL ~ '/static/images/' ~ post.image }} alt="" width="200">
+                                <img src={{ BASE_URL ~ '/static/images/'~ post.image }} alt="" width="200">
                             </div>
                             <div class="col-6">
                                 <p>Crée par {{ post.username}}</p>

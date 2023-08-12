@@ -1,0 +1,2 @@
+- Remettre en place le template des vues
+- Appliquer le design pattern singleton

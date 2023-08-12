@@ -7,7 +7,6 @@
         </div>
     </div>
 {% endblock %}
-
 {% block content %}
  <div class="container">
             
@@ -17,10 +16,8 @@
                <!--Afficher les enregistrements de la BDD -->
 		<div class="table-div">
 			<!-- Afficher le message de  notification -->
-			{{ include(ROOT_PATH . '/admin/includes/messages.php') }}
-
-			<!-- Afficher le message de  notification -->
 			
+			<!-- Afficher le message de  notification -->
 				<table class="table">
 					<thead>
 						<th>Id</th>
@@ -28,30 +25,39 @@
 						<th>Email</th>
 						<th>Role</th>
 						<!-- que l'Admin est autorisé à valider / dévalider un user -->
-
-						
+			
 						<th colspan="2">Action</th>
 					</thead>
 					<tbody>
 						{% for user in users %}
-							<tr>
-								<!-- <td><?php echo $key + 1; ?></td> -->
+							<tr>						
 								<td> {{user.id }}</td>
 								<td> {{ user.username }}</td>
 								<td> {{ user.email }} </td>
 								<td> {{ user.role }}</td>
-									<td>{{ user.valid  }}</td>
-							
+								<td>{{ user.valid  }}</td>
+								<!-- si Admin donc autorisé à valider / dévalider un user -->
+								
 
 
 								<!-- Actions sur utilisateur : editer et supprimer -->
+
+								<td>
+									<a class="fa fa-pencil btn edit" href="users.php?edit-admin="user.id>
+									</a>
+								</td>
+
+								<td>
+									<a class="fa fa-trash btn delete" href="users.php?delete-admin="user.id>
+									</a>
+								</td>
+							</tr>
+						{% endfor %}	
+
+						<!-- Actions sur utilisateur : editer et supprimer -->
 					</tbody>
 				</table>
 	
 		</div>
 		<!-- // Afficher les enregistrements de la BDD -->
-
-
-        {% endfor %}
-
 {% endblock %}
