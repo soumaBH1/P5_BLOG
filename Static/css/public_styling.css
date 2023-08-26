@@ -132,7 +132,7 @@ form input:focus {
 	background-size: 100% 100%;
 }
 .banner .welcome_msg {
-	width: 45%;
+	width: 50%;
 	float: bottom;
 	float: left;
 	padding: 20px;
@@ -156,10 +156,10 @@ form input:focus {
 	color: #B9E6F2;
 }
 .banner .welcome_msg a {
-	width: 40%;
+	width: 50%;
 	margin: 20px 0px;
 	background:rgb(61, 130, 152);
-	padding: 12px 15px;
+	padding: 20px 18px;
 	font-size: 1.2em;
 	text-decoration: none;
 }

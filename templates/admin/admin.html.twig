@@ -1,0 +1,170 @@
+{% extends 'BaseTemplate.html.twig' %}
+
+{% block title %}
+    <div class="">
+        <div class="col text-center">
+            <h3>Panel d'administration</h3>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="">
+        <div class="">
+            <div class="">
+                <table class="panel">
+                    <tr>
+                        <td>
+                            <h4>Informations du compte</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Session ID :</td>
+                        <td>{{ session.sessionId }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pseudo :</td>
+                        <td>{{ session.pseudo }}</td>
+
+                    </tr>
+                    <tr>
+                        <td>Adresse email :</td>
+                        <td>{{ session.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date de création du compte : </td>
+                        <td>{{ session.dateRegister|date('d/m/Y \\à H:i:s')  }}</td>
+                    </tr>
+                    <tr>
+                        <td>Role : </td>
+                        <td>{{ session.role }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class=" ">
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=listUser">Liste des utilisateurs</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=article&method=listAdmin">Liste des posts</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=comment&method=listAllComment">Liste des commentaires</a></div>
+                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=changePassword">Changer de mot de passe</a></div>
+            </div>
+        </div>
+    </div>
+
+
+   
+
+    {% if user is defined %}
+        <hr>
+        <div class="container">
+
+                {% for users in user %}
+                <div class="row">
+                    <p>User ID : {{ users.idUser }}</p>
+                </div>
+                <div class="row">
+                    <p>Pseudo : {{ users.pseudo }}</p>
+                </div>
+                <div class="row">
+                    <p>Email : {{ users.email }}</p>
+                </div>
+                <div class="row">
+                    <p>Date d'enregistrement : {{ users.dateRegister|date('d/m/Y \\à H:i:s')  }}</p>
+                </div>
+                <div class="row">
+                    <p>Rang :
+                        {% if users.role == 1%}
+                        Administrateur
+                        {% elseif users.role == 2 %}
+                        Utilisateur
+                        {% endif %}
+                    </p>
+                </div>
+                    <hr>
+                {% endfor %}
+        </div>
+    {% endif %}
+
+
+    {% if post is defined %}
+        <hr>
+        <div class="container">
+            {% for post in posts %}
+            <div class="row">
+                <div class="col-6"><p>ID Post : {{ post.idPost }}</p></div>
+                <div class="col-6"> <p>Titre: {{ post.title }}</p></div>
+            </div>
+                <div class="row">
+                    <p>Chapo : {{ post.chapo }}</p>
+                </div>
+
+            <div class="row">
+                <p>{{ post.content }}</p>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <p>Date de création: {{ post.frenchCreationDate|date('d/m/Y \\à H:i:s') }}</p>
+                </div>
+                <div class="col-4">
+                    {% if post.frenchUpdatedDate != null %}
+                    <div class="row">
+                        <p>Dernière modification le : {{ post.frenchUpdatedDate|date('d/m/Y \\à H:i:s') }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-4">
+                    <p>Crée par : {{ post.username }}</p>
+                </div>
+            </div>
+
+
+            {% if post.validated == '0' %}
+                <a class="btn btn-primary" href="index.php?page=article&method=approveArticle&idArticle={{ post.id }}">Approuver</a>
+            {% endif %}
+                <a class="btn btn-primary" href="index.php?page=article&method=editArticle&idArticle={{ post.id  }}">Editer</a>
+                <a class="btn btn-danger" href="index.php?page=article&method=deleteArticle&idArticle={{ post.id  }}">Supprimer</a>
+            <hr>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+
+    {% if comment is defined %}
+        <hr>
+        <div class="container">
+            {% for comment in comments %}
+                <div class="row justify-content-center">
+                    <p>ID : {{ comment.id }}</p>
+                </div>
+                <div class="row justify-content-center">
+                    <p>Commentaire : {{ comment.content }}</p>
+                </div>
+                <div class="row justify-content-center">
+                    <p>Ecrit par : {{ comment.username }} le {{ comment.frenchCreationDate|date('d/m/Y \\à H:i:s')  }}</p>
+                </div>
+                <div class="row justify-content-center">
+                    <p>Article : {{ comment.title }}</p>
+                </div>
+
+                <div class="row justify-content-around">
+                {% if comment.validate == '1' %}
+                    <p>Commentaire approuvé</p>
+                {% elseif comment.validate == '0' %}
+                    <p>Commentaire en attente de validation</p>
+                    <a class="btn btn-primary" href="index.php?page=comment&method=approveComment&idComment={{ comment.id }}">Approuver</a>
+                {% endif %}
+                <a class="btn btn-danger" href="index.php?page=comment&method=deleteComment&idComment={{ comment.id}}">Supprimer</a>
+                </div>
+
+                <hr>
+            {% endfor %}
+            {% if comments is empty %}
+                <div class="">
+                    <p>Il n'y a aucun commentaires</p>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+{% endblock %}

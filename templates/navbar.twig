@@ -8,6 +8,18 @@
 		<li><a class="active" href="index.php">Home</a></li>
 		<li><a href="index.php?action=listPosts">Blogs</a></li>
 		<li><a href="contact.php">Contact</a></li>
+		<li><a href="register.php">s'enregistrer</a></li>
 		<li><a href="<?php echo 'static/cv/CV_Ibtissem_BEN_HAMMOUDA.pdf' ?>">Mon CV</a></li>
+	
+	 {% if session.sessionId is defined %}
+            {% if session.rank == 'Administrateur' %}
+        <li class="nav-item">
+            <a class="nav-link" href="index.php?page=article&method=createArticle">Créer un article</a> {# verifier autorisation create article#}
+        </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+
+    
 	</ul>
 </div>

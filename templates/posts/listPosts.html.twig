@@ -17,20 +17,21 @@
                 <div class="full-post-div">
                         <h2 class="post-title">{{ post.title }}</h4>
                        <div > {{ post.chapo }} </div>
-                     
-                            <a class="card-link" href='index.php?page=post&id='~{{ post.identifier }}>Lire la suite</a>
+                   
+                            <a class="card-link" href='index.php?action=post&id={{ post.identifier }}'>Lire la suite</a>
                        
                         <div class="row">
                            <div class="post-body-div-details">
                                
                                     <p>A été créé le {{ post.frenchCreationDate}}</p>
-                                {% if post.frenchUpdatedDate <= post.frenchCreationDate %} 
-                                {% else %}
-                                    <p>A été modifié le {{ post.frenchUpdatedDate|date('d/m/Y \\à H:i:s') }}</p>
+                                {% if post.frenchCreationDate <= post.frenchUpdatedDate  %} 
+                                <p>A été modifié le {{ post.frenchUpdatedDate }}</p>
+                                     
                                 {% endif %}
                             </div>
-                            <div class="post_image" alt="">
-                                <img src={{ BASE_URL ~ '/static/images/'~ post.image }} alt="" width="200">
+                            <div class="content post post_image" alt="">
+                                <img src= {{ 'static/images/'~ post.image }} alt="" width="500">
+                            
                             </div>
                             <div class="col-6">
                                 <p>Crée par {{ post.username}}</p>

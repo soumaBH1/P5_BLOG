@@ -1,17 +1,15 @@
-<?php include('config.php'); ?>
+
 <!-- Code source pour gérer l'enregistrement et la connexion-->
 <?php include('includes/registration_login.php'); ?>
-<?php include('config/mysql.php'); ?>
-<?php include('includes/head_section.php'); ?>
+
+
 
 <title>Blog IBH | Créatin de compte </title>
 </head>
 
 <body>
 	<div class="container">
-		<!-- Navbar -->
-		<?php include(ROOT_PATH . '/includes/navbar.php'); ?>
-		<!-- // Navbar -->
+		
 
 		<div style="width: 40%; margin: 20px auto;">
 			<form method="post" action="register.php">
@@ -32,6 +30,4 @@
 		</div>
 	</div>
 	<!-- // container -->
-	<!-- Footer -->
-	<?php include(ROOT_PATH . '/includes/footer.php'); ?>
-	<!-- // Footer -->
+	

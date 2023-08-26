@@ -3,16 +3,20 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 require_once('src/controllers/homepage.php');
 require_once('src/controllers/post.php');
+use Exception;
+use Tracy\Debugger;
+use Application\Router;
 use Application\Controllers\Post;
 use Application\Controllers\User;
 use Application\Controllers\Homepage;
 use Application\Controllers\ListPosts;
 use Application\Controllers\AddComment;
-use Tracy\Debugger;
-
 require 'vendor/autoload.php' ; // 
 
 Debugger::enable();
+
+
+
 try {
       if (isset($_GET['action']) && $_GET['action'] !== '') {
         if ($_GET['action'] === 'post') {
@@ -26,7 +30,9 @@ try {
         }
             elseif ($_GET['action'] === 'listPosts') { 
                 (new Post())->index();
-       
+            }
+            elseif ($_GET['action'] === 'login') { 
+                (new Post())->index();
         }elseif ($_GET['action'] === 'listUsers') { 
             (new User())->index();
    
