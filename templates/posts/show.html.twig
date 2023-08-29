@@ -21,10 +21,10 @@
                     {% else %}
                         <h2 class="post-title">{{ post.title|e }}</h2> 
                         
-                        <div class="post" style="margin-left: 0px">
+                        <div class="post" >
                         
-                            <div class="post_image" alt="">
-                          <img src={{ BASE_URL ~ '/static/images/' ~ post.image }} alt="">
+                            <div class="content post post_image" alt="">
+                          <img src= {{ BASE_URL ~ '/static/images/' ~ post.image }} alt="" width="500">
                            
                             </div>
                             <div class="post-body-div-details">

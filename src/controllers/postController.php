@@ -8,9 +8,10 @@ use Twig\Loader\FilesystemLoader;
 use Application\Lib\DatabaseConnection;
 use Application\Repository\PostRepository;
 use Application\Repository\CommentRepository;
+use Application\Controllers\DefaultController;
 use Twig\Environment;
 
-class Post
+class PostController extends DefaultController
 {
     private $connection;
     private $repository;
@@ -28,15 +29,10 @@ class Post
 
         $commentRepository = new CommentRepository();
         $comments = $commentRepository->getComments($identifier);
-        $loader = new FilesystemLoader("templates");
-        $twig = new Environment($loader);
-        $twig->addExtension(new DebugExtension());
-        // load template
-        $template = $twig->load('posts/show.html.twig');
-        // set template variables
-        // render template
-    
-        echo $template->render(array("post" => $post));
+        $param=array("post" => $post);
+        $this->render("posts/show.html.twig", $param, false);
+        
+       
         
     }
     public function index()
@@ -44,15 +40,8 @@ class Post
         $connection =  DatabaseConnection::getConnection();
         $postRepository = new PostRepository();
         $posts = $postRepository->getPosts();
-        $loader = new FilesystemLoader("templates");
-        $twig = new Environment($loader, ['debug' => true]);
-        $twig->addExtension(new DebugExtension());
-        // load template
-        $template = $twig->load('posts/listPosts.html.twig');
-        // set template variables
-      
-        // render template
-        echo $template->render(array("posts" => $posts ));//, "user"=>$this->sessionService->getUserArray()));
+          $param=array("posts" => $posts );
+        $this->render("posts/listPosts.html.twig", $param, false);
     }
     public function createPostMethod()
     {

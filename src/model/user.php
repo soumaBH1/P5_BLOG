@@ -122,6 +122,7 @@ class User
     }
     public function hydrate(array $value)
     {
+    
         $this->setId($value['id'] ?? ''); 
         $this->setUsername($value['username'] ?? '');
         $this->setRole($value['role'] ?? ''); //remplace le isset

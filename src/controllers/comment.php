@@ -8,8 +8,8 @@ require_once('src/model/comment.php');
 use Twig\Environment;
 use Application\Lib\DatabaseConnection;
 use Application\Repository\CommentRepository;
-
-class Comment
+use Application\Controllers\DefaultController;
+class CommentController extends DefaultController
 {
     private $commentRepository;
     private $twig;

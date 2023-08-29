@@ -29,7 +29,7 @@
             {% if session.rank == 'Administrateur' %}
                 <a class="nav-link" href="index.php?page=admin">Mon compte</a>
             {% elseif session.rank == 'Utilisateur' %}
-                <a class="nav-link" href="index.php?page=user">Mon compte</a>
+                <a class="nav-link" href="index.php?action=user">Mon compte</a>
             {% endif %}
         </li>
     </ul>
@@ -37,14 +37,14 @@
  <ul>
     {% if session.sessionId is defined %}
         <form class="nav-item">
-            <a class="btn btn-warning" href="index.php?page=login&method=logout">Logout</a>
+            <a class="btn btn-warning" href="index.php?action=login&method=logout">Logout</a>
         </form>
     {% else %}
         <form class="nav-item">
-        <a class="btn btn-success" href="index.php?page=login">Login</a>
+        <a class="btn btn-success" href="index.php?action=login">Login</a>
         </form>
         <form class="nav-item">
-            <a class="btn btn-warning" href="index.php?page=login&method=register">Créer un compte</a>
+            <a class="btn btn-warning" href="index.php?action=register">Créer un compte</a>
         </form>
     {% endif %}
 	 </ul>

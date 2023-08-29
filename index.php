@@ -1,16 +1,18 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-require_once('src/controllers/homepage.php');
-require_once('src/controllers/post.php');
+require_once('src/controllers/homepageController.php');
+require_once('src/controllers/postController.php');
+require_once('src/controllers/loginController.php');
+//use Exception;
 use Exception;
 use Tracy\Debugger;
-use Application\Router;
-use Application\Controllers\Post;
-use Application\Controllers\User;
-use Application\Controllers\Homepage;
-use Application\Controllers\ListPosts;
-use Application\Controllers\AddComment;
+use Application\Controllers\CommentController;
+use Application\Controllers\HomepageController;
+use Application\Controllers\PostController;
+use Application\Controllers\UserController;
+use Application\Controllers\LoginController;
+
 require 'vendor/autoload.php' ; // 
 
 Debugger::enable();
@@ -22,19 +24,24 @@ try {
         if ($_GET['action'] === 'post') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $identifier = $_GET['id'];
-                (new Post())->show($identifier);
+                (new PostController())->show($identifier);
                 
             } else {
                 throw new Exception('Aucun identifiant de post envoyé.');
             }
         }
             elseif ($_GET['action'] === 'listPosts') { 
-                (new Post())->index();
+                (new PostController())->index();
             }
             elseif ($_GET['action'] === 'login') { 
-                (new Post())->index();
+                
+                (new LoginController())->login();
+            }
+            elseif ($_GET['action'] === 'register') { 
+                
+                (new LoginController())->register();
         }elseif ($_GET['action'] === 'listUsers') { 
-            (new User())->index();
+            (new UserController())->index();
    
     } elseif ($_GET['action'] === 'addComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
@@ -50,7 +57,7 @@ try {
             throw new Exception("La page que vous recherchez n'existe pas.");
     }
    } else {
-      (new Homepage())->execute();
+    (new HomepageController)->execute();
     }
 } catch (Exception $e) {
     $errorMessage = $e->getMessage();

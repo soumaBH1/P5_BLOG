@@ -9,8 +9,8 @@ use Twig\Environment;
 use Application\Lib\DatabaseConnection;
 use Application\Repository\UserRepository;
 use Application\Repository\CommentRepository;
-
-class User
+use Application\Controllers\DefaultController;
+class UserController extends DefaultController
 {
     private $connection;
     private $repository;
@@ -26,29 +26,19 @@ class User
 
         $userRepository = new userRepository();
         $user = $userRepository->getUser($identifier);
-        $loader = new FilesystemLoader("templates");
-        $twig = new Environment($loader);
-        $twig->addExtension(new DebugExtension());
-        // load template
-        $template = $twig->load('users/show.html.twig');
-        // set template variables
-        // render template
-    
-        echo $template->render(array("user" => $user));
         
+        $param=array("user" => $user);
+        $this->render("users/show.html.twig", $param, false);
+   
     }
     public function index()
     {
         $connection =  DatabaseConnection::getConnection();
         $userRepository = new UserRepository();
         $users = $userRepository->getUsers();
-        $loader = new FilesystemLoader("templates");
-        $twig = new Environment($loader);
-        $twig->addExtension(new DebugExtension());
-        // load template
-        $template = $twig->load('users/listUsers.html.twig');
-        // set template variables
-        // render template
-        echo $template->render(array("users" => $users));
+       
+
+        $param=array("users" => $users);
+        $this->render("users/listUsers.html.twig", $param, false);
     }
 }

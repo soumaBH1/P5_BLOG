@@ -1,10 +1,10 @@
 {% extends 'BaseTemplate.html.twig' %}
 
 {% block content %}
-    <form method="post" action="index.php?page=login&method=register">
+    <form method="post" action="index.php?action=register">
         <div class="form-group">
-            <label for="text">Pseudo</label>
-            <input type="text" name="pseudo" class="form-control" id="passwrd" placeholder="Pseudo">
+            <label for="text">Username</label>
+            <input type="text" name="username" class="form-control" id="passwrd" placeholder="Username">
         </div>
 
         <div class="form-group">
@@ -15,41 +15,13 @@
 
         <div class="form-group">
             <label for="passwrd">Mot de passe</label>
-            <input type="password" name="password1" class="form-control" id="passwrd" placeholder="Password">
+            <input type="password" name="password1" class="form-control" id="password" placeholder="Password">
         </div>
         <div class="form-group">
             <label for="passwrd">Retapez le mot de passe</label>
-            <input type="password" name="password2" class="form-control" id="passwrd" placeholder="Password">
+            <input type="password" name="password2" class="form-control" id="password" placeholder="Password">
         </div>
 
         <button type="submit" class="btn btn-primary">Enregistrer</button>
     </form>
 {% endblock %}
-<!-- Code source pour gérer l'enregistrement et la connexion-->
-
-<title>Blog IBH | Créatin de compte </title>
-</head>
-
-<body>
-	<div class="container">
-		
-
-		<div style="width: 40%; margin: 20px auto;">
-			<form method="post" action="register.php">
-				<h2>Création de compte sur Blog IBH</h2>
-				
-				<input type="text" name="username" value="<?php echo $username; ?>" placeholder="Username">
-				<input type="email" name="email" value="<?php echo $email ?>" placeholder="Email">
-				<input type="firstname" name="firstname" value="<?php echo $firstname  ?>" placeholder="Firstname">
-				<input type="lastname" name="lastname" value="<?php echo $lastname ?>" placeholder="Lastname">
-				<input type="age" name="age" value="<?php echo $age ?>" placeholder="Age">
-				<input type="password" name="password_1" placeholder="Password">
-				<input type="password" name="password_2" placeholder="Password confirmation">
-				<button type="submit" class="btn" name="reg_user">Register</button>
-				<p>
-					Vous avez déjà un compte? <a href="login.php">Connection</a>
-				</p>
-			</form>
-		</div>
-	</div>
-	<!-- // container -->
