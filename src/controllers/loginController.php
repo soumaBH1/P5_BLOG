@@ -29,11 +29,13 @@ class LoginController extends DefaultController
     }
     public function register()
     {
+
         // declaration des variables 
         $username = "";
         $email    = "";
-        $firstname = "";
-        $lastname = "";
+        $password_1 = "";
+        $password_2 = "";
+        $email = "";
         $age = NULL;
         $errors = array();
 
@@ -43,9 +45,9 @@ class LoginController extends DefaultController
             // recevoir toutes les valeurs d'entrée du formulaire
             $username = htmlspecialchars($_POST['username']);
             $email = htmlspecialchars($_POST['email']);
-            //$firstname = htmlspecialchars($_POST['firstname']);
-            // $lastname = htmlspecialchars($_POST['lastname']);
-            //$age = htmlspecialchars($_POST['age']);
+            $firstname = htmlspecialchars($_POST['firstname']);
+            $lastname = htmlspecialchars($_POST['lastname']);
+            $age = htmlspecialchars($_POST['age']);
             $password_1 = htmlspecialchars($_POST['password1']);
             $password_2 = htmlspecialchars($_POST['password2']);
 
@@ -70,6 +72,16 @@ class LoginController extends DefaultController
             }
             if ($password_1 != $password_2) {
                 array_push($errors, "les deux mots de passe ne correspondent pas !");
+            }
+            if ($errors = NULL) {
+                $row['email'] = $email;
+                $row['username'] = $email;
+                $row['password'] = $password_1;
+                $row['firstname'] = $firstname;
+                $row['lastname'] = $lastname;
+                $row['age'] = $age;
+                $userRepository = new UserRepository();
+                $userRepository->addUser($row);
             }
         }
     }
@@ -101,10 +113,9 @@ class LoginController extends DefaultController
 
             if (empty($errors)) {
                 $password = md5($password); // chiffrer le mot de passe
-              $userRepository = new UserRepository();
+                $userRepository = new UserRepository();
                 $userRepository->authentifyUser($email, $password);
-                
-                 }
+            }
         }
     }
 

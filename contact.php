@@ -14,8 +14,7 @@ ini_set("display_errors", "On");
 
 <body>
     <div class="container">
-        <!-- Navbar -->
-        <?php include(ROOT_PATH . '/includes/navbar.php'); ?>
+   
 
 
         <body class="d-flex flex-column min-vh-100">
