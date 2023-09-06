@@ -28,18 +28,31 @@
                            
                             </div>
                             <div class="post-body-div-details">
-                                crée le: {{ post.frenchCreationDate|e }}
-                                modifié le: {{ post.frenchUpdatedDate|e }}
-                                Username: {{ post.username|e }}
+                                <p> crée le: {{ post.frenchCreationDate|e }}</p>
+                              <p> modifié le: {{ post.frenchUpdatedDate|e }}</p>
+                              <p> Username: {{ post.username|e }}</p>
+                              <p> chapo: {{ post.chapo|e }}</p>
                             </div>
                            
-                            <div class="post-body-div">
+                            <p>
                                 {{ post.content|e }}
-                            </div>
+                            </p>
                         </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
+    <h2>Commentaires</h2>
+{{ post.id }}
+<form action="index.php?action=addComment&id="{{ post.id }}" method="post">
+   
+    <div>
+        <label for="comment">Commentaire</label><br />
+        <textarea id="comment" name="comment"></textarea>
+    </div>
+    <div>
+        <input type="submit" />
+    </div>
+</form>
 {% endblock %}

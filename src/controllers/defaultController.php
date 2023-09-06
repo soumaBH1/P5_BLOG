@@ -22,7 +22,7 @@ class DefaultController
         $template = $twig->load($templateFile);
         // set template variables
 
-        // render template
+        // render template render('votre_template.twig', ['utilisateur' => $_SESSION['utilisateur'],]);
         echo $template->render($params);
     }
 }

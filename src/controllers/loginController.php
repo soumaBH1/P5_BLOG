@@ -11,6 +11,7 @@ use Twig\Error\SyntaxError;
 use Application\Lib\DatabaseConnection;
 use Application\Repository\UserRepository;
 use Application\Controllers\DefaultController;
+use Application\Controllers\SessionController;
 
 /**
  * Class LoginController
@@ -73,7 +74,8 @@ class LoginController extends DefaultController
             if ($password_1 != $password_2) {
                 array_push($errors, "les deux mots de passe ne correspondent pas !");
             }
-            if ($errors = NULL) {
+            
+            if (empty($errors)) {
                 $row['email'] = $email;
                 $row['username'] = $email;
                 $row['password'] = $password_1;
@@ -81,6 +83,7 @@ class LoginController extends DefaultController
                 $row['lastname'] = $lastname;
                 $row['age'] = $age;
                 $userRepository = new UserRepository();
+               
                 $userRepository->addUser($row);
             }
         }
@@ -109,12 +112,44 @@ class LoginController extends DefaultController
             if (empty($password)) {
                 array_push($errors, "Oops.. vous avez oublié le mot de passe !");
             }
-            $password = md5($password); // chiffrer le mot de passe
+           
 
             if (empty($errors)) {
-                $password = md5($password); // chiffrer le mot de passe
                 $userRepository = new UserRepository();
-                $userRepository->authentifyUser($email, $password);
+                
+               $row= $userRepository->authentifyUser($email, $password);
+                // mettre l'utilisateur connecté dans le tableau de session
+       // Exemple d'utilisation
+$session = new SessionController($row);
+
+
+
+
+// Obtenir une variable de session
+$utilisateur = $session->get('role');
+//var_dump($utilisateur); exit();
+//echo "Utilisateur en session : $utilisateur";
+
+// Supprimer une variable de session
+//$session->remove('utilisateur');
+
+// Détruire la session
+//$session->destroy();
+                //var_dump($_SESSION); exit();
+                //redirection vers dashboard si admin
+            // si l'utilisateur est administrateur, rediriger vers la zone d'administration
+				if ( in_array($session->get('role'), ["Admin" , "author"])) {
+					$_SESSION['message'] = "Vous êtes maintenant connecté.";
+					
+                    // rediriger vers la zone d'administration
+					header('location: index.php');
+					exit(0);
+				} else {
+					$_SESSION['message'] = "Vous êtes maintenant connecté.";
+					// rediriger vers la zone publique
+					header('location: index.php');				
+					exit(0);
+				}    
             }
         }
     }

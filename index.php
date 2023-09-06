@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-require_once('src/controllers/homepageController.php');
+//require_once('src/controllers/homepageController.php');
 require_once('src/controllers/postController.php');
-require_once('src/controllers/loginController.php');
+//require_once('src/controllers/loginController.php');
 //use Exception;
 use Exception;
 use Tracy\Debugger;
@@ -43,16 +43,18 @@ try {
         }elseif ($_GET['action'] === 'listUsers') { 
             (new UserController())->index();
    
-    } elseif ($_GET['action'] === 'addComment') {
+        }elseif ($_GET['action'] === 'createPost') { 
+            (new PostController())->createPostMethod();
+   
+    }  elseif ($_GET['action'] === 'addComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
-                $identifier = $_GET['id'];
-                //var_dump($identifier, $_POST);exit;
-
+                $idPost = $_GET['id'];
+                var_dump($_SESSION['id']); exit();
+                (new CommentControler())->execute($idPost, $_SESSION['id']);
                
             } else {
                 throw new Exception('Aucun identifiant de post envoyé.');
             }
-         
         }else {
             throw new Exception("La page que vous recherchez n'existe pas.");
     }
@@ -61,6 +63,5 @@ try {
     }
 } catch (Exception $e) {
     $errorMessage = $e->getMessage();
-
     require('templates/error.php');
 }

@@ -23,12 +23,13 @@ class CommentController extends DefaultController
    
     public function execute(string $post, array $input)
     {
+        if (isset ($_session ))
         $author = null;
         $comment = null;
         $published = 0;
         $user_id = 1;
         if (!empty($input['author']) && !empty($input['comment'])) {
-            $author = $input['author'];
+            $user_id = $_session['user_id'];
             $comment = $input['comment'];
         } else {
             throw new \Exception('Les données du formulaire sont invalides.');

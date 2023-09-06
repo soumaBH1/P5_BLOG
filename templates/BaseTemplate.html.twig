@@ -18,26 +18,31 @@
 	<ul>
 		<li><a class="active" href="index.php">Home</a></li>
 		<li><a href="index.php?action=listPosts">Blogs</a></li>
-		<li><a href="contact.php">Contact</a></li>
-		<li><a href="<?php echo 'static/cv/CV_Ibtissem_BEN_HAMMOUDA.pdf' ?>">Mon CV</a></li>
-
-	
+        
+	 {% if session.id is defined %}
+            {% if session.role == 'Administrateur' %}
+        <li class="nav-item">
+            <a class="nav-link" href="index.php?action=createPoste">Créer un poste</a> 
+        </li>
+            {% endif %}
+        {% endif %}
 	</ul>
-	{% if session.sessionId is defined %}
+	{% if session.id is defined %}
     <ul class="navbar-nav justify-content-end">
         <li class="nav-item">
-            {% if session.rank == 'Administrateur' %}
-                <a class="nav-link" href="index.php?page=admin">Mon compte</a>
-            {% elseif session.rank == 'Utilisateur' %}
-                <a class="nav-link" href="index.php?action=user">Mon compte</a>
+            {% if session.role == 'Administrateur' %}
+                <a class="nav-link" href="index.php?action=dashboardAdmin">Mon compte</a>
+            {% elseif session.role == 'Utilisateur' %}
+                <a class="nav-link" href="index.php?action=dashboardUser">Mon compte</a>
             {% endif %}
         </li>
     </ul>
     {% endif %}
  <ul>
-    {% if session.sessionId is defined %}
+ 
+    {% if session.id is defined %}
         <form class="nav-item">
-            <a class="btn btn-warning" href="index.php?action=login&method=logout">Logout</a>
+            <a class="btn btn-warning" href="index.php?action=logout">Logout</a>
         </form>
     {% else %}
         <form class="nav-item">
@@ -65,7 +70,19 @@
 
   © Copyright © 2023 - Site réalisé par Ibtissem Ben Hammouda
   <a class="text-dark" href="https://www.linkedin.com/in/ibtissem-ben-hammouda-b0027653/?originalSubdomain=fr">Linkedin <?php echo date('Y'); ?></a>
+<li><a href="contact.php">Contact</a></li>
+		<li><a href="<?php echo 'static/cv/CV_Ibtissem_BEN_HAMMOUDA.pdf' ?>">Mon CV</a></li>
 
+{% if session.id is defined %}
+test
+    {% if session.role == 'Administrateur' %}
+        <div class="row">
+            <div class="col">
+                <a href="index.php?action=admin">Administration</a>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}
 
 </div>
 

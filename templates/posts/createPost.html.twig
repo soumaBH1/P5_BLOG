@@ -1,4 +1,4 @@
-{% extends 'templates/BaseTemplates.html.twig' %}
+{% extends 'BaseTemplate.html.twig' %}
 {% block title %}
     <div class="row">
         <div class="col text-center">
@@ -10,7 +10,7 @@
 {% block content %}
 
     <div class="container">
-        <form action="index.php?page=post&method=createPost" method="post">
+        <form action="index.php?action=createPost" method="post">
 
             <div class="form-group">
                 <label for="title">Titre</label>
@@ -24,7 +24,7 @@
 
             <div class="form-group form-check">
                 <label for="content">Contenu</label>
-                <textarea type="text" class="form-control" rows="10" id="content" name="content"></textarea>
+                <textarea type="text" class="form-control" rows="10" id="body" name="content"></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Créer</button>

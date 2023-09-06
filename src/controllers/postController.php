@@ -10,6 +10,7 @@ use Application\Repository\PostRepository;
 use Application\Repository\CommentRepository;
 use Application\Controllers\DefaultController;
 use Twig\Environment;
+use connection;
 
 class PostController extends DefaultController
 {
@@ -20,52 +21,56 @@ class PostController extends DefaultController
     {
         $this->connection = DatabaseConnection::getConnection();
         $this->repository = new PostRepository();
-      //  $this->sessionService= new SessionService();
+       
+      
     }
     public function show(string $identifier)
     {
-       
+
         $post = $this->repository->getPost($identifier);
 
         $commentRepository = new CommentRepository();
         $comments = $commentRepository->getComments($identifier);
-        $param=array("post" => $post);
+        $param = array("post" => $post);
         $this->render("posts/show.html.twig", $param, false);
-        
-       
-        
     }
     public function index()
     {
         $connection =  DatabaseConnection::getConnection();
         $postRepository = new PostRepository();
         $posts = $postRepository->getPosts();
-          $param=array("posts" => $posts );
+        $param = array("posts" => $posts);
         $this->render("posts/listPosts.html.twig", $param, false);
     }
     public function createPostMethod()
     {
-        $this->session->isAdmin();
-
-        $twigPage = 'createPost.html.twig';
-
-        $post = $this->post->getPostArray();
-
-        if (!empty($post)) {
-            $verify = $this->post->verifyPost();
-            if ($verify !== true) {
-                return $this->renderTwigErr($twigPage, $verify);
-                //return $this->render('createArticle.twig', ['erreur' => $verify]); /
-            }
-            $this->articleSql->createArticle($post['title'], $post['content'], $post['chapo'], $this->session->getUserVar('idUser'));
-
-            return $this->renderTwigSuccess($twigPage, 'Votre article nous a bien été envoyé! Il ne manque plus qu\'à le valider!');
-        } elseif (empty($post)) {
-
-            return $this->render($twigPage);
+        if ($_SESSION['role'] = "admin") {
+         // declaration des variables 
+         $title = "";
+         $body    = "";
+         $chapo = "";
+         $image = "";
+         $errors = array();
+         $row = array();
+         // créer UN post
+        
+             $this->render("posts/createPost.html.twig");
+             // recevoir toutes les valeurs d'entrée du formulaire
+             $title = htmlspecialchars($_POST['title']);
+             $body = htmlspecialchars($_POST['body']);
+             $chapo = htmlspecialchars($_POST['chapo']);
+             //$image = htmlspecialchars($_POST['image']);
+             $row['title']=$title;
+             $row['body']=$body;
+             $row['chapo']=$chapo;
+             $row['user_id']= $sessionController->get('id');
+            $connection =  DatabaseConnection::getConnection();
+            $postRepository = new PostRepository();
+            $postRepository->addPost($row);
+                       
+            $_SESSION['message'] = "Post crée avec  succée.";
+            header('location: index.php');
+             
         }
-        //$this->redirect('blog&method=createArticle');
     }
-
-    
 }
