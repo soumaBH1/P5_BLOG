@@ -120,7 +120,13 @@ class LoginController extends DefaultController
                $row= $userRepository->authentifyUser($email, $password);
                 // mettre l'utilisateur connecté dans le tableau de session
        // Exemple d'utilisation
-$session = new SessionController($row);
+if($row === NULL){
+    array_push($errors, "Oops.. Réessayer vos coordonnées ne correspondent pas !");
+           
+}else{
+    $session = new SessionController($row);
+}
+       
 
 
 

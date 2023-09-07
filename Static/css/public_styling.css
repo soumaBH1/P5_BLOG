@@ -132,9 +132,7 @@ form input:focus {
 	background-size: 100% 100%;
 }
 .banner .welcome_msg {
-	width: 50%;
 	float: bottom;
-	float: left;
 	padding: 20px;
 }
 .banner .welcome_msg h1 {
@@ -156,7 +154,6 @@ form input:focus {
 	color: #B9E6F2;
 }
 .banner .welcome_msg a {
-	width: 50%;
 	margin: 20px 0px;
 	background:rgb(61, 130, 152);
 	padding: 20px 18px;
@@ -212,10 +209,8 @@ form input:focus {
 	font-family: 'Averia Serif Libre', cursive;
 }
 .content .post {
-	width: 335px;
 	margin: 9px;
-	min-height: 320px;
-	float: left;
+	
 	border-radius: 2px;
 	border: 1px solid #b3b3b3;
 	position: relative;
@@ -277,14 +272,11 @@ form input:focus {
 	min-height: 250px;
 }
 .full-post-div-singleP {
-	min-height: 300px;
 	
 	border: 1px solid #e4e1e1;
 	border-radius: 2px;
 }
 .full-post-div {
-	min-height: 300px;
-	padding: 20px;
 	border: 1px solid #e4e1e1;
 	border-radius: 2px;
 }

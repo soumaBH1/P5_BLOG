@@ -20,7 +20,7 @@
 		<li><a href="index.php?action=listPosts">Blogs</a></li>
         
 	 {% if session.id is defined %}
-            {% if session.role == 'Administrateur' %}
+            {% if session.role == 'Admin' %}
         <li class="nav-item">
             <a class="nav-link" href="index.php?action=createPoste">Créer un poste</a> 
         </li>
@@ -30,7 +30,7 @@
 	{% if session.id is defined %}
     <ul class="navbar-nav justify-content-end">
         <li class="nav-item">
-            {% if session.role == 'Administrateur' %}
+            {% if session.role == 'Admin' %}
                 <a class="nav-link" href="index.php?action=dashboardAdmin">Mon compte</a>
             {% elseif session.role == 'Utilisateur' %}
                 <a class="nav-link" href="index.php?action=dashboardUser">Mon compte</a>
@@ -39,7 +39,7 @@
     </ul>
     {% endif %}
  <ul>
- 
+ {{session.id }}
     {% if session.id is defined %}
         <form class="nav-item">
             <a class="btn btn-warning" href="index.php?action=logout">Logout</a>
@@ -74,8 +74,8 @@
 		<li><a href="<?php echo 'static/cv/CV_Ibtissem_BEN_HAMMOUDA.pdf' ?>">Mon CV</a></li>
 
 {% if session.id is defined %}
-test
-    {% if session.role == 'Administrateur' %}
+
+    {% if session.role == 'Admin' %}
         <div class="row">
             <div class="col">
                 <a href="index.php?action=admin">Administration</a>

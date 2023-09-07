@@ -4,7 +4,7 @@ namespace Application\Model;
 
 class Post
 {
-    private int $identifier;
+    private int $id;
     private string $title;
     private string $frenchCreationDate;
     private string $frenchUpdatedDate;
@@ -13,6 +13,7 @@ class Post
     private string $chapo;
     private string $published;
     private string $username;
+    private int $user_id;
     public function getTitle(): string
     {
         return htmlspecialchars($this->title);
@@ -38,13 +39,13 @@ class Post
     {
         $this->frenchCreationDate = strtoupper($value);
     }
-    public function getIdentifier(): int
+    public function getId(): int
     {
-        return $this->identifier;
+        return $this->id;
     }
-    public function setIdentifier(int $value)
+    public function setId(int $value)
     {
-        $this->identifier= $value;
+        $this->id= $value;
     }
     public function getImage(): string
     {
@@ -89,9 +90,17 @@ class Post
     {
         $this->username = strtoupper($value);
     }
+    public function getUser_id(): int
+    {
+        return $this->user_id;
+    }
+    public function setUser_id(int $value)
+    {
+        $this->user_id = $value;
+    }
     public function hydrate(array $value)
     {
-        $this->setIdentifier($value['id'] ?? ''); 
+        $this->setId($value['id'] ?? ''); 
         $this->setTitle($value['title'] ?? '');
         $this->setContent($value['body'] ?? ''); //remplace le isset
         $this->setImage($value['image'] ?? '');
@@ -100,6 +109,7 @@ class Post
         $this->setFrenchCreationDate($value['french_creation_date'] ?? ''); 
         $this->setFrenchUpdatedDate($value['french_updated_date'] ?? ''); 
         $this->setUsername($value['username'] ?? ''); 
+        $this->setUser_id($value['user_id'] ?? ''); 
       
     }
 }

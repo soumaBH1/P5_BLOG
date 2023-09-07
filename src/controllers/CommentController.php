@@ -12,40 +12,39 @@ use Application\Controllers\DefaultController;
 class CommentController extends DefaultController
 {
     private $commentRepository;
-    private $twig;
+    private $connection;
+    private $repository;
 
-    public function __construct(CommentRepository $commentRepository, Environment $twig)
+    public function __construct()
     {
-        $this->commentRepository = $commentRepository;
-        $this->twig = $twig;
+        $this->connection = DatabaseConnection::getConnection();
+        $this->commentRepository = new CommentRepository();
+       
     }
 
    
-    public function execute(string $post, array $input)
+    public function execute(string $post_id, array $input)
     {
-        if (isset ($_session ))
-        $author = null;
+        if (isset ($_SESSION ))
+        
         $comment = null;
         $published = 0;
         $user_id = 1;
-        if (!empty($input['author']) && !empty($input['comment'])) {
-            $user_id = $_session['user_id'];
+        if (!empty($input['comment'])) {
+            $user_id = $_SESSION['user_id'];
             $comment = $input['comment'];
         } else {
             throw new \Exception('Les données du formulaire sont invalides.');
         }
         //
-        $connection =  DatabaseConnection::getConnection();
-
-        $commentRepository = new CommentRepository();
-        $success = $commentRepository->createComment($post, $user_id, $comment);
+        $success = $this->commentRepository->createComment($post_id, $user_id, $comment);
        ////
 
        
         if (!$success) {
             throw new \Exception('Impossible d\'ajouter le commentaire !');
         } else {
-            header('Location: index.php?action=post&id=' . $post);
+            header('Location: index.php?action=post&id=' . $post_id);
         }
     }
 }

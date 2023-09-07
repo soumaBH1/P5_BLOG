@@ -31,7 +31,8 @@ class PostController extends DefaultController
 
         $commentRepository = new CommentRepository();
         $comments = $commentRepository->getComments($identifier);
-        $param = array("post" => $post);
+        $param = array("post" => $post,
+                        "comments" => $comments,);
         $this->render("posts/show.html.twig", $param, false);
     }
     public function index()
@@ -63,7 +64,7 @@ class PostController extends DefaultController
              $row['title']=$title;
              $row['body']=$body;
              $row['chapo']=$chapo;
-             $row['user_id']= $sessionController->get('id');
+             $row['user_id']= $_SESSION['user_id'];
             $connection =  DatabaseConnection::getConnection();
             $postRepository = new PostRepository();
             $postRepository->addPost($row);

@@ -1,7 +1,5 @@
 <!-- inclusion des variables et fonctions -->
-<?php include('config.php'); ?>
-<?php include('includes/registration_login.php'); ?>
-<?php include('includes/head_section.php'); ?>
+
 </head>
 <?php
 //session_start();

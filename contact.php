@@ -1,11 +1,10 @@
-<?php include('config.php'); ?>
 <?php
 error_reporting(-1);
 ini_set("display_errors", "On");
 
 ?>
 
-<?php include('includes/head_section.php'); ?>
+
 <!DOCTYPE html>
 
 
@@ -73,7 +72,7 @@ ini_set("display_errors", "On");
             }
             ?>
 
-            <?php include('includes/footer.php') ?>
+           
         </body>
 
-        </html>
+      

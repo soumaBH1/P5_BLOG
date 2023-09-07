@@ -22,9 +22,12 @@
                         <h2 class="post-title">{{ post.title|e }}</h2> 
                         
                         <div class="post" >
-                        
+                        <p>
+                                {{ post.content|e }}
+                            </p>
                             <div class="content post post_image" alt="">
-                          <img src= {{ BASE_URL ~ '/static/images/' ~ post.image }} alt="" width="500">
+                          
+                            <img src= {{ BASE_URL ~ '/static/images/' ~ post.image }} alt="" width="500">
                            
                             </div>
                             <div class="post-body-div-details">
@@ -32,22 +35,36 @@
                               <p> modifié le: {{ post.frenchUpdatedDate|e }}</p>
                               <p> Username: {{ post.username|e }}</p>
                               <p> chapo: {{ post.chapo|e }}</p>
+                               <p> user_id: {{ post.user_id|e }}</p>
+                               <p> id: {{ post.id|e }}</p>
                             </div>
                            
-                            <p>
-                                {{ post.content|e }}
-                            </p>
+                            
                         </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    <h2>Commentaires</h2>
-{{ post.id }}
-<form action="index.php?action=addComment&id="{{ post.id }}" method="post">
-   
-    <div>
+    <h2>Commentaires:</h2>
+<div class="container">
+        <div class="content">
+          {% for comment in comments %}
+            <div class=".content .post-comments">
+                <!-- affichage du comments  -->
+                    {% if not post.published %}
+                      <p class=".content .post-comments">Désolé... Ce commentaire n'est pas encore publié</h2>
+                    {% else %}
+                        <p class=".content .post-comments">{{ comment.body|e }}</h2> 
+                    {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="content">
+<form method="post" action='index.php?action=addComment&id='{{ post.id }}'&user_id='{{ user.id }}>
+      <div>
         <label for="comment">Commentaire</label><br />
         <textarea id="comment" name="comment"></textarea>
     </div>
@@ -55,4 +72,6 @@
         <input type="submit" />
     </div>
 </form>
+ </div>
+    </div>
 {% endblock %}

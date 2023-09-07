@@ -2,8 +2,8 @@
 
 namespace Application\Controllers;
 
-require_once('src/lib/database_connection.php');
-require_once('src/model/post.php');
+//require_once('src/lib/database_connection.php');
+//require_once('src/model/post.php');
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\Extension\DebugExtension;

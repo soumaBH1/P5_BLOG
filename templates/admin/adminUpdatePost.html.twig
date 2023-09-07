@@ -1,0 +1,25 @@
+{% extends 'BaseTemplate.html.twig' %}
+<!-- CSS pour espace admin -->
+	<link rel="stylesheet" href= "static/css/admin_styling.css">
+	
+{% block content %}
+    <div class="container">
+    <form action="index.php?actioneditPost" method="post">
+        <input type="hidden" name="idPost" value="{{ post.id }}">
+        <div class="form-group">
+            <label for="title">Titre</label>
+            <input type="text" class="form-control" value="{{post.title}}" id="title" name="title">
+        </div>
+        <div class="form-group">
+            <label for="chapo">Chapo</label>
+            <input type="text" class="form-control" value="{{post.chapo}}" id="chapo" name="chapo">
+        </div>
+        <div class="form-group form-check">
+            <label for="content">Contenu</label>
+            <textarea type="text" class="form-control" rows="10" id="content" name="content">{{post.content}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Editer</button>
+    </form>
+
+    </div>
+{% endblock %}

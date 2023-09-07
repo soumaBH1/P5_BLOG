@@ -1,8 +1,10 @@
 {% extends 'BaseTemplate.html.twig' %}
-
+<!-- CSS pour espace admin -->
+	<link rel="stylesheet" href= "static/css/admin_styling.css">
+	
 {% block title %}
-    <div class="">
-        <div class="col text-center">
+    <div class=".container">
+        <div class=".container.dashboard h1 ">
             <h3>Panel d'administration</h3>
         </div>
     </div>
@@ -10,9 +12,9 @@
 
 {% block content %}
 
-    <div class="">
-        <div class="">
-            <div class="">
+    <div >
+        <div >
+            <div >
                 <table class="panel">
                     <tr>
                         <td>
@@ -21,11 +23,11 @@
                     </tr>
                     <tr>
                         <td>Session ID :</td>
-                        <td>{{ session.sessionId }}</td>
+                        <td>{{ session.id }}</td>
                     </tr>
                     <tr>
                         <td>Pseudo :</td>
-                        <td>{{ session.pseudo }}</td>
+                        <td>{{ session.username }}</td>
 
                     </tr>
                     <tr>
@@ -44,10 +46,9 @@
             </div>
 
             <div class=" ">
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?action=admin&method=listUser">Liste des utilisateurs</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=action&method=listAdmin">Liste des posts</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=comment&method=listAllComment">Liste des commentaires</a></div>
-                <div class="row pb-2 justify-content-center"><a class="btn btn-default btn-secondary" href="index.php?page=admin&method=changePassword">Changer de mot de passe</a></div>
+                <div><a class="btn" href="index.php?action=admin&method=listUser">Liste des utilisateurs</a></div>
+                <div><a class="btn" href="index.php?page=action&method=listPosts">Liste des posts</a></div>
+                <div><a class="btn" href="index.php?page=comment&method=listAllComment">Liste des commentaires</a></div>
             </div>
         </div>
     </div>
@@ -120,10 +121,10 @@
 
 
             {% if post.validated == '0' %}
-                <a class="btn btn-primary" href="index.php?page=article&method=approveArticle&idArticle={{ post.id }}">Approuver</a>
+                <a class="btn btn-primary" href="index.php?page=post&method=approvePost&idPost={{ post.id }}">Approuver</a>
             {% endif %}
-                <a class="btn btn-primary" href="index.php?page=article&method=editArticle&idArticle={{ post.id  }}">Editer</a>
-                <a class="btn btn-danger" href="index.php?page=article&method=deleteArticle&idArticle={{ post.id  }}">Supprimer</a>
+                <a class="btn btn-primary" href="index.php?page=post&method=editPost&idPost={{ post.id  }}">Editer</a>
+                <a class="btn btn-danger" href="index.php?page=post&method=deletePost&idPost={{ post.id  }}">Supprimer</a>
             <hr>
             {% endfor %}
 
@@ -148,9 +149,9 @@
                 </div>
 
                 <div class="row justify-content-around">
-                {% if comment.validate == '1' %}
+                {% if comment.published == '1' %}
                     <p>Commentaire approuvé</p>
-                {% elseif comment.validate == '0' %}
+                {% elseif comment.published == '0' %}
                     <p>Commentaire en attente de validation</p>
                     <a class="btn btn-primary" href="index.php?page=comment&method=approveComment&idComment={{ comment.id }}">Approuver</a>
                 {% endif %}
@@ -160,7 +161,7 @@
                 <hr>
             {% endfor %}
             {% if comments is empty %}
-                <div class="">
+                <div 
                     <p>Il n'y a aucun commentaires</p>
                 </div>
             {% endif %}

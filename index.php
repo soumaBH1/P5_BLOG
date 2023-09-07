@@ -2,7 +2,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 //require_once('src/controllers/homepageController.php');
-require_once('src/controllers/postController.php');
+//require_once('src/controllers/postController.php');
 //require_once('src/controllers/loginController.php');
 //use Exception;
 use Exception;
@@ -48,9 +48,10 @@ try {
    
     }  elseif ($_GET['action'] === 'addComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
-                $idPost = $_GET['id'];
-                var_dump($_SESSION['id']); exit();
-                (new CommentControler())->execute($idPost, $_SESSION['id']);
+                $post_id = $_GET['id'];
+                $user_id = $_GET['user_id'];
+                
+                (new CommentController())->execute($post_id, $_GET['user_id']);
                
             } else {
                 throw new Exception('Aucun identifiant de post envoyé.');
