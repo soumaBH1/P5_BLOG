@@ -2,14 +2,16 @@
 
 namespace Application\Controllers;
 
-use Twig\Extension\DebugExtension;
-use Twig\Loader\FilesystemLoader;
 use connection;
 use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\Extension\DebugExtension;
 use Application\Lib\DatabaseConnection;
+use Application\Services\SessionService;
 use Application\Repository\UserRepository;
 use Application\Repository\CommentRepository;
 use Application\Controllers\DefaultController;
+
 class UserController extends DefaultController
 {
     private $connection;
@@ -26,8 +28,11 @@ class UserController extends DefaultController
 
         $userRepository = new userRepository();
         $user = $userRepository->getUser($identifier);
+
+        $sessionService=new SessionService();
+        $userSession=$sessionService->getUserArray();
         
-        $param=array("user" => $user);
+        $param=array("user" => $user, "userSession"=> $userSession);
         $this->render("users/show.html.twig", $param, false);
    
     }
@@ -36,9 +41,11 @@ class UserController extends DefaultController
         $connection =  DatabaseConnection::getConnection();
         $userRepository = new UserRepository();
         $users = $userRepository->getUsers();
-       
 
-        $param=array("users" => $users);
+        $sessionService=new SessionService();
+        $userSession=$sessionService->getUserArray();
+
+        $param=array("users" => $users, "userSession"=> $userSession);
         $this->render("users/listUsers.html.twig", $param, false);
     }
 }

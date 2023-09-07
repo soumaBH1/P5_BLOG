@@ -1,5 +1,11 @@
 {% extends 'BaseTemplate.html.twig' %}
-{% block head %}{% endblock %}
+{% block head %} {% if userSession.id is defined %}
+            {% if userSession.role == 'Admin' %}
+        <li class="nav-item">
+            <a class="nav-link" href="index.php?action=createPoste">Créer un poste</a> 
+        </li>
+            {% endif %}
+        {% endif %}{% endblock %}
 {% block title %}
    
           <h3>HOME PAGE</h3>

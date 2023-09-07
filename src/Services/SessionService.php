@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace Application\Services;
 
 
 /**
@@ -28,6 +28,9 @@ class SessionService
      */
     public function __construct()
     {
+        if(!isset($_SESSION)){
+            return;
+        }
         $this->session = filter_var_array($_SESSION);
 
         if (isset($this->session['user'])) {

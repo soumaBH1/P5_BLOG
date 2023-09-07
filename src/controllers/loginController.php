@@ -6,12 +6,12 @@ namespace Application\Controllers;
 use DateTime;
 use Exception;
 use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use Twig\Error\RuntimeError;
+use Application\Services\SessionService;
 use Application\Lib\DatabaseConnection;
 use Application\Repository\UserRepository;
 use Application\Controllers\DefaultController;
-use Application\Controllers\SessionController;
 
 /**
  * Class LoginController
@@ -124,7 +124,8 @@ if($row === NULL){
     array_push($errors, "Oops.. Réessayer vos coordonnées ne correspondent pas !");
            
 }else{
-    $session = new SessionController($row);
+    $session = new SessionService();
+    $session->createSession($row);
 }
        
 
@@ -132,7 +133,7 @@ if($row === NULL){
 
 
 // Obtenir une variable de session
-$utilisateur = $session->get('role');
+//$utilisateur = $session->get('role');
 //var_dump($utilisateur); exit();
 //echo "Utilisateur en session : $utilisateur";
 
@@ -144,7 +145,7 @@ $utilisateur = $session->get('role');
                 //var_dump($_SESSION); exit();
                 //redirection vers dashboard si admin
             // si l'utilisateur est administrateur, rediriger vers la zone d'administration
-				if ( in_array($session->get('role'), ["Admin" , "author"])) {
+				if ( in_array($session->getUserArray()['role'], ["Admin" , "author"])) {
 					$_SESSION['message'] = "Vous êtes maintenant connecté.";
 					
                     // rediriger vers la zone d'administration
@@ -159,9 +160,6 @@ $utilisateur = $session->get('role');
             }
         }
     }
-
-
-
     public function logoutMethod()
     {
         unset($_SESSION);

@@ -23,24 +23,24 @@
                     </tr>
                     <tr>
                         <td>Session ID :</td>
-                        <td>{{ session.id }}</td>
+                        <td>{{ userSession.id }}</td>
                     </tr>
                     <tr>
                         <td>Pseudo :</td>
-                        <td>{{ session.username }}</td>
+                        <td>{{ userSession.username }}</td>
 
                     </tr>
                     <tr>
                         <td>Adresse email :</td>
-                        <td>{{ session.email }}</td>
+                        <td>{{ userSession.email }}</td>
                     </tr>
                     <tr>
                         <td>Date de création du compte : </td>
-                        <td>{{ session.dateRegister|date('d/m/Y \\à H:i:s')  }}</td>
+                        <td>{{ userSession.dateRegister|date('d/m/Y \\à H:i:s')  }}</td>
                     </tr>
                     <tr>
                         <td>Role : </td>
-                        <td>{{ session.role }}</td>
+                        <td>{{ userSession.role }}</td>
                     </tr>
                 </table>
             </div>

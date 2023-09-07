@@ -10,12 +10,16 @@ use Twig\Extension\DebugExtension;
 use Application\Lib\DatabaseConnection;
 use Application\Repository\PostRepository;
 use Application\Controllers\DefaultController;
+use Application\Services\SessionService;
+
 class HomepageController extends DefaultController
 {
     public function execute()
     {
         $connection =  DatabaseConnection::getConnection();
-       
-       $this->render("homepage.html.twig");
+       $sessionService=new SessionService();
+       $userSession=$sessionService->getUserArray();
+       $this->render("homepage.html.twig", ["userSession"=> $userSession]);
+
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Application\Controllers;
 
-use App\Services\SessionService;
+use Application\Services\SessionService;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 use Application\Lib\DatabaseConnection;
@@ -31,8 +31,11 @@ class PostController extends DefaultController
 
         $commentRepository = new CommentRepository();
         $comments = $commentRepository->getComments($identifier);
+       
+        $sessionService=new SessionService();
+        $userSession=$sessionService->getUserArray();
         $param = array("post" => $post,
-                        "comments" => $comments,);
+                        "comments" => $comments, "userSession"=> $userSession);
         $this->render("posts/show.html.twig", $param, false);
     }
     public function index()
@@ -40,7 +43,9 @@ class PostController extends DefaultController
         $connection =  DatabaseConnection::getConnection();
         $postRepository = new PostRepository();
         $posts = $postRepository->getPosts();
-        $param = array("posts" => $posts);
+        $sessionService=new SessionService();
+        $userSession=$sessionService->getUserArray();
+        $param = array("posts" => $posts, "userSession"=> $userSession) ;
         $this->render("posts/listPosts.html.twig", $param, false);
     }
     public function createPostMethod()
@@ -53,9 +58,10 @@ class PostController extends DefaultController
          $image = "";
          $errors = array();
          $row = array();
-         // créer UN post
-        
-             $this->render("posts/createPost.html.twig");
+         // passer les paramettres de connection
+         $sessionService=new SessionService();
+        $userSession=$sessionService->getUserArray();
+             $this->render("posts/createPost.html.twig", ["userSession"=> $userSession]);
              // recevoir toutes les valeurs d'entrée du formulaire
              $title = htmlspecialchars($_POST['title']);
              $body = htmlspecialchars($_POST['body']);
