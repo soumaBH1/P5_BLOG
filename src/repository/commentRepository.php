@@ -28,7 +28,23 @@ class CommentRepository
 
         return $comments;
     }
+    public function getAllComments(): array
+    {
+        $statement = $this->connection->prepare(
+            "SELECT id, post_id, user_id, body, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM comments ORDER BY created_at DESC"
+        );
+        $statement->execute();
 
+        $comments = [];
+        while (($row = $statement->fetch())) {
+            $comment = new Comment();
+            $comment->hydrate( $row);
+            $comments[] = $comment;
+        }
+       
+
+        return $comments;
+    }
     public function createComment(string $post, int $user_id, string $comment): bool
     {
     

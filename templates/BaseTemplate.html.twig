@@ -22,27 +22,26 @@
 	 {% if userSession.id is defined %}
             {% if userSession.role == 'Admin' %}
         <li class="nav-item">
-            <a class="nav-link" href="index.php?action=createPoste">Créer un poste</a> 
+            <a class="nav-link" href="index.php?action=createPost">Créer un poste</a> 
         </li>
             {% endif %}
         {% endif %}
 	</ul>
 	{% if userSession.id is defined %}
     <ul class="navbar-nav justify-content-end">
-        <li class="nav-item">
+        <li class="user-info">
             {% if userSession.role == 'Admin' %}
-                <a class="nav-link" href="index.php?action=dashboardAdmin">Mon compte</a>
-            {% elseif userSession.role == 'Utilisateur' %}
-                <a class="nav-link" href="index.php?action=dashboardUser">Mon compte</a>
+                <a  href="index.php?action=adminDashboard">Mon compte</a>
+            {% elseif userSession.role == 'user' %}
+                <a  href="index.php?action=userDachboard">Mon compte</a>
             {% endif %}
         </li>
     </ul>
     {% endif %}
  <ul>
- {{userSession.id }}
-    {% if userSession.id is defined %}
-        <form class="nav-item">
-            <a class="btn btn-warning" href="index.php?action=logout">Logout</a>
+     {% if userSession.id is defined %}
+        <form class="user-info">
+            <a class="logout-btn" href="index.php?action=logout">Logout</a>
         </form>
     {% else %}
         <form class="nav-item">
@@ -78,7 +77,7 @@
     {% if userSession.role == 'Admin' %}
         <div class="row">
             <div class="col">
-                <a href="index.php?action=admin">Administration</a>
+                <a href="index.php?action=adminDashboard">Administration</a>
             </div>
         </div>
     {% endif %}

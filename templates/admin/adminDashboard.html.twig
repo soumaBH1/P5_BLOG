@@ -3,10 +3,12 @@
 	<link rel="stylesheet" href= "static/css/admin_styling.css">
 	
 {% block title %}
-    <div class=".container">
-        <div class=".container.dashboard h1 ">
-            <h3>Panel d'administration</h3>
-        </div>
+<div class="header">
+	<div class="logo">
+			<h1>Blog IBH - Admin</h1>
+		</a>
+	</div>
+    
     </div>
 {% endblock %}
 
@@ -47,8 +49,8 @@
 
             <div class=" ">
                 <div><a class="btn" href="index.php?action=admin&method=listUser">Liste des utilisateurs</a></div>
-                <div><a class="btn" href="index.php?page=action&method=listPosts">Liste des posts</a></div>
-                <div><a class="btn" href="index.php?page=comment&method=listAllComment">Liste des commentaires</a></div>
+                <div><a class="btn" href="index.php?action&method=listPosts">Liste des posts</a></div>
+                <div><a class="btn" href="index.php?action=comment&method=listAllComment">Liste des commentaires</a></div>
             </div>
         </div>
     </div>
@@ -121,10 +123,10 @@
 
 
             {% if post.validated == '0' %}
-                <a class="btn btn-primary" href="index.php?page=post&method=approvePost&idPost={{ post.id }}">Approuver</a>
+                <a class="btn btn-primary" href="index.php?action=approvePost&idPost={{ post.id }}">Approuver</a>
             {% endif %}
-                <a class="btn btn-primary" href="index.php?page=post&method=editPost&idPost={{ post.id  }}">Editer</a>
-                <a class="btn btn-danger" href="index.php?page=post&method=deletePost&idPost={{ post.id  }}">Supprimer</a>
+                <a class="btn btn-primary" href="index.php?action=editPost&idPost={{ post.id  }}">Editer</a>
+                <a class="btn btn-danger" href="index.php?action=deletePost&idPost={{ post.id  }}">Supprimer</a>
             <hr>
             {% endfor %}
 
@@ -153,9 +155,9 @@
                     <p>Commentaire approuvé</p>
                 {% elseif comment.published == '0' %}
                     <p>Commentaire en attente de validation</p>
-                    <a class="btn btn-primary" href="index.php?page=comment&method=approveComment&idComment={{ comment.id }}">Approuver</a>
+                    <a class="btn btn-primary" href="index.php?action=approveComment&idComment={{ comment.id }}">Approuver</a>
                 {% endif %}
-                <a class="btn btn-danger" href="index.php?page=comment&method=deleteComment&idComment={{ comment.id}}">Supprimer</a>
+                <a class="btn btn-danger" href="index.php?action=deleteComment&idComment={{ comment.id}}">Supprimer</a>
                 </div>
 
                 <hr>

@@ -164,5 +164,9 @@ if($row === NULL){
     {
         unset($_SESSION);
         session_destroy();
+        $_SESSION['message'] = "Vous êtes maintenant déconnecté.";
+					// rediriger vers la zone publique
+					header('location: index.php');				
+					exit(0);
     }
 }

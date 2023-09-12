@@ -7,8 +7,10 @@ require_once('src/model/comment.php');
 
 use Twig\Environment;
 use Application\Lib\DatabaseConnection;
+use Application\Services\SessionService;
 use Application\Repository\CommentRepository;
 use Application\Controllers\DefaultController;
+
 class CommentController extends DefaultController
 {
     private $commentRepository;
@@ -22,8 +24,20 @@ class CommentController extends DefaultController
        
     }
 
+    public function index()
+    {
+        $connection =  DatabaseConnection::getConnection();
+        $commentRepository = new CommentRepository();
+        $comments = $commentRepository->getAllComments();
+
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+
+        $param = array("comments" => $comments, "userSession" => $userSession);
+        $this->render("posts/listComments.html.twig", $param, false);
+    }
    
-    public function execute(string $post_id, array $input)
+    public function execute(array $input)
     {
         if (isset ($_SESSION ))
         
@@ -31,7 +45,8 @@ class CommentController extends DefaultController
         $published = 0;
         $user_id = 1;
         if (!empty($input['comment'])) {
-            $user_id = $_SESSION['user_id'];
+            $post_id = $input['post_id'];
+            $user_id = $input['user_id'];
             $comment = $input['comment'];
         } else {
             throw new \Exception('Les données du formulaire sont invalides.');

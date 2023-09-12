@@ -21,8 +21,6 @@ class PostController extends DefaultController
     {
         $this->connection = DatabaseConnection::getConnection();
         $this->repository = new PostRepository();
-       
-      
     }
     public function show(string $identifier)
     {
@@ -31,11 +29,14 @@ class PostController extends DefaultController
 
         $commentRepository = new CommentRepository();
         $comments = $commentRepository->getComments($identifier);
-       
-        $sessionService=new SessionService();
-        $userSession=$sessionService->getUserArray();
-        $param = array("post" => $post,
-                        "comments" => $comments, "userSession"=> $userSession);
+
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+        $param = array(
+            "post" => $post,
+            "comments" => $comments, "userSession" => $userSession
+        );
+        //var_dump($param); exit();
         $this->render("posts/show.html.twig", $param, false);
     }
     public function index()
@@ -43,41 +44,49 @@ class PostController extends DefaultController
         $connection =  DatabaseConnection::getConnection();
         $postRepository = new PostRepository();
         $posts = $postRepository->getPosts();
-        $sessionService=new SessionService();
-        $userSession=$sessionService->getUserArray();
-        $param = array("posts" => $posts, "userSession"=> $userSession) ;
+
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+
+        $param = array("posts" => $posts, "userSession" => $userSession);
         $this->render("posts/listPosts.html.twig", $param, false);
     }
     public function createPostMethod()
     {
         if ($_SESSION['role'] = "admin") {
-         // declaration des variables 
-         $title = "";
-         $body    = "";
-         $chapo = "";
-         $image = "";
-         $errors = array();
-         $row = array();
-         // passer les paramettres de connection
-         $sessionService=new SessionService();
-        $userSession=$sessionService->getUserArray();
-             $this->render("posts/createPost.html.twig", ["userSession"=> $userSession]);
-             // recevoir toutes les valeurs d'entrée du formulaire
-             $title = htmlspecialchars($_POST['title']);
-             $body = htmlspecialchars($_POST['body']);
-             $chapo = htmlspecialchars($_POST['chapo']);
-             //$image = htmlspecialchars($_POST['image']);
-             $row['title']=$title;
-             $row['body']=$body;
-             $row['chapo']=$chapo;
-             $row['user_id']= $_SESSION['user_id'];
+            // declaration des variables 
+            $title = "";
+            $body    = "";
+            $chapo = "";
+            $image = "";
+            $errors = array();
+            $row = array();
+
+            // passer les paramettres de connection
+            $sessionService = new SessionService();
+            $userSession = $sessionService->getUserArray();
+            
+            $this->render("posts/createPost.html.twig", ["userSession" => $userSession]);
+           
+            // recevoir toutes les valeurs d'entrée du formulaire
+            if (!empty($_POST)){
+            $title = htmlspecialchars($_POST['title']);
+            $body = htmlspecialchars($_POST['content']);
+            $chapo = htmlspecialchars($_POST['chapo']);
+            $fituredImage = htmlspecialchars($_POST['featured_image']);
+            $row['title'] = $title;
+            $row['body'] = $body;
+            $row['chapo'] = $chapo;
+            $row['user_id'] = $userSession['id'];
+            $row['featured_image'] =  $fituredImage;
             $connection =  DatabaseConnection::getConnection();
             $postRepository = new PostRepository();
+           // var_dump($userSession['id']); exit();
             $postRepository->addPost($row);
-                       
+
             $_SESSION['message'] = "Post crée avec  succée.";
             header('location: index.php');
-             
+        }
         }
     }
 }

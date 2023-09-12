@@ -9,9 +9,9 @@ namespace Application\Services;
  */
 class SessionService
 {
-    const ADMIN = 'Administrateur';
+    const ADMIN = 'Admin';
 
-    const USER = 'Utilisateur';
+    const USER = 'User';
 
     /**
      * @var mixed
@@ -43,12 +43,14 @@ class SessionService
      */
     public function createSession(array $data)
     {
-        if ($data['role'] == 1) $data['role'] = self::ADMIN;
-        elseif ($data['role'] == 2) $data['role'] = self::USER;
+        if ($data['role'] == "admin") $data['role'] = self::ADMIN;
+        elseif ($data['role'] =="user") $data['role'] = self::USER;
 
         $this->session['user'] = [
             'sessionId' => session_id(),
             'username' => $data['username'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
             'id' => $data['id'],
             'email' => $data['email'],
             'created_at' => $data['created_at'],
@@ -78,16 +80,16 @@ class SessionService
 
     public function isAdmin()
     {
-        if ($this->getUserVar('role') !== 'Administrateur') {
-            header('Location: index.php?page=home');
+        if ($this->getUserVar('role') !== 'admin') {
+           // header('Location: index.php?action=homePage');
         }
         return true;
     }
 
     public function isUser()
     {
-        if ($this->getUserVar('role') !== 'Utilisateur') {
-            header('Location: index.php?page=home');
+        if ($this->getUserVar('role') !== 'user') {
+            //header('Location: index.php?action=homePage');
         }
         return true;
     }
@@ -125,9 +127,9 @@ class SessionService
      */
     private function verifyRole()
     {
-        if ($this->getUserVar('role') == 1) {
+        if ($this->getUserVar('role') == "admin") {
             $this->setUserVar('role', self::ADMIN);
-        } elseif ($this->getUserVar('role') == 2) {
+        } else {
             $this->setUserVar('role', self::USER);
         }
     }

@@ -22,56 +22,58 @@
                         <h2 class="post-title">{{ post.title|e }}</h2> 
                         
                         <div class="post" >
-                        <p>
+                            <p>
                                 {{ post.content|e }}
                             </p>
-                            <div class="content post post_image" alt="">
-                          
-                            <img src= {{ BASE_URL ~ '/static/images/' ~ post.image }} alt="" width="500">
                            
+                            <div class="content post post_image" alt="">
+                            <img src= {{ BASE_URL ~ '/static/images/' ~ post.image }} alt="" width="500">
                             </div>
+                            
                             <div class="post-body-div-details">
-                                <p> crée le: {{ post.frenchCreationDate|e }}</p>
+                              <p> crée le: {{ post.frenchCreationDate|e }}</p>
                               <p> modifié le: {{ post.frenchUpdatedDate|e }}</p>
                               <p> Username: {{ post.username|e }}</p>
                               <p> chapo: {{ post.chapo|e }}</p>
-                               <p> user_id: {{ post.user_id|e }}</p>
-                               <p> id: {{ post.id|e }}</p>
                             </div>
-                           
-                            
                         </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    <h2>Commentaires:</h2>
-<div class="container">
-        <div class="content">
-          {% for comment in comments %}
-            <div class=".content .post-comments">
-                <!-- affichage du comments  -->
-                    {% if not post.published %}
-                      <p class=".content .post-comments">Désolé... Ce commentaire n'est pas encore publié</h2>
-                    {% else %}
-                        <p class=".content .post-comments">{{ comment.body|e }}</h2> 
-                    {% endif %}
-            </div>
-        {% endfor %}
-        </div>
-    </div>
+   {% if  comments is defined %}
+    
     <div class="container">
         <div class="content">
-<form method="post" action='index.php?action=addComment&id='{{ post.id }}'&user_id='{{ user.id }}>
-      <div>
-        <label for="comment">Commentaire</label><br />
-        <textarea id="comment" name="comment"></textarea>
+      <h2>Commentaires:</h2>    
+      {% for comment in comments %}
+                 <div class=".comments-section">
+                <!-- affichage du comments  -->
+                    {% if not comment.published %}
+                    {% else %}
+                      <p class=".comment">{{ comment.body|e }}</h2> 
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    <div>
-        <input type="submit" />
-    </div>
-</form>
- </div>
-    </div>
+     {% endif %}
+        <div class="container">
+             <div class="content">
+              <div class=".comments-section">
+              <h2>Ajouter un commentaire:</h2>
+                <form method="post" class="form-control" action="index.php?action=addComment&id={{ post.id }}&user_id={{ userSession.id }}">
+                
+                <div class="form-group">
+                <label for="comment">Commentaire</label><br />
+                <input type="text" class="form-control" id="comment" name="comment"></textarea>
+                </div>
+                
+                 <button type="submit" class="btn btn-primary">Créer</button>
+                
+                </form>
+             </div>
+        </div></div>
+   
 {% endblock %}

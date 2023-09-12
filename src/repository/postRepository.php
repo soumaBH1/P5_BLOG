@@ -49,15 +49,18 @@ class PostRepository
             $body = $row['body'];
             $chapo = $row['chapo'];
             $user_id = $row['user_id'];
+            $image= $row['featured_image'];
            $published=0;
             
-            $statement = $this->connection->prepare('INSERT INTO posts (user_id, post_id, body, published, created_at) VALUES(:user_id, :post_id, :body, :published, now())');
+            $statement = $this->connection->prepare('INSERT INTO posts (user_id, body, published, title , chapo, image, created_at) VALUES(:user_id, :body, :published, :title, :chapo, :image, now())');
            
                 $statement->bindParam(':user_id', $user_id);
+                $statement->bindParam(':body', $body);
                 $statement->bindParam(':published', $published);
                 $statement->bindParam(':title', $title);
-                $statement->bindParam(':body', $body);
                 $statement->bindParam(':chapo', $chapo);
+                $statement->bindParam(':image', $image);
                 $statement->execute();
+              
     } 
 }
