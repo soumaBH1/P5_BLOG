@@ -13,7 +13,8 @@ class Comment
     private string $frenchCreationDate;
     private string $frenchUpdatedDate;
     private string $body;
-    
+    private bool $published;
+    private string $username;
     public function getFrenchCreationDate(): string
     {
         return $this->frenchCreationDate;
@@ -62,12 +63,30 @@ class Comment
     {
         $this->frenchUpdatedDate= strtoupper($value);
     }
+    public function getPublished(): bool
+    {
+        return $this->published;
+    }
+    public function setPublished(bool $value)
+    {
+        $this->published= $value;
+    }   
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+    public function setUsername(string $value)
+    {
+        $this->username= strtoupper($value);
+    }
     public function hydrate(array $value)
     {
         $this->setId($value['id'] ?? ''); 
         $this->setPost_id($value['post_id'] ?? ''); 
         $this->setUser_id($value['user_id'] ?? ''); 
         $this->setBody($value['body'] ?? ''); //remplace le isset
+        $this->setPublished($value['published'] ?? ''); 
+        $this->setUsername($value['username'] ?? ''); 
         $this->setFrenchCreationDate($value['french_creation_date'] ?? ''); 
         $this->setFrenchUpdatedDate($value['french_updated_date'] ?? ''); 
         

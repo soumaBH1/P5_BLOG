@@ -31,9 +31,9 @@
     <ul class="navbar-nav justify-content-end">
         <li class="user-info">
             {% if userSession.role == 'Admin' %}
-                <a  href="index.php?action=adminDashboard">Mon compte</a>
+                <a class="buttons" href="index.php?action=adminDashboard">Mon compte</a>
             {% elseif userSession.role == 'user' %}
-                <a  href="index.php?action=userDachboard">Mon compte</a>
+                <a class="buttons" href="index.php?action=userDachboard">Mon compte</a>
             {% endif %}
         </li>
     </ul>
@@ -64,7 +64,9 @@
 </div>
 </section>
 </body>
-<footer>
+
+{% block footer %}
+
 <div class="footer">
 
   © Copyright © 2023 - Site réalisé par Ibtissem Ben Hammouda
@@ -75,7 +77,7 @@
 {% if userSession.id is defined %}
 
     {% if userSession.role == 'Admin' %}
-        <div class="row">
+        <div  class="buttons">
             <div class="col">
                 <a href="index.php?action=adminDashboard">Administration</a>
             </div>
@@ -86,5 +88,5 @@
 </div>
 
 </footer>
+{% endblock %}
 
-</html>

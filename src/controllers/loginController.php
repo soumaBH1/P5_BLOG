@@ -124,6 +124,7 @@ if($row === NULL){
     array_push($errors, "Oops.. Réessayer vos coordonnées ne correspondent pas !");
            
 }else{
+    $_SESSION['message'] = "You are now logged in";
     $session = new SessionService();
     $session->createSession($row);
 }

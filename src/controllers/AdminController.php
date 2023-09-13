@@ -1,4 +1,4 @@
-<?
+<?php
 namespace Application\Controllers;
 
 use Twig\Environment;
@@ -14,15 +14,19 @@ use Application\Controllers\DefaultController;
 class AdminController extends DefaultController
 {
     
+    /**
+     * admin dashboard execute
+     * @return void
+     */
     public function execute()
     {
-        
+        $connection =  DatabaseConnection::getConnection();
         $sessionService=new SessionService();
         $userSession=$sessionService->getUserArray();
       
        $postRepository = new PostRepository();
        $posts = $postRepository->getPosts();
-
+       
        $userRepository = new UserRepository();
         $users = $userRepository->getUsers();
 
@@ -30,7 +34,7 @@ class AdminController extends DefaultController
         $comments = $commentRepository->getAllComments();
         
         $params = array("comments" => $comments,"posts" => $posts, "users" => $users, "userSession" => $userSession);
-       $this->render("adminDashboard.html.twig", $params);
+        $this->render("adminDashboard.html.twig", $params);
 
     }
 }

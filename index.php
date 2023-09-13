@@ -1,10 +1,7 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-//require_once('src/controllers/AdminController.php');
-//require_once('src/controllers/postController.php');
-//require_once('src/controllers/loginController.php');
-//use Exception;
+
 use Exception;
 use Tracy\Debugger;
 use Application\Controllers\PostController;
@@ -48,6 +45,7 @@ try {
         } elseif ($_GET['action'] === 'addComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                $post_id = $_GET['id'];
+               
                $user_id = $_GET['user_id'];
                $comment = $_POST['comment'];
                $row = ["post_id" => $post_id, "user_id" => $user_id, "comment" => $comment];

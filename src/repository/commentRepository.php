@@ -14,7 +14,7 @@ class CommentRepository
     public function getComments(string $post): array
     {
         $statement = $this->connection->prepare(
-            "SELECT id, post_id, user_id, body, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM comments WHERE post_id = ? ORDER BY created_at DESC"
+             "SELECT comments.id, comments.post_id, comments.user_id, comments.body, comments.published, DATE_FORMAT(comments.created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(comments.updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date, users.username FROM comments inner join users ON users.id = comments.user_id WHERE comments.post_id = ? ORDER BY comments.created_at DESC"
         );
         $statement->execute([$post]);
 
@@ -30,8 +30,9 @@ class CommentRepository
     }
     public function getAllComments(): array
     {
+       
         $statement = $this->connection->prepare(
-            "SELECT id, post_id, user_id, body, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date FROM comments ORDER BY created_at DESC"
+            "SELECT comments.id, comments.post_id, comments.user_id, comments.body, comments.published, DATE_FORMAT(comments.created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(comments.updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date, users.username FROM comments inner join users ON users.id = comments.user_id ORDER BY comments.created_at DESC"
         );
         $statement->execute();
 
@@ -45,20 +46,24 @@ class CommentRepository
 
         return $comments;
     }
-    public function createComment(string $post, int $user_id, string $comment): bool
+    public function createComment(string $post_id, int $user_id, string $comment): bool
     {
     
         $statement = $this->connection->prepare(
-            'INSERT INTO comments(post_id, user_id, body, created_at) VALUES(?, ?, ?, NOW())'
+            'INSERT INTO comments(post_id, user_id, body, created_at) VALUES(:post_id, :user_id, :comment, NOW())'
         );
-        $affectedLines = $statement->execute([$post, $user_id, $comment]);
-
+        $statement->bindParam(':post_id', $post_id);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':comment', $comment);
+        $affectedLines = $statement->execute();
+       
         return ($affectedLines > 0);
     }
     public function deleteComment($idComment)
     {
         $statement = $this->connection->prepare(
- 'DELETE FROM Comment WHERE Comment.id = ' . $idComment );
+ 'DELETE FROM Comment WHERE Comment.id = :?');
+ $statement->bindParam(':?', $idcomment);
         return $statement->execute();
     }
 

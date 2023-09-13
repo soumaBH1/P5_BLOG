@@ -14,12 +14,15 @@ use Application\Services\SessionService;
 
 class HomepageController extends DefaultController
 {
+    /**
+     * Summary of execute
+     * @return void
+     */
     public function execute()
     {
         $connection =  DatabaseConnection::getConnection();
       $sessionService=new SessionService();
        $userSession=$sessionService->getUserArray();
-      //var_dump($userSession); exit();
        $this->render("homepage.html.twig", ["userSession"=> $userSession]);
 
     }

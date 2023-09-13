@@ -42,23 +42,29 @@
             </div>
         </div>
     </div>
+    <hr>
    {% if  comments is defined %}
     
     <div class="container">
         <div class="content">
-      <h2>Commentaires:</h2>    
-      {% for comment in comments %}
-                 <div class=".comments-section">
+            <h2>Commentaires:</h2>    
+            {% for comment in comments %}
+                 <div class="comments-section">
                 <!-- affichage du comments  -->
-                    {% if not comment.published %}
+              
+                    {% if comment.published %}
+                     <p class="comment">{{ comment.body|e }}</p>
+                     <p class="comment .comment-date" >crée le: {{ comment.frenchCreationDate|e }}</p>  
+                    <p class="comment ." >par: {{ comment.username|e }}</p>  
+                  
                     {% else %}
-                      <p class=".comment">{{ comment.body|e }}</h2> 
-                    {% endif %}
+                     {% endif %}
                 </div>
             {% endfor %}
         </div>
     </div>
      {% endif %}
+      <hr>
         <div class="container">
              <div class="content">
               <div class=".comments-section">

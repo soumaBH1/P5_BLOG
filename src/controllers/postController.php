@@ -66,7 +66,7 @@ class PostController extends DefaultController
             $sessionService = new SessionService();
             $userSession = $sessionService->getUserArray();
             
-            $this->render("posts/createPost.html.twig", ["userSession" => $userSession]);
+            $this->render("posts/createPost.html.twig", ["userSession" => $userSession, "errors" => $errors]);
            
             // recevoir toutes les valeurs d'entrée du formulaire
             if (!empty($_POST)){
@@ -74,16 +74,16 @@ class PostController extends DefaultController
             $body = htmlspecialchars($_POST['content']);
             $chapo = htmlspecialchars($_POST['chapo']);
             $fituredImage = htmlspecialchars($_POST['featured_image']);
+            $published = htmlspecialchars($_POST['publish']);
             $row['title'] = $title;
             $row['body'] = $body;
             $row['chapo'] = $chapo;
             $row['user_id'] = $userSession['id'];
             $row['featured_image'] =  $fituredImage;
+            $row['published'] =  $published;
             $connection =  DatabaseConnection::getConnection();
             $postRepository = new PostRepository();
-           // var_dump($userSession['id']); exit();
             $postRepository->addPost($row);
-
             $_SESSION['message'] = "Post crée avec  succée.";
             header('location: index.php');
         }

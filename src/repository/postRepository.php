@@ -50,9 +50,9 @@ class PostRepository
             $chapo = $row['chapo'];
             $user_id = $row['user_id'];
             $image= $row['featured_image'];
-           $published=0;
+            $published= $row['published'];
             
-            $statement = $this->connection->prepare('INSERT INTO posts (user_id, body, published, title , chapo, image, created_at) VALUES(:user_id, :body, :published, :title, :chapo, :image, now())');
+            $statement = $this->connection->prepare('INSERT INTO posts (user_id, body, published, title , chapo, image, published, created_at) VALUES(:user_id, :body, :published, :title, :chapo, :image, :published, now())');
            
                 $statement->bindParam(':user_id', $user_id);
                 $statement->bindParam(':body', $body);
@@ -60,7 +60,8 @@ class PostRepository
                 $statement->bindParam(':title', $title);
                 $statement->bindParam(':chapo', $chapo);
                 $statement->bindParam(':image', $image);
-                $statement->execute();
-              
+                $statement->bindParam(':published', $published);
+                $test=$statement->execute();
+              //var_dump($test); exit();
     } 
 }
