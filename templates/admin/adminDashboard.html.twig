@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block content %}
-   
-            <div >
+    
+           <div >
                 <table>
                     <tr>
                         <td>
@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <td>Date de création du compte : </td>
-                        <td>{{ userSession.created_at|date('d/m/Y \\à H:i:s')  }}</td>
+                        <td>{{ userSession.created_at|e }}</td>
                     </tr>
                     <tr>
                         <td>Role : </td>
@@ -39,7 +39,7 @@
             </div>
 
             <div >
-                <div><a  href="index.php?action=adminListUser">Liste des utilisateurs</a></div>
+                <div><a  href="index.php?action=listUser">Liste des utilisateurs</a></div>
                 <div><a  href="index.php?action=adminListPosts">Liste des posts</a></div>
                 <div><a  href="index.php?action=adminListAllComment">Liste des commentaires</a></div>
             </div>
@@ -63,13 +63,13 @@
                     <p>Email : {{ users.email }}</p>
                 </div>
                 <div >
-                    <p>Date d'enregistrement : {{ users.created_at|date('d/m/Y \\à H:i:s')  }}</p>
+                    <p>Date d'enregistrement : {{ users.created_at|e }}</p>
                 </div>
                 <div >
                     <p>Role :
-                        {% if users.role == "user" %}
+                        {% if users.role == "Admin" %}
                         Administrateur
-                        {% elseif users.role == "admin" %}
+                        {% elseif users.role == "User" %}
                         Utilisateur
                         {% endif %}
                     </p>
@@ -97,12 +97,12 @@
             </div>
             <div class="row">
                 <div >
-                    <p>Date de création: {{ post.frenchCreationDate|date('d/m/Y \\à H:i:s') }}</p>
+                    <p>Date de création: {{ post.frenchCreationDate|e }}</p>
                 </div>
                 <div >
                     {% if post.frenchUpdatedDate != null %}
                     <div >
-                        <p>Dernière modification le : {{ post.frenchUpdatedDate|date('d/m/Y \\à H:i:s') }}</p>
+                        <p>Dernière modification le : {{ post.frenchUpdatedDate|e }}</p>
                     </div>
                     {% endif %}
                 </div>
@@ -115,8 +115,8 @@
             {% if post.published == '0' %}
                 <a  href="index.php?action=publishPost&idPost={{ post.id }}">Approuver</a>
             {% endif %}
-                <a  href="index.php?action=editPost&idPost={{ post.id  }}">Editer</a>
-                <a  href="index.php?action=deletePost&idPost={{ post.id  }}">Supprimer</a>
+                <a  href="index.php?action=editPost&idPost={{ post.id }}">Editer</a>
+                <a  href="index.php?action=deletePost&idPost={{ post.id }}">Supprimer</a>
             <hr>
             {% endfor %}
 
@@ -134,7 +134,7 @@
                     <p>Commentaire : {{ comment.content }}</p>
                 </div>
                 <div >
-                    <p>Ecrit par : {{ comment.username }} le {{ comment.frenchCreationDate|date('d/m/Y \\à H:i:s')  }}</p>
+                    <p>Ecrit par : {{ comment.username }} le {{ comment.frenchCreationDate|e }}</p>
                 </div>
                 <div >
                     <p>Post : {{ comment.post_id }}</p>

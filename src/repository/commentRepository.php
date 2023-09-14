@@ -50,7 +50,7 @@ class CommentRepository
     {
     
         $statement = $this->connection->prepare(
-            'INSERT INTO comments(post_id, user_id, body, created_at) VALUES(:post_id, :user_id, :comment, NOW())'
+            'INSERT INTO comments(post_id, user_id, body, created_at) VALUES (:post_id, :user_id, :comment, NOW())'
         );
         $statement->bindParam(':post_id', $post_id);
         $statement->bindParam(':user_id', $user_id);

@@ -44,13 +44,13 @@ class LoginController extends DefaultController
         if ($_POST['action'] = 'register') {
             $this->render("login/register.html.twig");
             // recevoir toutes les valeurs d'entrée du formulaire
-            $username = htmlspecialchars($_POST['username']);
-            $email = htmlspecialchars($_POST['email']);
-            $firstname = htmlspecialchars($_POST['firstname']);
-            $lastname = htmlspecialchars($_POST['lastname']);
-            $age = htmlspecialchars($_POST['age']);
-            $password_1 = htmlspecialchars($_POST['password1']);
-            $password_2 = htmlspecialchars($_POST['password2']);
+            if (isset($_POST['username'])){ $username = htmlspecialchars($_POST['username']);}
+            if (isset($_POST['email'])){ $email = htmlspecialchars($_POST['email']);}
+            if (isset($_POST['firstname'])){ $firstname = htmlspecialchars($_POST['firstname']);}
+            if (isset($_POST['lastname'])){ $lastname = htmlspecialchars($_POST['lastname']);}
+            if (isset($_POST['age'])){ $age = htmlspecialchars($_POST['age']);}
+            if (isset($_POST['password1'])){ $password_1 = htmlspecialchars($_POST['password1']);}
+            if (isset($_POST['password2'])){ $password_2 = htmlspecialchars($_POST['password2']);}
 
             // validation du formulaire : s'assurer que le formulaire est correctement rempli
             if (empty($username)) {
@@ -85,6 +85,8 @@ class LoginController extends DefaultController
                 $userRepository = new UserRepository();
                
                 $userRepository->addUser($row);
+            } else {
+
             }
         }
     }
@@ -100,67 +102,61 @@ class LoginController extends DefaultController
         // // CONNEXION DE L'UTILISATEUR
         if ($_POST['action'] = 'login') {
             $this->render("login/login.html.twig");
-            // recevoir toutes les valeurs d'entrée du formulaire
-            $email = htmlspecialchars($_POST['email']);
-            $password = htmlspecialchars($_POST['password']);
+            
+            if ((isset($_POST['email'])) && (isset($_POST['password']))){
+                // recevoir toutes les valeurs d'entrée du formulaire
+                $email = htmlspecialchars($_POST['email']);
+                $password = htmlspecialchars($_POST['password']);
 
-            // validation du formulaire : s'assurer que le formulaire est correctement rempli
+                // validation du formulaire : s'assurer que le formulaire est correctement rempli
 
-            if (empty($email)) {
+                if (empty($email)) {
                 array_push($errors, "Oops.. vous avez oublié l'Email !'");
-            }
-            if (empty($password)) {
+                }
+                if (empty($password)) {
                 array_push($errors, "Oops.. vous avez oublié le mot de passe !");
-            }
+                }
            
 
-            if (empty($errors)) {
-                $userRepository = new UserRepository();
+                if (empty($errors)) {
+                    $userRepository = new UserRepository();
                 
-               $row= $userRepository->authentifyUser($email, $password);
-                // mettre l'utilisateur connecté dans le tableau de session
-       // Exemple d'utilisation
-if($row === NULL){
-    array_push($errors, "Oops.. Réessayer vos coordonnées ne correspondent pas !");
+                    $row= $userRepository->authentifyUser($email, $password);
+                    
+                    // mettre l'utilisateur connecté dans le tableau de session
+                    // Exemple d'utilisation
+                    if($row === NULL){
+                    array_push($errors, "Oops.. Réessayer vos coordonnées ne correspondent pas !");
            
-}else{
-    $_SESSION['message'] = "You are now logged in";
-    $session = new SessionService();
-    $session->createSession($row);
-}
-       
-
-
-
-
-// Obtenir une variable de session
-//$utilisateur = $session->get('role');
-//var_dump($utilisateur); exit();
-//echo "Utilisateur en session : $utilisateur";
-
-// Supprimer une variable de session
-//$session->remove('utilisateur');
-
-// Détruire la session
-//$session->destroy();
-                //var_dump($_SESSION); exit();
-                //redirection vers dashboard si admin
-            // si l'utilisateur est administrateur, rediriger vers la zone d'administration
-				if ( in_array($session->getUserArray()['role'], ["Admin" , "author"])) {
-					$_SESSION['message'] = "Vous êtes maintenant connecté.";
-					
-                    // rediriger vers la zone d'administration
-					header('location: index.php');
-					exit(0);
-				} else {
-					$_SESSION['message'] = "Vous êtes maintenant connecté.";
-					// rediriger vers la zone publique
-					header('location: index.php');				
-					exit(0);
-				}    
-            }
+                    }else{
+                    $_SESSION['message'] = "You are now logged in";
+                    $session = new SessionService();
+                    $session->createSession($row);
+                    
+                    }
+                }
+                     //redirection vers dashboard si admin
+                    // si l'utilisateur est administrateur, rediriger vers la zone d'administration
+			        if (isset($session)){	
+                       
+                        if ( in_array($session->getUserArray()['role'], ["admin"])) {
+					    $_SESSION['message'] = "Vous êtes maintenant connecté.";
+                       
+                        // rediriger vers la zone d'administration
+					    header('location: index.php');
+                        //exit(0);
+					   
+				    } else {
+					    $_SESSION['message'] = "Vous êtes maintenant connecté.";
+					    // rediriger vers la zone publique
+					    header('location: index.php');	
+                        //exit(0);			
+					   
+				    }    
+                }
+            }    
         }
-    }
+        }
     public function logoutMethod()
     {
         unset($_SESSION);

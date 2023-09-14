@@ -20,7 +20,7 @@
                       <h2 class="post-title">Désolé... Ce post n'est pas encore publié</h2>
                     {% else %}
                         <h2 class="post-title">{{ post.title|e }}</h2> 
-                        
+                        <p class="post .chapo"> CHAPO: {{ post.chapo|e }}</p>
                         <div class="post" >
                             <p>
                                 {{ post.content|e }}
@@ -34,7 +34,7 @@
                               <p> crée le: {{ post.frenchCreationDate|e }}</p>
                               <p> modifié le: {{ post.frenchUpdatedDate|e }}</p>
                               <p> Username: {{ post.username|e }}</p>
-                              <p> chapo: {{ post.chapo|e }}</p>
+                              
                             </div>
                         </div>
                     {% endif %}
@@ -49,17 +49,18 @@
         <div class="content">
             <h2>Commentaires:</h2>    
             {% for comment in comments %}
-                 <div class="comments-section">
+                 
                 <!-- affichage du comments  -->
               
                     {% if comment.published %}
+                <div class="comments-section">
                      <p class="comment">{{ comment.body|e }}</p>
                      <p class="comment .comment-date" >crée le: {{ comment.frenchCreationDate|e }}</p>  
                     <p class="comment ." >par: {{ comment.username|e }}</p>  
-                  
+                  </div>
                     {% else %}
                      {% endif %}
-                </div>
+                
             {% endfor %}
         </div>
     </div>

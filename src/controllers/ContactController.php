@@ -12,7 +12,7 @@ use Application\Repository\PostRepository;
 use Application\Controllers\DefaultController;
 use Application\Services\SessionService;
 
-class HomepageController extends DefaultController
+class ContactController extends DefaultController
 {
     /**
      * Summary of execute
@@ -20,13 +20,10 @@ class HomepageController extends DefaultController
      */
     public function execute()
     {
-        
         $connection =  DatabaseConnection::getConnection();
       $sessionService=new SessionService();
-      
        $userSession=$sessionService->getUserArray();
-      
-       $this->render("homepage.html.twig", ["userSession"=> $_SESSION]);
+       $this->render("Contact.html.twig", ["userSession"=> $userSession]);
 
     }
 }

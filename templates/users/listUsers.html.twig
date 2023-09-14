@@ -1,4 +1,5 @@
 {% extends 'BaseTemplate.html.twig' %}
+
 {% block head %}{% endblock %}
 {% block title %}
     <div class="row">
@@ -8,17 +9,17 @@
     </div>
 {% endblock %}
 {% block content %}
- <div class="container">
+ <div class="containerAdmin">
             
             <!-- affichage de l'enveloppe de posts -->
-          <div class="post-wrapper-singleP">
+          <div class="postAdmin-wrapper-singleP">
               
                <!--Afficher les enregistrements de la BDD -->
-		<div class="table-div">
+		<div class="tableAdmin-div">
 			<!-- Afficher le message de  notification -->
 			
 			<!-- Afficher le message de  notification -->
-				<table class="table">
+				<table class="tableAdmin">
 					<thead>
 						<th>Id</th>
 						<th>Login</th>
@@ -43,12 +44,14 @@
 								<!-- Actions sur utilisateur : editer et supprimer -->
 
 								<td>
-									<a class="fa fa-pencil btn edit" href="users.php?edit-admin="user.id>
+									<a class="fa fa-pencil btn edit" href="users.php?action=editUser&user_id={{user.id}}">
+									Editer
 									</a>
 								</td>
 
-								<td>
-									<a class="fa fa-trash btn delete" href="users.php?delete-admin="user.id>
+								<td >
+									<a class="fa fa-trash btn delete" href="users.php?action=deleteUser&user_id={{user.id}}">
+									Supprimer
 									</a>
 								</td>
 							</tr>

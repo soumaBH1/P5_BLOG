@@ -9,9 +9,9 @@ namespace Application\Services;
  */
 class SessionService
 {
-    const ADMIN = 'Admin';
+    const ADMIN = 'admin';
 
-    const USER = 'User';
+    const USER = 'user';
 
     /**
      * @var mixed
@@ -26,7 +26,7 @@ class SessionService
     /**
      * SessionController constructor.
      */
-    public function __construct()
+    public function _construct()
     {
         if(!isset($_SESSION)){
             return;
@@ -125,12 +125,14 @@ class SessionService
     /**
      *
      */
-    private function verifyRole()
+    private function verifyRole() :string
     {
         if ($this->getUserVar('role') == "admin") {
-            $this->setUserVar('role', self::ADMIN);
+           //$this->setUserVar('role', self::ADMIN); 
+           return "admin";
         } else {
-            $this->setUserVar('role', self::USER);
+            //$this->setUserVar('role', self::USER);
+            return "user";
         }
     }
 

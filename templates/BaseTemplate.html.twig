@@ -16,13 +16,12 @@
 		</a>
 	</div>
 	<ul>
-		<li><a class="active" href="index.php">Home</a></li>
-		<li><a href="index.php?action=listPosts">Blogs</a></li>
+		<li class="nav-item"><a  href="index.php">Home</a></li>
+		<li class="nav-item"><a  href="index.php?action=listPosts">Blogs</a></li>
         
 	 {% if userSession.id is defined %}
-            {% if userSession.role == 'Admin' %}
-        <li class="nav-item">
-            <a class="nav-link" href="index.php?action=createPost">Créer un poste</a> 
+            {% if userSession.role == 'admin' %}
+        <li class="nav-item"> <a  href="index.php?action=createPost">Créer un poste</a> 
         </li>
             {% endif %}
         {% endif %}
@@ -30,7 +29,7 @@
 	{% if userSession.id is defined %}
     <ul class="navbar-nav justify-content-end">
         <li class="user-info">
-            {% if userSession.role == 'Admin' %}
+            {% if userSession.role == 'admin' %}
                 <a class="buttons" href="index.php?action=adminDashboard">Mon compte</a>
             {% elseif userSession.role == 'user' %}
                 <a class="buttons" href="index.php?action=userDachboard">Mon compte</a>
@@ -41,7 +40,7 @@
  <ul>
      {% if userSession.id is defined %}
         <form class="user-info">
-            <a class="logout-btn" href="index.php?action=logout">Logout</a>
+            <a class="headerAdmin .logout-btn" href="index.php?action=logout">Logout</a>
         </form>
     {% else %}
         <form class="nav-item">
@@ -55,11 +54,16 @@
 </div>
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body>
 <section id="content">
   <div class="container">
+  
 {% block content %}
-
+{% if successMessage is defined %}
+    <div class="alert alert-success">
+        {{ successMessage }}
+    </div>
+{% endif %}
 {% endblock %}
 </div>
 </section>
@@ -71,14 +75,14 @@
 
   © Copyright © 2023 - Site réalisé par Ibtissem Ben Hammouda
   <a class="text-dark" href="https://www.linkedin.com/in/ibtissem-ben-hammouda-b0027653/?originalSubdomain=fr">Linkedin <?php echo date('Y'); ?></a>
-<li><a href="contact.php">Contact</a></li>
-		<li><a href="<?php echo 'static/cv/CV_Ibtissem_BEN_HAMMOUDA.pdf' ?>">Mon CV</a></li>
+<li><a href="index.php?action=contact">Contact</a></li>
+		<li><a href="static/cv/CV_Ibtissem_BEN_HAMMOUDA.pdf">Mon CV</a></li>
 
 {% if userSession.id is defined %}
 
-    {% if userSession.role == 'Admin' %}
-        <div  class="buttons">
-            <div class="col">
+    {% if userSession.role == 'admin' %}
+        <div  class="btn btn-primary">
+            <div>
                 <a href="index.php?action=adminDashboard">Administration</a>
             </div>
         </div>

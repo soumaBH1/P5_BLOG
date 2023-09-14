@@ -53,40 +53,46 @@ class PostController extends DefaultController
     }
     public function createPostMethod()
     {
-        if ($_SESSION['role'] = "admin") {
-            // declaration des variables 
-            $title = "";
-            $body    = "";
-            $chapo = "";
-            $image = "";
-            $errors = array();
-            $row = array();
-
-            // passer les paramettres de connection
-            $sessionService = new SessionService();
-            $userSession = $sessionService->getUserArray();
+        if (isset($userSession)) { //vérifier si un utilisateur estconnecté
             
-            $this->render("posts/createPost.html.twig", ["userSession" => $userSession, "errors" => $errors]);
-           
-            // recevoir toutes les valeurs d'entrée du formulaire
-            if (!empty($_POST)){
-            $title = htmlspecialchars($_POST['title']);
-            $body = htmlspecialchars($_POST['content']);
-            $chapo = htmlspecialchars($_POST['chapo']);
-            $fituredImage = htmlspecialchars($_POST['featured_image']);
-            $published = htmlspecialchars($_POST['publish']);
-            $row['title'] = $title;
-            $row['body'] = $body;
-            $row['chapo'] = $chapo;
-            $row['user_id'] = $userSession['id'];
-            $row['featured_image'] =  $fituredImage;
-            $row['published'] =  $published;
-            $connection =  DatabaseConnection::getConnection();
-            $postRepository = new PostRepository();
-            $postRepository->addPost($row);
-            $_SESSION['message'] = "Post crée avec  succée.";
-            header('location: index.php');
-        }
+                //vérifier si l'utilisateur connecté est admin
+            
+            if ($userSession['role'] = "admin") {
+                // declaration des variables 
+                $title = "";
+                $body    = "";
+                $chapo = "";
+                $image = "";
+                $errors = array();
+                $row = array();
+                $published = 0;
+                 //afficher le template creation de post   
+                $this->render("posts/createPost.html.twig", ["userSession" => $userSession, "errors" => $errors]);
+
+                // recevoir toutes les valeurs d'entrée du formulaire
+                if (!empty($_POST)) {
+                    $title = htmlspecialchars($_POST['title']);
+                    $body = htmlspecialchars($_POST['content']);
+                    $chapo = htmlspecialchars($_POST['chapo']);
+                    $fituredImage = htmlspecialchars($_POST['featured_image']);
+                    $published = $_POST['publish'];
+
+                    $row['title'] = $title;
+                    $row['body'] = $body;
+                    $row['chapo'] = $chapo;
+                    $row['user_id'] = $userSession['id'];
+                    $row['featured_image'] =  $fituredImage;
+                    $row['published'] =  $published;
+                    $connection =  DatabaseConnection::getConnection();
+                    $postRepository = new PostRepository();
+                    
+                    $postRepository->addPost($row);
+                    $_SESSION['message'] = "Post crée avec  succée.";
+                    header('Location: index.php?action=listPost');
+                }
+            } else {
+                $this->render("homepage.html.twig", ["userSession" => $userSession], false);
+            }
         }
     }
 }

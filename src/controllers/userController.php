@@ -23,18 +23,17 @@ class UserController extends DefaultController
     }
     public function show(string $identifier)
     {
-       
+
         $User = $this->repository->getUser($identifier);
 
         $userRepository = new userRepository();
         $user = $userRepository->getUser($identifier);
 
-        $sessionService=new SessionService();
-        $userSession=$sessionService->getUserArray();
-        
-        $param=array("user" => $user, "userSession"=> $userSession);
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+
+        $param = array("user" => $user, "userSession" => $userSession);
         $this->render("users/show.html.twig", $param, false);
-   
     }
     public function index()
     {
@@ -42,10 +41,34 @@ class UserController extends DefaultController
         $userRepository = new UserRepository();
         $users = $userRepository->getUsers();
 
-        $sessionService=new SessionService();
-        $userSession=$sessionService->getUserArray();
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+        if (isset($userSession)) {
 
-        $param=array("users" => $users, "userSession"=> $userSession);
-        $this->render("users/listUsers.html.twig", $param, false);
+            if ($userSession['role'] = "admin") {
+                $param = array("users" => $users, "userSession" => $userSession);
+                $this->render("users/listUsers.html.twig", $param, false);
+            } else {
+                $this->render("homepage.html.twig", ["userSession" => $userSession], false);
+            }
+        }
+    }
+    public function editUser(string $identifier)
+    {
+        $connection =  DatabaseConnection::getConnection();
+        $userRepository = new UserRepository();
+        $users = $userRepository->getUsers();
+
+        $sessionService = new SessionService();
+        $user = $userRepository->getUser($identifier);
+        if (isset($userSession)) {
+
+            if ($userSession['role'] = "admin") {
+                $param = array("user" => $user, "userSession" => $userSession);
+                $this->render("users/listUsers.html.twig", $param, false);
+            } else {
+                $this->render("homepage.html.twig", ["userSession" => $userSession], false);
+            }
+        }
     }
 }

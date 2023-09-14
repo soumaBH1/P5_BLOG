@@ -19,7 +19,7 @@ class CommentController extends DefaultController
     {
         $this->connection = DatabaseConnection::getConnection();
         $this->commentRepository = new CommentRepository();
-       
+        
     }
 
     public function index()
@@ -34,33 +34,46 @@ class CommentController extends DefaultController
         $param = array("comments" => $comments, "userSession" => $userSession);
         $this->render("posts/listComments.html.twig", $param, false);
     }
-   
-    public function execute(array $input)
-    {
-        if (isset ($_SESSION ))
-        
-               $published = 0;
-               $post_id = $_GET['id'];
-            
-        $user_id = $_GET['user_id'];
-        $comment = $_POST['comment'];
-        
-        if (!empty($comment)) {
-            
-        } else {
-            throw new \Exception('Les données du formulaire sont invalides.');
-        }
-        //
-        $success = $this->commentRepository->createComment($post_id, $user_id, $comment);
-       
-        ////
 
+    public function execute($row)
+    {
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
        
-        if (!$success) {
-            throw new \Exception('Impossible d\'ajouter le commentaire !');
-        } else {
-            echo "Commentaire ajoutée avec succée!";
-            header('Location: index.php?action=post&id=' . $post_id);
+        //var_dump($userSession); exit();
+        if (isset($userSession)) {
+            
+            if ($userSession['role']="admin") {
+
+                $published = 0;
+                $post_id = $_GET['id'];
+                $user_id = $_GET['user_id'];
+                $comment = $_POST['comment'];
+                
+                if (empty($comment)) {
+                  
+                 header('Location: index.php?action=post&id=' . $post_id);
+                    //ajouter un message d'erreur
+                    $errors = "Le champ commentaire est vide!";
+            
+                     //throw new \Exception('Les données du formulaire sont invalides.');
+                } else {
+       
+                    //
+                    $success = $this->commentRepository->createComment($post_id, $user_id, $comment);
+
+                    if (!$success) {
+                        throw new \Exception('Impossible d\'ajouter le commentaire !');
+                    } else {
+                     $successMessage = "Commentaire ajoutée avec succée!";
+                        header('Location: index.php?action=post&id=' . $post_id);
+                        // return $this->render('posts/show.html.twig', ['post_id' => $post_id, 'successMessage' => $successMessage, 'userSession' => $userSession]);
+                    } 
+                 }
+             }
         }
+        header('Location: index.php?action=post&id=' . $post_id);
+                        
     }
 }
+   

@@ -13,17 +13,17 @@
         <div class="content">
         <form action="index.php?action=createPost" method="post">
 
-            <div class="form-group">
+            <div>
                 <label for="title">Titre</label>
                 <input type="text"   id="title" name="title">
             </div>
 
-            <div class="form-group">
+            <div>
                 <label for="chapo">Extrait</label>
                 <input type="text"  id="chapo" name="chapo">
             </div>
 
-            <div class="form-group form-check">
+            <div>
                 <label for="content">Contenu</label>
                 <textarea type="text" cols="30" rows="10" id="content" name="content"></textarea>
             </div>
@@ -32,10 +32,10 @@
                 {% if userSession.role == 'Admin' %}
 						<label for="publish">
 							Publier
-							<input type="checkbox" value="0" name="publish" id="publish" checked="checked">
+							<input type="checkbox" value="0" name="publish" id="publish" checked="checked">&nbsp;
 						</label>
                 {% endif %}        
-            <button type="submit" >Créer</button>
+            <button type="submit" class="btn" name="create_post">Créer</button>
         </form>
  </div>
     </div>

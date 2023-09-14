@@ -52,7 +52,7 @@ class PostRepository
             $image= $row['featured_image'];
             $published= $row['published'];
             
-            $statement = $this->connection->prepare('INSERT INTO posts (user_id, body, published, title , chapo, image, published, created_at) VALUES(:user_id, :body, :published, :title, :chapo, :image, :published, now())');
+            $statement = $this->connection->prepare('INSERT INTO posts (user_id, body, published, title , chapo, image, created_at) VALUES(:user_id, :body, :published, :title, :chapo, :image, now())');
            
                 $statement->bindParam(':user_id', $user_id);
                 $statement->bindParam(':body', $body);
@@ -62,6 +62,12 @@ class PostRepository
                 $statement->bindParam(':image', $image);
                 $statement->bindParam(':published', $published);
                 $test=$statement->execute();
+                if ($test){
+                
+               echo $_SESSION['message'] = "User added successfully.";
+               
+                }
+                
               //var_dump($test); exit();
     } 
 }
