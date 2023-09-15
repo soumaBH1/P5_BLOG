@@ -32,7 +32,7 @@ class CommentRepository
     {
        
         $statement = $this->connection->prepare(
-            "SELECT comments.id, comments.post_id, comments.user_id, comments.body, comments.published, DATE_FORMAT(comments.created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(comments.updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_updated_date, users.username FROM comments inner join users ON users.id = comments.user_id ORDER BY comments.created_at DESC"
+            "SELECT comments.id, comments.post_id, comments.user_id, comments.body, comments.published, comments.created_at AS french_creation_date, comments.updated_at AS french_updated_date, users.username FROM comments inner join users ON users.id = comments.user_id ORDER BY comments.created_at DESC"
         );
         $statement->execute();
 
@@ -59,12 +59,27 @@ class CommentRepository
        
         return ($affectedLines > 0);
     }
-    public function deleteComment($idComment)
-    {
+    public function deleteComment(string $idComment)
+    {  
         $statement = $this->connection->prepare(
- 'DELETE FROM Comment WHERE Comment.id = :?');
- $statement->bindParam(':?', $idcomment);
-        return $statement->execute();
+        'DELETE FROM Comments WHERE Comments.id = :id');
+        $statement->bindParam(':id', $idcomment);
+         $success=$statement->execute();
+        return($success);
+    }
+    /**
+     * Summary of publishComment
+     * @param string $idComment
+     * @return bool
+     */
+    public function publishComment(string $id_comment)
+    { 
+        $statement = $this->connection->prepare(
+            'UPDATE comments SET comments.published = 1 WHERE comments.id = :id');
+        $statement->bindParam(':id', $id_comment);
+         $success=$statement->execute();
+         
+        return($success);
     }
 
 }

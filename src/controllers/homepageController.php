@@ -20,13 +20,12 @@ class HomepageController extends DefaultController
      */
     public function execute()
     {
-        
-        $connection =  DatabaseConnection::getConnection();
-      $sessionService=new SessionService();
-      
-       $userSession=$sessionService->getUserArray();
-      
-       $this->render("homepage.html.twig", ["userSession"=> $_SESSION]);
 
+        $connection =  DatabaseConnection::getConnection();
+        $sessionService = new SessionService();
+
+        $userSession = $sessionService->getUserArray();
+
+        $this->render("homepage.html.twig", ["userSession" => $userSession]);
     }
 }

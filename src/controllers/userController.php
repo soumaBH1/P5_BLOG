@@ -71,4 +71,31 @@ class UserController extends DefaultController
             }
         }
     }
+    public function deleteUserMethod(string $User_id)
+    {
+        
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+       
+        if (isset($userSession)) {
+           
+            if ($userSession['role']="admin") {
+                
+               $success = $this->repository->deleteUser($User_id);
+               
+                if($success==true){     
+                    $successMessage="User supprimé avec succée!";
+                   (new AdminController())->execute();
+                }else{
+                    (new AdminController())->execute();
+                
+                }
+                }else{
+                header('Location: index.php'); 
+            }
+             
+        }else{
+        header('Location: index.php');
+     }
+    }
 }

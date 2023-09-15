@@ -21,9 +21,9 @@ class ContactController extends DefaultController
     public function execute()
     {
         $connection =  DatabaseConnection::getConnection();
-      $sessionService=new SessionService();
-       $userSession=$sessionService->getUserArray();
-       $this->render("Contact.html.twig", ["userSession"=> $userSession]);
+        $sessionService=new SessionService();
+        $userSession=$sessionService->getUserArray();
+        $this->render("Contact.html.twig", ["userSession"=> $userSession]);
 
     }
 }

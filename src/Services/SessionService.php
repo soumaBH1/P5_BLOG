@@ -26,7 +26,7 @@ class SessionService
     /**
      * SessionController constructor.
      */
-    public function _construct()
+    public function __construct()
     {
         if(!isset($_SESSION)){
             return;

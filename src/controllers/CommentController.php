@@ -40,7 +40,7 @@ class CommentController extends DefaultController
         $sessionService = new SessionService();
         $userSession = $sessionService->getUserArray();
        
-        //var_dump($userSession); exit();
+        
         if (isset($userSession)) {
             
             if ($userSession['role']="admin") {
@@ -71,9 +71,66 @@ class CommentController extends DefaultController
                     } 
                  }
              }
-        }
-        header('Location: index.php?action=post&id=' . $post_id);
+             header('Location: index.php?action=post&id=' . $post_id);
+        }else{
+                header('Location: index.php');
+             }
+       
                         
+    }
+    public function deleteCommentMethod(string $comment_id)
+    {
+        
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+       
+        if (isset($userSession)) {
+           
+            if ($userSession['role']="admin") {
+              
+               $success = $this->commentRepository->deleteComment($comment_id);
+               
+                if($success==true){     
+                    $successMessage="Commentaire supprimé avec succée!";
+                   (new AdminController())->execute();
+                }else{
+                    (new AdminController())->execute();
+                
+                }
+                }else{
+                header('Location: index.php'); 
+            }
+             
+        }else{
+        header('Location: index.php');
+     }
+    }
+     function publishCommentMethod(string $comment_id)
+    {
+        
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+       
+        if (isset($userSession)) {
+           
+            if ($userSession['role']="admin") {
+              
+               $success = $this->commentRepository->publishComment($comment_id);
+               
+                if($success==true){     
+                    $successMessage="Commentaire publiée avec succée!";
+                   (new AdminController())->execute();
+                }else{
+                    (new AdminController())->execute();
+                
+                }
+                }else{
+                header('Location: index.php'); 
+            }
+             
+        }else{
+        header('Location: index.php');
+     }
     }
 }
    

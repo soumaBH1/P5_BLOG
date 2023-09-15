@@ -8,6 +8,13 @@ use Twig\Extension\DebugExtension;
 
 class DefaultController
 {
+    /**
+     * Summary of render
+     * @param string $templateFile
+     * @param array $params
+     * @param bool $isDebug
+     * @return void
+     */
     public function render(string $templateFile, array $params = [], bool $isDebug = false)
     {
         $loader = new FilesystemLoader("templates");
@@ -21,8 +28,6 @@ class DefaultController
         // load template
         $template = $twig->load($templateFile);
         // set template variables
-
-        // render template render('votre_template.twig', ['utilisateur' => $_SESSION['utilisateur'],]);
-        echo $template->render($params);
+         echo $template->render($params);
     }
 }

@@ -36,7 +36,6 @@ class PostController extends DefaultController
             "post" => $post,
             "comments" => $comments, "userSession" => $userSession
         );
-        //var_dump($param); exit();
         $this->render("posts/show.html.twig", $param, false);
     }
     public function index()
@@ -49,10 +48,12 @@ class PostController extends DefaultController
         $userSession = $sessionService->getUserArray();
 
         $param = array("posts" => $posts, "userSession" => $userSession);
-        $this->render("posts/listPosts.html.twig", $param, false);
+        $this->render("posts/listPosts.html.twig", $param);
     }
     public function createPostMethod()
     {
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
         if (isset($userSession)) { //vérifier si un utilisateur estconnecté
             
                 //vérifier si l'utilisateur connecté est admin
@@ -95,4 +96,104 @@ class PostController extends DefaultController
             }
         }
     }
+
+    public function editPostMethod(int $identifier)
+    {
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+        if (isset($userSession)) { //vérifier si un utilisateur estconnecté
+            
+            $post = $this->repository->getPost($identifier);    
+            //vérifier si l'utilisateur connecté est admin            
+            if ($userSession['role'] = "admin") {
+                // declaration des variables 
+                $title = "";
+                $body    = "";
+                $chapo = "";
+                $image = "";
+                $errors = array();
+                $row = array();
+                $published = 0;
+                 //afficher le template creation de post   
+                 $this->render("admin/adminUpdatePost.html.twig", ["post"=> $post, "userSession" => $userSession, "errors" => $errors]);
+
+                // recevoir toutes les valeurs d'entrée du formulaire
+                if (!empty($_POST)) {
+                    $title = htmlspecialchars($_POST['title']);
+                    $body = htmlspecialchars($_POST['content']);
+                    $chapo = htmlspecialchars($_POST['chapo']);
+                    $fituredImage = htmlspecialchars($_POST['featured_image']);
+                    $published = $_POST['publish'];
+
+                    $row['title'] = $title;
+                    $row['body'] = $body;
+                    $row['chapo'] = $chapo;
+                    $row['user_id'] = $userSession['id'];
+                    $row['featured_image'] =  $fituredImage;
+                    $row['published'] =  $published;
+                    $connection =  DatabaseConnection::getConnection();
+                    $postRepository = new PostRepository();
+                    
+                    $postRepository->addPost($row);
+                    $_SESSION['message'] = "Post crée avec  succée.";
+                    header('Location: index.php?action=listPost');
+                }
+            } else {
+                $this->render("homepage.html.twig", ["userSession" => $userSession], false);
+            }
+        }
+    }
+
+    public function listPostsAdmin()
+    {
+        $connection =  DatabaseConnection::getConnection();
+        $postRepository = new PostRepository();
+        $posts = $postRepository->getPosts();
+
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+        
+        if (isset($userSession)) {
+            
+            if ($userSession['role']="admin") {
+             $param = array("posts" => $posts, "userSession" => $userSession);
+             $this->render("admin/listPostsAdmin.html.twig", $param);
+            }else{
+                header('Location: index.php');  
+            }
+        }else{
+        header('Location: index.php');
+     }
+    }
+
+
+    ///Supprimer un post
+    
+    public function deletePostMethod(string $post)
+    {
+        
+        $sessionService = new SessionService();
+        $userSession = $sessionService->getUserArray();
+       
+        if (isset($userSession)) {
+           
+            if ($userSession['role']="admin") {
+               $success = $this->repository->deletePost($post);
+                if($success==true){     
+                    $successMessage="Post supprimé avec succée!";
+                   (new AdminController())->execute();
+                }else{
+                    $param = array("post" => $post, "userSession" => $userSession);
+                    (new AdminController())->execute();
+                
+                }
+                }else{
+                header('Location: index.php'); 
+            }
+             
+        }else{
+        header('Location: index.php');
+     }
+    }
+
 }

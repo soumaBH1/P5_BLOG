@@ -7,7 +7,7 @@
 
 {% block content %}
     
-           <div >
+           <div class="container">
                 <table>
                     <tr>
                         <td>
@@ -17,6 +17,16 @@
                     <tr>
                         <td>Session ID :</td>
                         <td>{{ userSession.id }}</td>
+                    </tr>
+                     <tr>
+                        <td>Nom :</td>
+                        <td>{{ userSession.lastname }}</td>
+
+                    </tr>
+                     <tr>
+                        <td>Prénom :</td>
+                        <td>{{ userSession.firstname }}</td>
+
                     </tr>
                     <tr>
                         <td>Pseudo :</td>
@@ -29,7 +39,7 @@
                     </tr>
                     <tr>
                         <td>Date de création du compte : </td>
-                        <td>{{ userSession.created_at|e }}</td>
+                        <td>{{ userSession.created_at }}</td>
                     </tr>
                     <tr>
                         <td>Role : </td>
@@ -38,10 +48,11 @@
                 </table>
             </div>
 
-            <div >
-                <div><a  href="index.php?action=listUser">Liste des utilisateurs</a></div>
-                <div><a  href="index.php?action=adminListPosts">Liste des posts</a></div>
-                <div><a  href="index.php?action=adminListAllComment">Liste des commentaires</a></div>
+             <div class="container" >
+              
+                <div  class="btn btn-primary"><a  href="index.php?action=adminlistUsers">Liste des utilisateurs</a></div>
+                <div  class="btn btn-primary"><a  href="index.php?action=adminListPosts">Liste des posts</a></div>
+                <div  class="btn btn-primary"><a  href="index.php?action=adminListComments">Liste des commentaires</a></div>
             </div>
        
 
@@ -49,31 +60,35 @@
    
 
     {% if users is defined %}
-        <hr>
+        
         <div class="container">
-
-                {% for user in users %}
+            
+            <h3>Liste des utilisateurs</h3>
+             <hr>   {% for user in users %}
                 <div >
-                    <p>User ID : {{ users.id }}</p>
+                    <p>User ID : {{ user.id }}</p>
                 </div>
                 <div >
-                    <p>username : {{ users.username }}</p>
+                    <p>username : {{ user.username }}</p>
                 </div>
                 <div >
-                    <p>Email : {{ users.email }}</p>
+                    <p>Email : {{ user.email }}</p>
                 </div>
                 <div >
-                    <p>Date d'enregistrement : {{ users.created_at|e }}</p>
+                    <p>Date d'enregistrement : {{ user.frenchCreationDate }}</p>
                 </div>
                 <div >
                     <p>Role :
-                        {% if users.role == "Admin" %}
+                        {% if user.role == "admin" %}
                         Administrateur
-                        {% elseif users.role == "User" %}
+                        {% elseif user.role == "user" %}
                         Utilisateur
                         {% endif %}
                     </p>
                 </div>
+                 <a  href="index.php?action=editUser&id={{ user.id }}">Editer</a>
+                <a  href="index.php?action=deleteUser&id={{ user.id }}">Supprimer</a>
+           
                     <hr>
                 {% endfor %}
         </div>
@@ -81,57 +96,60 @@
 
 
     {% if posts is defined %}
-        <hr>
+        
         <div class="container">
+        <h3>Liste des Posts</h3><hr>
             {% for post in posts %}
-            <div >
-                <div ><p>ID Post : {{ post.id }}</p></div>
-                <div > <p>Titre: {{ post.title }}</p></div>
-            </div>
+                <div >
+                    <div ><p>ID Post : {{ post.id }}</p></div>
+                    <div > <p>Titre: {{ post.title }}</p></div>
+                </div>
                 <div class="row">
                     <p>Chapo : {{ post.chapo }}</p>
                 </div>
 
-            <div class="row">
-                <p>{{ post.content }}</p>
-            </div>
-            <div class="row">
-                <div >
-                    <p>Date de création: {{ post.frenchCreationDate|e }}</p>
+                <div class="row">
+                    <p>{{ post.content }}</p>
                 </div>
+                <div class="row">
+                    <div >
+                        <p>Date de création: {{ post.frenchCreationDate }}</p>
+                    </div>
                 <div >
                     {% if post.frenchUpdatedDate != null %}
                     <div >
-                        <p>Dernière modification le : {{ post.frenchUpdatedDate|e }}</p>
+                        <p>Dernière modification le : {{ post.frenchUpdatedDate }}</p>
                     </div>
                     {% endif %}
                 </div>
                 <div >
                     <p>Crée par : {{ post.username }}</p>
                 </div>
-            </div>
-
-
-            {% if post.published == '0' %}
-                <a  href="index.php?action=publishPost&idPost={{ post.id }}">Approuver</a>
-            {% endif %}
-                <a  href="index.php?action=editPost&idPost={{ post.id }}">Editer</a>
-                <a  href="index.php?action=deletePost&idPost={{ post.id }}">Supprimer</a>
+                {% if post.published == '0' %}
+                     <a  href="index.php?action=publishPost&id={{ post.id }}">Approuver</a>
+                {% endif %}
+                <a  href="index.php?action=editPost&id={{ post.id }}">Editer</a>
+                 <a  href="index.php?action=deletePost&id={{ post.id }}">Supprimer</a>
             <hr>
             {% endfor %}
+
+            </div>
+      
 
         </div>
     {% endif %}
 
     {% if comments is defined %}
-        <hr>
+        
         <div class="container">
-            {% for comment in comments %}
+           
+        <h3 >Liste des commentaires</h3> 
+        <hr>{% for comment in comments %}
                 <div >
                     <p>ID : {{ comment.id }}</p>
                 </div>
                 <div >
-                    <p>Commentaire : {{ comment.content }}</p>
+                    <p>Commentaire : {{ comment.body }}</p>
                 </div>
                 <div >
                     <p>Ecrit par : {{ comment.username }} le {{ comment.frenchCreationDate|e }}</p>
@@ -143,11 +161,11 @@
                 <div >
                 {% if comment.published == '1' %}
                     <p>Commentaire validé</p>
-                {% elseif comment.published == '0' %}
+                {% else %}
                     <p>Commentaire en attente de validation</p>
-                    <a href="index.php?action=publishComment&idComment={{ comment.id }}">Approuver</a>
+                    <a href="index.php?action=publishComment&id={{ comment.id }}">Approuver</a>
                 {% endif %}
-                <a  href="index.php?action=deleteComment&idComment={{ comment.id}}">Supprimer</a>
+                <a  href="index.php?action=deleteComment&id={{ comment.id}}">Supprimer</a>
                 </div>
 
                 <hr>

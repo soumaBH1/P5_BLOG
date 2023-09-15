@@ -1,11 +1,11 @@
 {% extends 'BaseTemplate.html.twig' %}
-<!-- CSS pour espace admin -->
-	<link rel="stylesheet" href= "static/css/admin_styling.css">
+
 	
 {% block content %}
     <div class="container">
-    <form action="index.php?actioneditPost" method="post">
-        <input type="hidden" name="idPost" value="{{ post.id }}">
+             <div class="content">
+    <form action="index.php?action=editPost" method="post">
+        <input type="hidden" id="id_post" name="idPost" value="{{ post.id }}">
         <div class="form-group">
             <label for="title">Titre</label>
             <input type="text" class="form-control" value="{{post.title}}" id="title" name="title">
@@ -20,6 +20,6 @@
         </div>
         <button type="submit" class="btn">Editer</button>
     </form>
-
+</div>
     </div>
 {% endblock %}

@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-
 use Exception;
 use Tracy\Debugger;
 use Application\Controllers\PostController;
@@ -32,7 +31,8 @@ try {
             (new PostController())->index();
 
         } elseif ($_GET['action'] === 'adminDashboard') {
-                (new AdminController())->execute();
+              
+            (new AdminController())->execute();
 
         } elseif ($_GET['action'] === 'login') {
             (new LoginController())->login();
@@ -45,18 +45,39 @@ try {
 
         } elseif ($_GET['action'] === 'register') {
             (new LoginController())->register();
-
-        } elseif ($_GET['action'] === 'listUsers') {
-            (new UserController())->index();
-
+        
         } elseif ($_GET['action'] === 'createPost') {
             (new PostController())->createPostMethod();
+        
+        } elseif ($_GET['action'] === 'adminlistPosts') {
+                (new PostController())->listPostsAdmin();
+   
+            } elseif ($_GET['action'] === 'adminlistUsers') {
+            (new UserController())->index();
 
-        }elseif ($_GET['action'] === 'editUser') {
+ 
+        }elseif ($_GET['action'] === 'publishComment') {
+                $identifier = $_GET['id'];
+             (new commentController())->publishCommentMethod($identifier);
+ 
+         //}elseif ($_GET['action'] === 'editUser') {
            // (new UserController())->editUser();
 
         }elseif ($_GET['action'] === 'deleteUser') {
-           // (new UserController())->deleteUser();
+            $identifier = $_GET['id'];
+            (new UserController())->deleteUserMethod($identifier);
+        
+        }elseif ($_GET['action'] === 'editPost') {
+            $id = $_GET['id'];
+            (new PostController())->editPostMethod($id);
+
+        }elseif ($_GET['action'] === 'deletePost') {
+            $identifier = $_GET['id'];
+         (new PostController())->deletePostMethod($identifier);
+        
+        }elseif ($_GET['action'] === 'deleteComment') {
+            $identifier = $_GET['id'];
+         (new CommentController())->deleteCommentMethod($identifier);
 
         } elseif ($_GET['action'] === 'addComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {

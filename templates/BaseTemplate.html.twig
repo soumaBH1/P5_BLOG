@@ -35,22 +35,27 @@
                 <a class="buttons" href="index.php?action=userDachboard">Mon compte</a>
             {% endif %}
         </li>
+       
     </ul>
     {% endif %}
  <ul>
      {% if userSession.id is defined %}
-        <form class="user-info">
-            <a class="headerAdmin .logout-btn" href="index.php?action=logout">Logout</a>
-        </form>
-    {% else %}
+     <li class="user-info">
         <form class="nav-item">
-        <a class="btn btn-success" href="index.php?action=login">Login</a>
+            <a class="btn btn-warning" href="index.php?action=logout">Logout</a>
+        </form>
+    </li> 
+    {% else %}
+    <li class="user-info">
+        <form class="nav-item">
+        <a class="btn btn-warning" href="index.php?action=login">Login</a>
         </form>
         <form class="nav-item">
             <a class="btn btn-warning" href="index.php?action=register">Créer un compte</a>
         </form>
+     </li> 
     {% endif %}
-	 </ul>
+	</ul>
 </div>
 </head>
 
@@ -65,6 +70,13 @@
     </div>
 {% endif %}
 {% endblock %}
+{% if errors is defined %}
+{% for error in errors %}
+    <div class="alert alert-error">
+        {{ errors }}
+    </div>
+    {% endfor %}
+{% endif %}
 </div>
 </section>
 </body>

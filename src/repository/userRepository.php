@@ -18,7 +18,7 @@ class UserRepository
     public function getUserByEmail(string $email): User
     {
         $statement = $this->connection->prepare(
-            "SELECT id, firstname, lastname, email, password, role, username, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM users WHERE email = ?"
+            "SELECT id, firstname, lastname, email, password, role, username, created_at AS french_creation_date, updated_at AS french_creation_date FROM users WHERE email = ?"
         );
         $statement->execute([$email]);
 
@@ -31,7 +31,7 @@ class UserRepository
     public function getUser(string $identifier): User
     {
         $statement = $this->connection->prepare(
-            "SELECT id, firstname, lastname, email, password, role, username, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM users WHERE id = ?"
+            "SELECT id, firstname, lastname, email, password, role, username, created_at AS french_creation_date, updated_at AS french_creation_date FROM users WHERE id = ?"
         );
         $statement->execute([$identifier]);
 
@@ -44,7 +44,7 @@ class UserRepository
     public function getUsers(): array
     {
         $statement = $this->connection->query(
-            "SELECT id, firstname, lastname, email, password, role, username, DATE_FORMAT(created_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date, DATE_FORMAT(updated_at, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM users"
+            "SELECT id, firstname, lastname, email, password, role, username, created_at AS french_creation_date, updated_at AS french_creation_date FROM users"
         );
         $users = [];
         while (($row = $statement->fetch())) {
@@ -129,5 +129,12 @@ class UserRepository
         $_SESSION['message'] = "User added successfully.";
        
         header('location: index.php');
+    }
+    public function deleteUser(string $id)
+    {
+        $statement = $this->connection->prepare(
+        'DELETE FROM users WHERE id = :id');
+        $statement->bindParam(':id', $id);
+        return $statement->execute();
     }
 }
