@@ -1,25 +1,41 @@
 {% extends 'BaseTemplate.html.twig' %}
-
+{% block head %}{% endblock %}
+{% block title %}
+                   <h3>Modifier Post</h3>   
+{% endblock %}
 	
 {% block content %}
     <div class="container">
+     <h3>Modifier Post</h3><hr>
              <div class="content">
-    <form action="index.php?action=editPost" method="post">
-        <input type="hidden" id="id_post" name="idPost" value="{{ post.id }}">
-        <div class="form-group">
-            <label for="title">Titre</label>
-            <input type="text" class="form-control" value="{{post.title}}" id="title" name="title">
+             <div>
+                <form action="index.php?action=editPost&id={{ post.id }}" method="post">
+                     <input type="hidden" id="id" name="id" value="{{ post.id }}">
+                     <div class="form-group">
+                        <label for="title">Titre</label>
+                        <input type="text" class="form-control" value="{{post.title}}" id="title" name="title">
+                    </div>
+                    <div class="form-group">
+                         <label for="chapo">Chapo</label>
+                         <input type="text" class="form-control" value="{{post.chapo}}" id="chapo" name="chapo">
+                    </div>
+                     <div class="form-group form-check">
+                        <label for="content">Contenu</label>
+                        <textarea type="text" class="form-control" rows="10" id="content" name="content">{{post.content}}</textarea>
+                    </div>
+                     <label style="float: left; margin: 5px auto 5px;">Image</label>
+				<input type="file" name="featured_image">
+                {% if userSession.role == 'Admin' %}
+						<label for="publish">
+							Publier
+							<input type="checkbox" value="0" name="publish" id="publish" checked="checked">&nbsp;
+						</label>
+                {% endif %}        
+                    <button type="submit" class="btn">Editer</button>
+                </form>
         </div>
-        <div class="form-group">
-            <label for="chapo">Chapo</label>
-            <input type="text" class="form-control" value="{{post.chapo}}" id="chapo" name="chapo">
-        </div>
-        <div class="form-group form-check">
-            <label for="content">Contenu</label>
-            <textarea type="text" class="form-control" rows="10" id="content" name="content">{{post.content}}</textarea>
-        </div>
-        <button type="submit" class="btn">Editer</button>
-    </form>
-</div>
     </div>
+  
+{% endblock %}
+{% block footer %}
 {% endblock %}

@@ -86,8 +86,8 @@
                         {% endif %}
                     </p>
                 </div>
-                 <a  href="index.php?action=editUser&id={{ user.id }}">Editer</a>
-                <a  href="index.php?action=deleteUser&id={{ user.id }}">Supprimer</a>
+                    <a  href="index.php?action=editUser&id={{ user.id }}">Editer</a>
+                    <a  href="index.php?action=deleteUser&id={{ user.id }}">Supprimer</a>
            
                     <hr>
                 {% endfor %}
@@ -124,8 +124,9 @@
                 </div>
                 <div >
                     <p>Crée par : {{ post.username }}</p>
+                    
                 </div>
-                {% if post.published == '0' %}
+                {% if post.published != '1' %}
                      <a  href="index.php?action=publishPost&id={{ post.id }}">Approuver</a>
                 {% endif %}
                 <a  href="index.php?action=editPost&id={{ post.id }}">Editer</a>

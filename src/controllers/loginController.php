@@ -81,7 +81,7 @@ class LoginController extends DefaultController
 
             if (empty($errors)) {
                 $row['email'] = $email;
-                $row['username'] = $email;
+                $row['username'] = $username;
                 $row['password'] = $password_1;
                 $row['firstname'] = $firstname;
                 $row['lastname'] = $lastname;

@@ -79,4 +79,14 @@ class PostRepository
         $success= $statement->execute();
          return($success);
     }
+
+    public function publishPost(string $id_post)
+    { 
+        $statement = $this->connection->prepare(
+            'UPDATE posts SET posts.published = 1 WHERE posts.id = :id');
+        $statement->bindParam(':id', $id_post);
+         $success=$statement->execute();
+         
+        return($success);
+    }
 }

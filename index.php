@@ -58,15 +58,20 @@ try {
  
         }elseif ($_GET['action'] === 'publishComment') {
                 $identifier = $_GET['id'];
-             (new commentController())->publishCommentMethod($identifier);
+             (new CommentController())->publishCommentMethod($identifier);
  
-         //}elseif ($_GET['action'] === 'editUser') {
-           // (new UserController())->editUser();
+        }elseif ($_GET['action'] === 'publishPost') {
+                $identifier = $_GET['id'];
+             (new PostController())->publishPostMethod($identifier);
 
         }elseif ($_GET['action'] === 'deleteUser') {
             $identifier = $_GET['id'];
             (new UserController())->deleteUserMethod($identifier);
         
+        }elseif ($_GET['action'] === 'editUser') {
+            $id = $_GET['id'];
+            (new UserController())->editUserMethod($id);
+
         }elseif ($_GET['action'] === 'editPost') {
             $id = $_GET['id'];
             (new PostController())->editPostMethod($id);
@@ -82,7 +87,6 @@ try {
         } elseif ($_GET['action'] === 'addComment') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
                 $post_id = $_GET['id'];
-                
                 $user_id = $_GET['user_id'];
                 $comment = $_POST['comment'];
                 $row = ["post_id" => $post_id, "user_id" => $user_id, "comment" => $comment];

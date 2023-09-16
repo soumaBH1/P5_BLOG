@@ -1,0 +1,45 @@
+{% extends 'BaseTemplate.html.twig' %}
+{% block head %}{% endblock %}
+{% block title %}
+                  
+{% endblock %}
+{% block content %}
+ <div class="container">
+     <h3>Modifier User</h3><hr>
+             <div class="content">
+<div style="width: 40%; margin: 20px auto;">
+    <form method="post" action="index.php?action=editUser&id={{ user.id }}" method="post">
+        <div class="form-group">
+            <label for="text"> Username </label>
+            <input type="text" name="username" class="form-control" id="username" value={{user.username}}>
+        </div>
+        <div class="form-group">
+            <label for="text"> Nom </label>
+            <input type="text" name="firstname" class="form-control" id="firstname" value={{user.firstname}}>
+        </div>
+        <div class="form-group">
+            <label for="text"> Prénom </label>
+            <input type="text" name="lastname" class="form-control" id="lastname" value={{user.lastname}}>
+        </div>
+         <div class="form-group">
+            <label for="text"> Age </label>
+            <input type="text" name="age" class="form-control" id="age" value={{user.age}}>
+        </div>
+        <div class="form-group">
+            <label for="text"> Role </label>
+            <input type="text" name="role" class="form-control" id="role" value={{user.role}}>
+        </div>
+        <div class="form-group">
+            <label for="email"> Email address </label>
+            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" value={{user.email}}>
+            <small id="emailHelp" class="form-text text-muted"> Vos données sont protégées! </small>
+        </div>
+
+        
+        <button type="submit" class="btn"> Enregistrer </button>
+    </form>
+    </div>
+
+{% endblock %}
+{% block footer %}
+{% endblock %}
